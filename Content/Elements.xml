@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Content">
+    <File Path="Content\global.scss" Url="Content/global.scss" ReplaceContent="TRUE" />
+    <File Path="Content\icomoon.css" Url="Content/icomoon.css" ReplaceContent="TRUE" />
+    <File Path="Content\ng-quick-date.css" Url="Content/ng-quick-date.css" ReplaceContent="TRUE" />
+    <File Path="Content\ng-quick-date-default-theme.css" Url="Content/ng-quick-date-default-theme.css" ReplaceContent="TRUE" />
+    <File Path="Content\ng-quick-date-plus-default-theme.css" Url="Content/ng-quick-date-plus-default-theme.css" ReplaceContent="TRUE" />
+    <File Path="Content\normalize.css" Url="Content/normalize.css" ReplaceContent="TRUE" />
+    <File Path="Content\bootstrap.min.css" Url="Content/bootstrap.min.css" ReplaceContent="TRUE" />
+    <File Path="Content\global.css" Url="Content/global.css" ReplaceContent="TRUE" />
+    <File Path="Content\global.css.map" Url="Content/global.css.map" ReplaceContent="TRUE" />
+    <File Path="Content\global.min.css" Url="Content/global.min.css" ReplaceContent="TRUE" />
+    <File Path="Content\fonts\icomoon.eot" Url="Content/fonts/icomoon.eot" ReplaceContent="TRUE" />
+    <File Path="Content\fonts\icomoon.svg" Url="Content/fonts/icomoon.svg" ReplaceContent="TRUE" />
+    <File Path="Content\fonts\icomoon.ttf" Url="Content/fonts/icomoon.ttf" ReplaceContent="TRUE" />
+    <File Path="Content\fonts\icomoon.woff" Url="Content/fonts/icomoon.woff" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

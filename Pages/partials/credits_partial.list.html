@@ -1,0 +1,36 @@
+<!-- Sección de créditos -->
+<div class="last-credits-section">
+    <h4 class="subtitle-section">Créditos PyME en mora</h4>
+    <div>
+        <div class="unavailable-message" ng-if="!credits.length">
+            Por el momento no hay elementos que requieran atención inmediata
+        </div>
+        <div ng-if="credits.length">
+            <table>
+                <thead>
+                <tr>
+                    <th>Folio</th>
+                    <th>Propietario</th>
+                    <th>Descripción</th>
+                    <th>Inscripción</th>
+                    <th>Estatus</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="certificate in credits | limitTo: 20 | orderBy:reverse">
+                    <td>{{ certificate.id }}</td>
+                    <td>{{ certificate.owner }}</td>
+                    <td>{{ certificate.description }}</td>
+                    <td>{{ certificate.inscription }}</td>
+                    <td>{{ certificate.status.title }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="action-button-holder" ng-if="!credits.length">
+        <a ui-sref="credits.new" class="action-button action-button-red" title="Nuevo Crédito"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+    </div>
+
+</div>

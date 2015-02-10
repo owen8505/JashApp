@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns="http://schemas.microsoft.com/sharepoint/" Description="SharePoint App Feature" Id="c9e6d33c-ecf9-4c38-8384-f53deaa5df42" Scope="Web" Title="JashApp Feature1" Version="1.0.0.0">
+  <ElementManifests>
+    <ElementManifest Location="Pages\Elements.xml" />
+    <ElementFile Location="Pages\index.html" />
+    <ElementFile Location="Pages\partials\catalogs_partial.html" />
+    <ElementFile Location="Pages\partials\certificates_partial.edit.html" />
+    <ElementFile Location="Pages\partials\certificates_partial.html" />
+    <ElementFile Location="Pages\partials\certificates_partial.list.html" />
+    <ElementFile Location="Pages\partials\certificates_partial.new.html" />
+    <ElementFile Location="Pages\partials\certificates_partial.view.html" />
+    <ElementFile Location="Pages\partials\credits_partial.edit.html" />
+    <ElementFile Location="Pages\partials\credits_partial.html" />
+    <ElementFile Location="Pages\partials\credits_partial.list.html" />
+    <ElementFile Location="Pages\partials\credits_partial.new.html" />
+    <ElementFile Location="Pages\partials\credits_partial.view.html" />
+    <ElementFile Location="Pages\partials\dashboard_partial.html" />
+    <ElementFile Location="Pages\partials\users_partial.html" />
+    <ElementFile Location="Pages\templates\certificate_new_template.html" />
+    <ElementFile Location="Pages\templates\credit_new_template.html" />
+    <ElementFile Location="Pages\templates\manager_detail_template.html" />
+    <ElementFile Location="Pages\templates\request_info_template.html" />
+    <ElementManifest Location="Scripts\Elements.xml" />
+    <ElementFile Location="Scripts\App.js" />
+    <ElementFile Location="Scripts\jquery-1.9.1.min.map" />
+    <ElementFile Location="Scripts\jquery-1.9.1.min.js" />
+    <ElementFile Location="Scripts\jquery-1.9.1.js" />
+    <ElementFile Location="Scripts\jquery-1.9.1.intellisense.js" />
+    <ElementFile Location="Scripts\App\App.js" />
+    <ElementFile Location="Scripts\App\config.exceptionHandler.js" />
+    <ElementFile Location="Scripts\App\config.js" />
+    <ElementFile Location="Scripts\controllers\CertificateController.js" />
+    <ElementFile Location="Scripts\controllers\CreditController.js" />
+    <ElementFile Location="Scripts\controllers\DashboardController.js" />
+    <ElementFile Location="Scripts\controllers\RootController.js" />
+    <ElementFile Location="Scripts\lib\angular-animate.js" />
+    <ElementFile Location="Scripts\lib\angular-resource.js" />
+    <ElementFile Location="Scripts\lib\angular-route.js" />
+    <ElementFile Location="Scripts\lib\angular-sanitize.js" />
+    <ElementFile Location="Scripts\lib\angular-strap.js" />
+    <ElementFile Location="Scripts\lib\angular-strap.tpl.js" />
+    <ElementFile Location="Scripts\lib\angular-ui-router.min.js" />
+    <ElementFile Location="Scripts\lib\angular.js" />
+    <ElementFile Location="Scripts\lib\ng-currency.js" />
+    <ElementFile Location="Scripts\lib\ng-quick-date.min.js" />
+    <ElementFile Location="Scripts\services\CertificateService.js" />
+    <ElementFile Location="Scripts\services\CreditService.js" />
+    <ElementFile Location="Scripts\vendor\jquery-2.1.3.min.js" />
+    <ElementFile Location="Scripts\vendor\modernizr.js" />
+    <ElementFile Location="Scripts\vendor\moment-with-locales.js" />
+    <ElementFile Location="Scripts\vendor\prefixfree.js" />
+    <ElementFile Location="Scripts\appchrome.js" />
+    <ElementFile Location="Scripts\modernizr.js" />
+    <ElementFile Location="Scripts\prefixfree.js" />
+    <ElementFile Location="Scripts\prefixfree.min.js" />
+    <ElementManifest Location="Content\Elements.xml" />
+    <ElementFile Location="Content\global.scss" />
+    <ElementFile Location="Content\icomoon.css" />
+    <ElementFile Location="Content\ng-quick-date.css" />
+    <ElementFile Location="Content\ng-quick-date-default-theme.css" />
+    <ElementFile Location="Content\ng-quick-date-plus-default-theme.css" />
+    <ElementFile Location="Content\normalize.css" />
+    <ElementFile Location="Content\bootstrap.min.css" />
+    <ElementFile Location="Content\global.css" />
+    <ElementFile Location="Content\global.css.map" />
+    <ElementFile Location="Content\global.min.css" />
+    <ElementFile Location="Content\fonts\icomoon.eot" />
+    <ElementFile Location="Content\fonts\icomoon.svg" />
+    <ElementFile Location="Content\fonts\icomoon.ttf" />
+    <ElementFile Location="Content\fonts\icomoon.woff" />
+    <ElementManifest Location="Images\Elements.xml" />
+    <ElementFile Location="Images\AppIcon.png" />
+    <ElementFile Location="Images\Logo_Jash.png" />
+  </ElementManifests>
+  <UpgradeActions>
+    <VersionRange>
+      <ApplyElementManifests>
+        <ElementManifest Location="Pages\Elements.xml" />
+        <ElementManifest Location="Scripts\Elements.xml" />
+        <ElementManifest Location="Content\Elements.xml" />
+        <ElementManifest Location="Images\Elements.xml" />
+      </ApplyElementManifests>
+    </VersionRange>
+  </UpgradeActions>
+</Feature>

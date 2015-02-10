@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="Pages\" Type="ElementManifest" />
+    <ProjectItemFile Source="index.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\catalogs_partial.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\certificates_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\certificates_partial.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\certificates_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\certificates_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\certificates_partial.view.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\credits_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\credits_partial.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\credits_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\credits_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\credits_partial.view.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\dashboard_partial.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\users_partial.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\certificate_new_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\credit_new_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\manager_detail_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\request_info_template.html" Target="Pages\templates\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

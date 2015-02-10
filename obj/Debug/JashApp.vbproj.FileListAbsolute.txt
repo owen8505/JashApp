@@ -1,0 +1,5 @@
+c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\JashApp.pdb
+c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\JashApp.xml
+c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.dll
+c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.xml
+c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.pdb

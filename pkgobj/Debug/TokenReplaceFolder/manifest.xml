@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Solution xmlns="http://schemas.microsoft.com/sharepoint/" SolutionId="3fa42cd8-4b5b-4eeb-8b0a-4a8ecd9cec7a" SharePointProductVersion="16.0">
+  <FeatureManifests>
+    <FeatureManifest Location="JashApp_Feature1\Feature.xml" />
+  </FeatureManifests>
+</Solution>

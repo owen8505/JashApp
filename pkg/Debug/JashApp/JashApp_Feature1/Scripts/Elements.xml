@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Scripts">
+    <File Path="Scripts\App.js" Url="Scripts/App.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery-1.9.1.min.map" Url="Scripts/jquery-1.9.1.min.map" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery-1.9.1.min.js" Url="Scripts/jquery-1.9.1.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery-1.9.1.js" Url="Scripts/jquery-1.9.1.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery-1.9.1.intellisense.js" Url="Scripts/jquery-1.9.1.intellisense.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\App\App.js" Url="Scripts/App/App.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\App\config.exceptionHandler.js" Url="Scripts/App/config.exceptionHandler.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\App\config.js" Url="Scripts/App/config.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\CertificateController.js" Url="Scripts/controllers/CertificateController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\CreditController.js" Url="Scripts/controllers/CreditController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\DashboardController.js" Url="Scripts/controllers/DashboardController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\RootController.js" Url="Scripts/controllers/RootController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-animate.js" Url="Scripts/lib/angular-animate.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-resource.js" Url="Scripts/lib/angular-resource.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-route.js" Url="Scripts/lib/angular-route.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-sanitize.js" Url="Scripts/lib/angular-sanitize.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-strap.js" Url="Scripts/lib/angular-strap.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-strap.tpl.js" Url="Scripts/lib/angular-strap.tpl.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-ui-router.min.js" Url="Scripts/lib/angular-ui-router.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular.js" Url="Scripts/lib/angular.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\ng-currency.js" Url="Scripts/lib/ng-currency.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\ng-quick-date.min.js" Url="Scripts/lib/ng-quick-date.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\services\CertificateService.js" Url="Scripts/services/CertificateService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\services\CreditService.js" Url="Scripts/services/CreditService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\vendor\jquery-2.1.3.min.js" Url="Scripts/vendor/jquery-2.1.3.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\vendor\modernizr.js" Url="Scripts/vendor/modernizr.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\vendor\moment-with-locales.js" Url="Scripts/vendor/moment-with-locales.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\vendor\prefixfree.js" Url="Scripts/vendor/prefixfree.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\appchrome.js" Url="Scripts/appchrome.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\modernizr.js" Url="Scripts/modernizr.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\prefixfree.js" Url="Scripts/prefixfree.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\prefixfree.min.js" Url="Scripts/prefixfree.min.js" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

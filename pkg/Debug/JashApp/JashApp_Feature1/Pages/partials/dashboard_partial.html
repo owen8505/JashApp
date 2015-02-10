@@ -1,0 +1,123 @@
+<div class="local-search">
+    <input type="search" class="form-control" placeholder="Buscar" />
+</div>
+
+<section id="Dashboard" class="section-container" data-ng-controller="DashboardController as dashboardCtrl">
+
+    <div>
+        <ul class="local-nav large-12 end">
+            <li ng-repeat="subsection in SUBSECTIONS" ng-class="{'selected':isCurrentSubsection(subsection)}"><a ng-click="setCurrentSubsection(subsection)">{{ subsection.title }}</a></li>
+        </ul>
+    </div>
+
+    <!-- Sección de elementos con anomalías-->
+    <div class="section warnings-section" ng-if="isCurrentSubsection(SUBSECTIONS[SUBSECTION.ALL])">
+        <h4 class="subtitle-section">Requiere atención inmediata </h4>
+        <div>
+            <div class="unavailable-message" ng-if="!warningList.length">
+                Por el momento no hay elementos que requieran atención inmediata
+            </div>
+            <div ng-if="warningList.length">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Fecha de creación</th>
+                        <th>Fecha de entrega</th>
+                        <th>Fecha gestor</th>
+                        <th>Estatus</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in warningList">
+                        <td>
+                            <a ng-if="isCertificate(item.type)" ui-sref="certificates.edit({id:item.id})">{{ item.folio }}</a>
+                        </td>
+                        <td>{{ item.creationDate | formatDate }}</td>
+                        <td>{{ item.deliveryDate | formatDate }}</td>
+                        <td>{{ item.committedDate }}</td>
+                        <td>{{ item.status.title }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de certificados -->
+    <div class="section" ng-controller="CertificateController as certificateCrtl" ng-if="isCurrentSubsection(SUBSECTIONS[SUBSECTION.ALL]) || isCurrentSubsection(SUBSECTIONS[SUBSECTION.CERTIFICATES])">
+        <div class="last-certificates-section">
+            <h4 class="subtitle-section">Certificados de Libertad de Gravamen</h4>
+            <div>
+                <div class="unavailable-message" ng-if="!certificates.length">
+                    Por el momento no hay elementos que requieran atención inmediata
+                </div>
+                <div ng-if="certificates.length">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Folio {{ certificates.length }}</th>
+                            <th>Propietario</th>
+                            <th>Descripción</th>
+                            <th>Inscripción</th>
+                            <th>Estatus</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="certificate in certificates | limitTo: 5 ">
+                            <td><a ui-sref="certificates.edit({id:certificate.id})">{{ certificate.folio }}</a></td>
+                            <td>{{ certificate.owner }}</td>
+                            <td>{{ certificate.description }}</td>
+                            <td>{{ certificate.inscription }}</td>
+                            <td>{{ certificate.status.title }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="action-button-holder">
+                <a ui-sref="certificates.new" class="btn btn-default" title="Nuevo Certificado" ng-click="createCertificate()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de créditos -->
+    <div class="section" ng-controller="CreditController as creditCrtl" ng-if="isCurrentSubsection(SUBSECTIONS[SUBSECTION.ALL]) || isCurrentSubsection(SUBSECTIONS[SUBSECTION.CREDITS])">
+        <div class="last-credits-section">
+            <h4 class="subtitle-section">Créditos PyME en mora</h4>
+            <div>
+                <div class="unavailable-message" ng-if="!credits.length">
+                    Por el momento no hay elementos que requieran atención inmediata
+                </div>
+                <div ng-if="credits.length">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Folio {{ credits.length }}</th>
+                            <th>Propietario</th>
+                            <th>Descripción</th>
+                            <th>Inscripción</th>
+                            <th>Estatus</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="credit in credits | limitTo: 5 ">
+                            <td><a ui-sref="credits.edit({id:credit.id})">{{ credit.folio }}</a></td>
+                            <td>{{ credit.owner }}</td>
+                            <td>{{ credit.description }}</td>
+                            <td>{{ credit.inscription }}</td>
+                            <td>{{ credit.status.title }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="action-button-holder">
+                <a ui-sref="credits.new" class="btn btn-default" title="Nuevo Crédito" ng-click="createCredit()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+            </div>
+        </div>
+    </div>
+
+</section>

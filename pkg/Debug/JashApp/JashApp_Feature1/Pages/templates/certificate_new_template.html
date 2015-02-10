@@ -1,0 +1,41 @@
+<li class="mandatory-field-label">Campos obligatorios <em class="mandatory-field">*</em></li>
+<li><h3>Datos generales</h3></li>
+<li>
+    <label for="certificate-creation-date">Fecha de creación:</label>
+    <div id="certificate-creation-date">{{ selectedItem.creationDate | formatDate }}</div>
+</li>
+<li>
+    <label for="certificate-delivery-date">Fecha de entrega:</label>
+    <div id="certificate-delivery-date">{{ selectedItem.deliveryDate | formatDate }}</div>
+</li>
+<li>
+    <label for="certificate-status">Estatus:</label>
+    <input id="certificate-status" type="text" class="form-control" ng-model="selectedItem.status.title" readonly>
+</li>
+<li>
+    <label for="certificate-folio">Folio:</label>
+    <span class="third-width"><input id="certificate-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true"></span>
+</li>
+<li ng-if="selectedItem.status.code == 2">
+    <label for="certificate-committed-date">Fecha comprometida por el gestor:</label>
+    <input id="certificate-committed-date" type="text" class="form-control" ng-model="selectedItem.committedDate" readonly>
+</li>
+<li>
+    <label for="certificate-owner">Propietario: <em class="mandatory-field">*</em></label>
+    <input id="certificate-owner" type="text" class="form-control" class="form-control" placeholder="Ej. Ricardo Rosas" ng-model="selectedItem.owner" required="true">
+</li>
+<li>
+    <label for="certificate-description">Descrición: <em class="mandatory-field">*</em></label>
+    <textarea id="certificate-description" class="form-control" required="true" placeholder="Ej. Casa habitación" ng-model="selectedItem.description"></textarea>
+</li>
+<li>
+    <label for="certificate-inscription">Inscripción: <em class="mandatory-field">*</em></label>
+    <input id="certificate-inscription" type="text"  class="form-control"placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true">
+</li>
+<li>
+    <label for="certificate-attachments">Archivos adjuntos:</label>
+    <span class="third-width"><input id="certificate-attachment-name" type="text" ng-model="attachmentName" class="form-control" placeholder="Ej. Copia de correo"></span>
+    <span class="third-width"><input id="certificate-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ></span>
+    <span class="third-width"><a class="btn btn-default" ng-click="addAttachment(attachmentName)">Añadir</a></span>
+    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" href="attachment.url" target="_blank">{{ attachment.name }} <span class="icon icon-circle-with-cross"></span></a>
+</li>

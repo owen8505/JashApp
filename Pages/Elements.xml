@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Pages">
+    <File Path="Pages\index.html" Url="Pages/index.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\catalogs_partial.html" Url="Pages/partials/catalogs_partial.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\certificates_partial.edit.html" Url="Pages/partials/certificates_partial.edit.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\certificates_partial.html" Url="Pages/partials/certificates_partial.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\certificates_partial.list.html" Url="Pages/partials/certificates_partial.list.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\certificates_partial.new.html" Url="Pages/partials/certificates_partial.new.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\certificates_partial.view.html" Url="Pages/partials/certificates_partial.view.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\credits_partial.edit.html" Url="Pages/partials/credits_partial.edit.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\credits_partial.html" Url="Pages/partials/credits_partial.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\credits_partial.list.html" Url="Pages/partials/credits_partial.list.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\credits_partial.new.html" Url="Pages/partials/credits_partial.new.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\credits_partial.view.html" Url="Pages/partials/credits_partial.view.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\dashboard_partial.html" Url="Pages/partials/dashboard_partial.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\users_partial.html" Url="Pages/partials/users_partial.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\certificate_new_template.html" Url="Pages/templates/certificate_new_template.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\credit_new_template.html" Url="Pages/templates/credit_new_template.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\manager_detail_template.html" Url="Pages/templates/manager_detail_template.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\request_info_template.html" Url="Pages/templates/request_info_template.html" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

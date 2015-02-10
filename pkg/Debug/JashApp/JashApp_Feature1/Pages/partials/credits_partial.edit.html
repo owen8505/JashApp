@@ -1,0 +1,95 @@
+<div class="section-content">
+    <form id="credit-form" class="item-form">
+        <fieldset>
+            <legend ng-bind="titleState"></legend>
+            <div class="warning-message" ng-if="selectedItem.anomaly">
+                <span class="icon icon-warning"></span> Este elemento requiere atención inmediata.
+            </div>
+            <ol>
+                <ng-include src="'/JashApp/Pages/templates/credit_new_template.html'"></ng-include>
+            </ol>
+            <ol>
+                <li><h3>Datos del gestor</h3></li>
+                <li>
+                    <label for="credit-zone">Región:</label>
+                    <span class="third-width">
+                        <button id="credit-zone" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="zonesDropdown">
+                            <span ng-if="!selectedItem.zone">Selecciona una zona</span><span ng-if="selectedItem.zone">{{ selectedItem.zone.title }}</span>
+                            <span class="caret"></span>
+                        </button>
+
+                    </span>
+                </li>
+                <li>
+                    <label for="credit-manager">Gestor:</label>
+                    <span class="third-width">
+                    <button id="credit-manager" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="managersDropdown">
+                        <span ng-if="!selectedItem.manager">Selecciona un gestor</span><span ng-if="selectedItem.manager">{{ selectedItem.manager.name }}</span>
+                        <span class="caret"></span>
+                    </button>
+
+                    </span>
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Enviar correo" data-placement="top" data-template="/JashApp/Pages/templates/request_info_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Solicitar información</a></span>
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="/JashApp/Pages/templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
+                </li>
+                <li>
+                    <label for="credit-cost">Costo de derechos:</label>
+                    <span class="third-width"><input id="credit-cost" type="text" placeholder="$1,200.00" class="form-control" ng-model="selectedItem.cost" ng-currency></span>
+                </li>
+                <li>
+                    <label for="credit-committed-date">Fecha comprometida por el gestor:</label>
+                    <div id="credit-committed-date">{{ selectedItem.committedDate | formatDate }}</div>
+                </li>
+                <li>
+                    <label for="credit-payment">Pago de derechos:</label>
+                    <input id="credit-payment" type="checkbox" ng-model="selectedItem.payment">
+                </li>
+            </ol>
+            <ol ng-if="isCurrentStatus(selectedItem.status)">
+                <li><h3>Datos de envío</h3></li>
+                <li>
+                    <label for="credit-parcel">Paquetería:</label>
+                    <span class="third-width">
+                        <button id="credit-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="parcelsDropdown">
+                            <span ng-if="!selectedItem.parcel">Selecciona una paquetería</span><span ng-if="selectedItem.parcel">{{ selectedItem.parcel.title }}</span>
+                            <span class="caret"></span>
+                        </button>
+
+                    </span>
+                </li>
+                <li>
+                    <label>Créditos generados:</label>
+                    <a class="btn btn-default" title="Generar crédito" data-template="/JashApp/Pages/templates/request_info_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Generar crédito</a>
+                    <a class="attachment_link" ng-repeat="document in selectedItem.documents" href="document.url" target="_blank"><span class=""></span> {{ document.name }}}}</a>
+                </li>
+            </ol>
+
+            <ol ng-if="isCurrentStatus(selectedItem.status)">
+                <li><h3>Datos de cobro</h3></li>
+                <li>
+                    <label for="credit-invoice">Factura:</label>
+                    <span class="third-width"><input id="credit-invoice" type="text" class="form-control" placeholder="Ej. A-001" ng-model="selectedItem.invoice"></span>
+                    <span class="third-width"><input id="credit-invoice-file" ng-model="invoiceFile" class="form-control" type="file"></span>
+                    <span class="third-width"><a class="btn btn-default">Añadir</a></span>
+                    <a class="attachment_link" ng-repeat="invoice in selectedItem.invoices" href="invoice.url" target="_blank"><span class=""></span> {{ invoice.name }}</a>
+                </li>
+                <li>
+                    <label>Créditos generados:</label>
+                    <a class="btn btn-default" title="Generar crédito" data-template="/JashApp/Pages/templates/request_info_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Generar crédito</a>
+                    <a class="attachment_link" ng-repeat="document in selectedItem.documents" href="document.url" target="_blank"><span class=""></span> {{ document.name }}</a>
+                </li>
+                <li>
+                    <label for="credit-cashed">Cobrado:</label>
+                    <input id="credit-cashed" type="checkbox" ng-model="selectedItem.cashed">
+                </li>
+            </ol>
+
+            <ol>
+                <li class="action-button-holder">
+                    <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="savecredit()" ng-disabled="!isValidForm()">Guardar</a>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>

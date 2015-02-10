@@ -1,0 +1,15 @@
+<div class="popover">
+    <div class="arrow"></div>
+    <h3 class="popover-title" ng-bind="title" ng-show="title"></h3>
+    <div class="popover-content">
+        <form name="popoverForm">
+            <li>
+                <label for="certificate-mail-observation">Observaciones:</label>
+                <textarea id="certificate-mail-observation" ng-model="observations"></textarea>
+            </li>
+            <li>
+                <a type="button" class="btn btn-primary" ng-click="sendMail(observations)">Enviar correo</a>
+            </li>
+        </form>
+    </div>
+</div>

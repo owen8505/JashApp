@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="3fa42cd8-4b5b-4eeb-8b0a-4a8ecd9cec7a" 
+        solutionId="3fa42cd8-4b5b-4eeb-8b0a-4a8ecd9cec7a" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="JashApp"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="c9e6d33c-ecf9-4c38-8384-f53deaa5df42" />
+  </features>
+</package>
