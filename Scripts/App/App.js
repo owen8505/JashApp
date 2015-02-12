@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate'])
+    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate'])
 
         .value('DEFAULT_VALUES', {
             SECTION: {
@@ -40,60 +40,64 @@
 
         .config(['$stateProvider', function ($stateProvider) {
 
-            $stateProvider.state('dashboard', {
-                url: '/dashboard',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/dashboard_partial.html',
+            $stateProvider.state('home', {
+                url: '',
+                templateUrl: 'Pages/partials/dashboard_partial.html',
                 title: 'Resumen',
-            }).state('certificates',{
+            }).state('dashboard', {
+                url: '/dashboard',
+                templateUrl: 'Pages/partials/dashboard_partial.html',
+                title: 'Resumen',
+            }).state('certificates', {
                 url: '/certificates',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/certificates_partial.html',
+                templateUrl: 'Pages/partials/certificates_partial.html',
                 title: 'Certificados',
-                settings: {section: 'Certificados'},
-            }).state('certificates.list',{
+                settings: { section: 'Certificados' },
+            }).state('certificates.list', {
                 url: '/list',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/certificates_partial.list.html',
+                templateUrl: 'Pages/partials/certificates_partial.list.html',
                 title: 'Certificados',
-                settings: {section: 'Lista de Certificados'}
-            }).state('certificates.new',{
+                settings: { section: 'Lista de Certificados' }
+            }).state('certificates.new', {
                 url: '/new',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/certificates_partial.new.html',
+                templateUrl: 'Pages/partials/certificates_partial.new.html',
                 title: 'Certificados',
-                settings: {section: 'Nuevo Certificado'},
+                settings: { section: 'Nuevo Certificado' },
                 state: 1
-            }).state('certificates.view',{
+            }).state('certificates.view', {
                 url: '/:id/view',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/certificates_partial.view.html',
+                templateUrl: 'Pages/partials/certificates_partial.view.html',
                 title: 'Certificados',
-                settings: {section: 'Ver Certificado'},
+                settings: { section: 'Ver Certificado' },
                 state: 2
-            }).state('certificates.edit',{
+            }).state('certificates.edit', {
                 url: '/:id/edit',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/certificates_partial.edit.html',
+                templateUrl: 'Pages/partials/certificates_partial.edit.html',
                 title: 'Certificados',
-                settings: {section: 'Editar Certificado'},
+                settings: { section: 'Editar Certificado' },
                 state: 3
-            }).state('credits',{
+            }).state('credits', {
                 url: '/credits',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/credits_partial.html',
+                templateUrl: 'Pages/partials/credits_partial.html',
                 title: 'Créditos',
-                settings: {section: 'Créditos'},
-            }).state('credits.new',{
+                settings: { section: 'Créditos' },
+            }).state('credits.new', {
                 url: '/new',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/credits_partial.new.html',
+                templateUrl: 'Pages/partials/credits_partial.new.html',
                 title: 'Créditos',
-                settings: {section: 'Nuevo Crédito'},
+                settings: { section: 'Nuevo Crédito' },
                 state: 1
             }).state('users', {
                 url: '/users',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/users_partial.html',
+                templateUrl: 'Pages/partials/users_partial.html',
                 title: 'Usuarios',
-                settings: {section: 'Usuarios'}
+                settings: { section: 'Usuarios' }
             }).state('catalogs', {
                 url: '/catalogs',
-                templateUrl: '/sites/Jash/JashApp/Pages/partials/catalogs_partial.html',
+                templateUrl: 'Pages/partials/catalogs_partial.html',
                 title: 'Catálogos',
-                settings: {section: 'Catálogos'}
-            })
+                settings: { section: 'Catálogos' }
+            });
 
         }])
 

@@ -71,14 +71,17 @@
     <Content Include="Content\ng-quick-date.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Images\Logo_Jash.png" />
-    <Content Include="Pages\Elements.xml" />
+    <Content Include="Pages\appLauncher.html" />
+    <Content Include="Pages\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Scripts\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{69fb3256-763c-4b3e-9364-82ba8379ace5}</SharePointProjectItemId>
     </None>
-    <Content Include="Pages\index.html" />
+    <Content Include="Pages\app.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
     <Content Include="Pages\partials\certificates_partial.edit.html" />
     <Content Include="Pages\partials\certificates_partial.html" />
@@ -103,6 +106,7 @@
     <Content Include="Scripts\controllers\CertificateController.js" />
     <Content Include="Scripts\controllers\CreditController.js" />
     <Content Include="Scripts\controllers\DashboardController.js" />
+    <Content Include="Scripts\controllers\LauncherController.js" />
     <Content Include="Scripts\controllers\RootController.js" />
     <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />
@@ -110,6 +114,7 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\lib\angular-animate.js" />
+    <Content Include="Scripts\lib\angular-cookies.js" />
     <Content Include="Scripts\lib\angular-resource.js" />
     <Content Include="Scripts\lib\angular-route.js" />
     <Content Include="Scripts\lib\angular-sanitize.js" />
@@ -123,6 +128,7 @@
     <Content Include="Scripts\prefixfree.js" />
     <Content Include="Scripts\prefixfree.min.js" />
     <Content Include="Scripts\services\CertificateService.js" />
+    <Content Include="Scripts\services\ContextService.js" />
     <Content Include="Scripts\services\CreditService.js" />
     <Content Include="Scripts\vendor\jquery-2.1.3.min.js" />
     <Content Include="Scripts\vendor\modernizr.js" />

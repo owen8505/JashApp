@@ -2,7 +2,7 @@
 <Feature xmlns="http://schemas.microsoft.com/sharepoint/" Description="SharePoint App Feature" Id="c9e6d33c-ecf9-4c38-8384-f53deaa5df42" Scope="Web" Title="JashApp Feature1" Version="1.0.0.0">
   <ElementManifests>
     <ElementManifest Location="Pages\Elements.xml" />
-    <ElementFile Location="Pages\index.html" />
+    <ElementFile Location="Pages\app.html" />
     <ElementFile Location="Pages\partials\catalogs_partial.html" />
     <ElementFile Location="Pages\partials\certificates_partial.edit.html" />
     <ElementFile Location="Pages\partials\certificates_partial.html" />
@@ -20,6 +20,7 @@
     <ElementFile Location="Pages\templates\credit_new_template.html" />
     <ElementFile Location="Pages\templates\manager_detail_template.html" />
     <ElementFile Location="Pages\templates\request_info_template.html" />
+    <ElementFile Location="Pages\appLauncher.html" />
     <ElementManifest Location="Scripts\Elements.xml" />
     <ElementFile Location="Scripts\App.js" />
     <ElementFile Location="Scripts\jquery-1.9.1.min.map" />
@@ -53,6 +54,9 @@
     <ElementFile Location="Scripts\modernizr.js" />
     <ElementFile Location="Scripts\prefixfree.js" />
     <ElementFile Location="Scripts\prefixfree.min.js" />
+    <ElementFile Location="Scripts\controllers\LauncherController.js" />
+    <ElementFile Location="Scripts\lib\angular-cookies.js" />
+    <ElementFile Location="Scripts\services\ContextService.js" />
     <ElementManifest Location="Content\Elements.xml" />
     <ElementFile Location="Content\global.scss" />
     <ElementFile Location="Content\icomoon.css" />

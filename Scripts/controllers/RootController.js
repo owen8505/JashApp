@@ -2,7 +2,7 @@
 
 var Jash = angular.module('Jash');
 
-Jash.controller('RootController',['$scope','$rootScope', 'CertificateService', 'CreditService', 'DEFAULT_VALUES' ,function($scope, $rootScope, CertificateService, CreditService, DEFAULT_VALUES){
+Jash.controller('RootController',['$scope','$rootScope', 'ContextService', 'CertificateService', 'CreditService', 'DEFAULT_VALUES' ,function($scope, $rootScope, ContextService, CertificateService, CreditService, DEFAULT_VALUES){
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
@@ -14,10 +14,10 @@ Jash.controller('RootController',['$scope','$rootScope', 'CertificateService', '
     ];
 
     $scope.parcels = [
-        {id:0, title: 'DHL'},
-        {id:1, title: 'Fedex'},
-        {id:2, title: 'Estafeta'}
-    ]
+        { id: 0, title: 'DHL' },
+        { id: 1, title: 'Fedex' },
+        { id: 2, title: 'Estafeta' }
+    ];
 
     // Catálogo de gestores
     $scope.managers = [
@@ -38,12 +38,14 @@ Jash.controller('RootController',['$scope','$rootScope', 'CertificateService', '
     // Función que selecciona la sección enviada como parámetro
     $scope.setCurrentSection = function (section) {
         $scope.currentSection = section;
-    }
+    };
 
     $scope.initController = function() {
-
         // Sección seleccionada
-        $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];;
+        $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
+        //var url = ContextService.getSpWeb().url + '/_api/sp.userprofiles.peoplemanager';
+        
+        
     };
 
     $scope.initController();

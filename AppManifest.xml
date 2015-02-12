@@ -7,13 +7,18 @@
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
-    <Title>JashApp</Title>
-    <StartPage>~appWebUrl/Pages/index.html?{StandardTokens}</StartPage>
+    <Title>Jash App</Title>
+    <StartPage>~appWebUrl/appLauncher.html?{StandardTokens}&amp;SPHostTitle={HostTitle}&amp;SPHostLogoUrl={HostLogoUrl}</StartPage>
   </Properties>
 
   <AppPrincipal>
     <Internal />
   </AppPrincipal>
-
-
+  <AppPermissionRequests>
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" />
+    <AppPermissionRequest Scope="http://sharepoint/search" />
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" />
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web/list" Right="FullControl" >
+    </AppPermissionRequest>
+  </AppPermissionRequests>
 </App>
