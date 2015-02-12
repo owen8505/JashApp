@@ -57,24 +57,7 @@
             loadAppContext();
         } else {
             createAppContext();
-        }
-
-        var executor = new SP.RequestExecutor(spWeb.appWebUrl);
-        executor.executeAsync({
-            url:
-                spWeb.appWebUrl +
-                "/_api/SP.AppContextSite(@target)/web/lists?@target='" +
-                spWeb.hostUrl + "'",
-            method: "GET",
-            success: function (data) {
-                console.log(data)
-            },
-            error: function (response) {
-                console.log(response)
-            }
-
-            //_api/lists/getByTitle(\'Gestores\')/items
-        });
+        }        
     };   
  
     init();
