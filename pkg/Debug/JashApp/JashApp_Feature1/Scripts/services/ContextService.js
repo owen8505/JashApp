@@ -1,33 +1,32 @@
-﻿Jash.factory('ContextService', ['$cookieStore', '$window', '$state', function ($cookieStore, $window, $state) {
+﻿Jash.factory('ContextService', ['$cookieStore', '$window', '$resource', '$state', function ($cookieStore, $window, $resource, $state) {
 
     var spWeb = {
         appWebUrl: '',
-        url: '',
-        title: '',
-        logoUrl: ''
+        hostUrl: '',        
+        clientTag: '',
+        productNumber: ''        
+        
     };
 
     var queryString = '';
 
     var loadAppContext = function () {
-        spWeb.url = $cookieStore.get('SPAppWebUrl');
-        spWeb.url = $cookieStore.get('SPHostUrl');
-        spWeb.title = $cookieStore.get('SPHostTitle');
-        spWeb.logoUrl = $cookieStore.get('SPHostLogoUrl');
+        spWeb.appWebUrl = $cookieStore.get('SPAppWebUrl');
+        spWeb.hostUrl = $cookieStore.get('SPHostUrl');        
+        spWeb.clientTag = $cookieStore.get('SPClientTag');
+        spWeb.productNumber = $cookieStore.get('SPProductNumber');                
     };
 
     var createAppContext = function () {
-        var appWebUrl = decodeURIComponent(queryString['SPAppWebUrl']);
-        var url = decodeURIComponent(queryString['SPHostUrl']);
-        var title = decodeURIComponent(queryString['SPHostTitle']);
-        var logoUrl = decodeURIComponent(queryString['SPHostLogoUrl']);
-
-        console.log(appWebUrl)
+        var appWebUrl = decodeURIComponent(queryString['SPAppWebUrl']);   
+        var hostUrl = decodeURIComponent(queryString['SPHostUrl']);        
+        var clientTag = decodeURIComponent(queryString['SPClientTag']);
+        var productNumber = decodeURIComponent(queryString['SPProductNumber']);        
 
         $cookieStore.put('SPAppWebUrl', appWebUrl);
-        $cookieStore.put('SPHostUrl', url);
-        $cookieStore.put('SPHostTitle', title);
-        $cookieStore.put('SPHostLogoUrl', logoUrl);
+        $cookieStore.put('SPHostUrl', hostUrl);        
+        $cookieStore.put('SPClientTag', clientTag);
+        $cookieStore.put('SPProductNumber', productNumber);        
 
         $window.location.href = appWebUrl + '/app.html';
     };
@@ -52,13 +51,30 @@
 
     var init = function () {
         
-        queryString = getQueryString();
+        queryString = getQueryString();        
         
         if (!queryString['SPHostUrl']) {
             loadAppContext();
         } else {
             createAppContext();
         }
+
+        var executor = new SP.RequestExecutor(spWeb.appWebUrl);
+        executor.executeAsync({
+            url:
+                spWeb.appWebUrl +
+                "/_api/SP.AppContextSite(@target)/web/lists?@target='" +
+                spWeb.hostUrl + "'",
+            method: "GET",
+            success: function (data) {
+                console.log(data)
+            },
+            error: function (response) {
+                console.log(response)
+            }
+
+            //_api/lists/getByTitle(\'Gestores\')/items
+        });
     };   
  
     init();

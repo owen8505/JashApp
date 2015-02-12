@@ -374,13 +374,18 @@ table{
 
     h1.logo{
         display: inline-block;
-        vertical-align: top;
-        width: 50%;
+        vertical-align: top;        
 
         img{
             max-width: 100px;
             width: 100%
         }
+    }
+
+    .username{        
+        margin-top: 3rem;
+        padding-right: 2.5rem;
+        text-align: right;
     }
 }
 

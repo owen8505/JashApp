@@ -285,11 +285,14 @@ table {
   padding: 0.3rem 1.5rem; }
   .top-bar h1.logo {
     display: inline-block;
-    vertical-align: top;
-    width: 50%; }
+    vertical-align: top; }
     .top-bar h1.logo img {
       max-width: 100px;
       width: 100%; }
+  .top-bar .username {
+    margin-top: 3rem;
+    padding-right: 2.5rem;
+    text-align: right; }
 
 .container {
   margin: 2rem auto; }

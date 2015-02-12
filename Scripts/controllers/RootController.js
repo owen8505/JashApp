@@ -2,10 +2,13 @@
 
 var Jash = angular.module('Jash');
 
-Jash.controller('RootController',['$scope','$rootScope', 'ContextService', 'CertificateService', 'CreditService', 'DEFAULT_VALUES' ,function($scope, $rootScope, ContextService, CertificateService, CreditService, DEFAULT_VALUES){
+Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'CertificateService', 'CreditService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, CertificateService, CreditService, DEFAULT_VALUES) {
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
+
+    // Nombre de usuario
+    $scope.userName = 'ENTRE';
 
     // Catálogo de Regiones
     $scope.zones = [
@@ -44,6 +47,23 @@ Jash.controller('RootController',['$scope','$rootScope', 'ContextService', 'Cert
         // Sección seleccionada
         $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
         //var url = ContextService.getSpWeb().url + '/_api/sp.userprofiles.peoplemanager';
+
+        var context = SP.ClientContext.get_current();
+        var user = context.get_web().get_currentUser();
+        context.load(user);
+        // /_api/web/currentuser
+        /*context.executeQueryAsync(
+            Function.createDelegate(this, function (data) {
+                $scope.userName = user.get_title();
+                console.log($scope.userName)
+                $scope.$apply();
+            }),
+            Function.createDelegate(this, function (response) {
+                console.log(response)
+            })
+        );*/
+
+        ManagerService.getAllManagers();
         
         
     };

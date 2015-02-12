@@ -13,11 +13,12 @@
 <body ng-controller="RootController as RootCtrl">
 
 <div class="top-bar container-fluid">
-    <div>
-        <h1 class="logo col-xs-12">
+    <div class="row">
+        <h1 class="logo col-lg-10">
             <a href="/" title="Resumen"><img src="Images/Logo_Jash.png" alt="Logo Jash" /></a>
         </h1>
-    </div>
+        <div class="username col-lg-2">{{ userName | capitalize }}</div>
+</div>
 </div>
 
 <div class="container">
@@ -45,7 +46,7 @@
 <script src="/_layouts/15/init.js"></script>
 <script src="/_layouts/15/SP.Core.js"></script>
 <script src="/_layouts/15/SP.Runtime.js"></script>
-<script src="/_layouts/15/SP.UserProfiles.js"></script>
+<script src="/_layouts/15/SP.RequestExecutor.js"></script>
 <script src="/_layouts/15/SP.js"></script>
 
 <!-- Angular Libraries -->
@@ -78,6 +79,7 @@
 <script src="Scripts/services/CertificateService.js"></script>
 <script src="Scripts/services/CreditService.js"></script>
 <script src="Scripts/services/ContextService.js"></script>
+<script src="Scripts/services/ManagerService.js"></script>
 
 <!-- Directives -->
 

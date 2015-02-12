@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate'])
+    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ngResource', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate'])
 
         .value('DEFAULT_VALUES', {
             SECTION: {
@@ -136,5 +136,11 @@
                 }
             }
         })
+
+        .filter('capitalize', function () {
+            return function (input, all) {
+                return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); }) : '';
+            }
+        });
 
 })();

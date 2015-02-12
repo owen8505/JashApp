@@ -37,5 +37,6 @@
     <ProjectItemFile Source="controllers\LauncherController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="lib\angular-cookies.js" Target="Scripts\lib\" Type="ElementFile" />
     <ProjectItemFile Source="services\ContextService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="services\ManagerService.js" Target="Scripts\services\" Type="ElementFile" />
   </Files>
 </ProjectItem>

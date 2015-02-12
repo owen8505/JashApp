@@ -57,6 +57,7 @@
     <ElementFile Location="Scripts\controllers\LauncherController.js" />
     <ElementFile Location="Scripts\lib\angular-cookies.js" />
     <ElementFile Location="Scripts\services\ContextService.js" />
+    <ElementFile Location="Scripts\services\ManagerService.js" />
     <ElementManifest Location="Content\Elements.xml" />
     <ElementFile Location="Content\global.scss" />
     <ElementFile Location="Content\icomoon.css" />

@@ -8,17 +8,17 @@
 >
   <Properties>
     <Title>Jash App</Title>
-    <StartPage>~appWebUrl/appLauncher.html?{StandardTokens}&amp;SPHostTitle={HostTitle}&amp;SPHostLogoUrl={HostLogoUrl}</StartPage>
+    <StartPage>~appWebUrl/appLauncher.html?{StandardTokens}</StartPage>
   </Properties>
 
   <AppPrincipal>
     <Internal />
   </AppPrincipal>
-  <AppPermissionRequests>
-    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" />
-    <AppPermissionRequest Scope="http://sharepoint/search" />
-    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" />
-    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web/list" Right="FullControl" >
-    </AppPermissionRequest>
+  <AppPermissionRequests AllowAppOnlyPolicy="false">
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web/list" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
   </AppPermissionRequests>
 </App>
