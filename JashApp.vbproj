@@ -83,9 +83,11 @@
     </None>
     <Content Include="Pages\app.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
+    <Content Include="Pages\partials\managers_partial.html" />
     <Content Include="Pages\partials\certificates_partial.edit.html" />
     <Content Include="Pages\partials\certificates_partial.html" />
     <Content Include="Pages\partials\certificates_partial.list.html" />
+    <Content Include="Pages\partials\managers_partial.new.html" />
     <Content Include="Pages\partials\certificates_partial.new.html" />
     <Content Include="Pages\partials\certificates_partial.view.html" />
     <Content Include="Pages\partials\credits_partial.edit.html" />
@@ -97,7 +99,7 @@
     <Content Include="Pages\partials\users_partial.html" />
     <Content Include="Pages\templates\certificate_new_template.html" />
     <Content Include="Pages\templates\credit_new_template.html" />
-    <Content Include="Pages\templates\manager_detail_template.html" />
+    <Content Include="Pages\templates\manager_new_template.html" />
     <Content Include="Pages\templates\request_info_template.html" />
     <Content Include="Scripts\appchrome.js" />
     <Content Include="Scripts\App\App.js" />
@@ -107,6 +109,7 @@
     <Content Include="Scripts\controllers\CreditController.js" />
     <Content Include="Scripts\controllers\DashboardController.js" />
     <Content Include="Scripts\controllers\LauncherController.js" />
+    <Content Include="Scripts\controllers\ManagerController.js" />
     <Content Include="Scripts\controllers\RootController.js" />
     <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />

@@ -23,10 +23,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
     ];
 
     // Catálogo de gestores
-    $scope.managers = [
-        {id:0, name:'Ricardo Rosas', phone:'(55) 4354 8820', cellphone:'(55) 4354 8820', mail: 'luis.sanchez.franco@gmail.com', zone:{id:0, title:'Ciudad de México'}, score: 10},
-        {id:1, name:'Erik López', phone:'(55) 4354 8820', cellphone:'(55) 4354 8820', mail: 'luis.sanchez.franco@gmail.com', zone:{id:1, title:'Toluca'}, score: 8},
-    ];
+    $scope.managers = ManagerService.getAllManagers();
 
     $scope.warningList = CertificateService.getWarningCertificates();
 
@@ -45,26 +42,21 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
 
     $scope.initController = function() {
         // Sección seleccionada
-        $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
-        //var url = ContextService.getSpWeb().url + '/_api/sp.userprofiles.peoplemanager';
+        $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];        
 
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();
         context.load(user);
-        // /_api/web/currentuser
-        /*context.executeQueryAsync(
+   
+        context.executeQueryAsync(
             Function.createDelegate(this, function (data) {
                 $scope.userName = user.get_title();
-                console.log($scope.userName)
                 $scope.$apply();
             }),
             Function.createDelegate(this, function (response) {
                 console.log(response)
             })
-        );*/
-
-        ManagerService.getAllManagers();
-        
+        );
         
     };
 

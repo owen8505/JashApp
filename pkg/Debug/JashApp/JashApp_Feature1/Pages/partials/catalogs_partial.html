@@ -1,1 +1,47 @@
-Catalgos
+<section id="Catalogs" class="section-container">
+
+    <!-- Sección de certificados -->
+    <div class="section">
+        <div class="last-certificates-section">
+            <h4 class="subtitle-section">Gestores</h4>
+            <div>
+                <div class="unavailable-message" ng-if="!managers.length">
+                    Por el momento no hay elementos en el catálogo de gestores.
+                </div>
+                <div ng-if="managers.length">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Celular</th>
+                            <th>Correo</th>
+                            <th>Región</th>
+                            <th>Calificación</th>
+                            <th>Activo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="manager in managers">
+                            <td><a ui-sref="managers.edit({id:manager.id})">{{ manager.id }}</a></td>
+                            <td>{{ manager.name }}</td>
+                            <td>{{ manager.phone }}</td>
+                            <td>{{ manager.cellphone }}</td>
+                            <td>{{ manager.mail }}</td>
+                            <td>{{ manager.zone.title }}</td>
+                            <td>{{ manager.score }}</td>
+                            <td>{{ manager.active }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="action-button-holder">
+                <a ui-sref="managers.new" class="btn btn-default" title="Nuevo Gestor"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+            </div>
+        </div>
+    </div>
+
+</section>

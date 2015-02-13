@@ -1,0 +1,17 @@
+
+<div class="section-content">
+    <form id="certificate-form" class="item-form">
+        <fieldset>
+            <legend ng-bind="titleState"></legend>
+            <ol>
+                <ng-include src="'Pages/templates/manager_new_template.html'"></ng-include>
+            </ol>
+            <ol>
+                <li class="action-button-holder">
+                    <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="saveCertificate()" ng-disabled="!isValidForm()">Guardar</a>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>

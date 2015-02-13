@@ -18,9 +18,11 @@
     <ElementFile Location="Pages\partials\users_partial.html" />
     <ElementFile Location="Pages\templates\certificate_new_template.html" />
     <ElementFile Location="Pages\templates\credit_new_template.html" />
-    <ElementFile Location="Pages\templates\manager_detail_template.html" />
+    <ElementFile Location="Pages\templates\manager_new_template.html" />
     <ElementFile Location="Pages\templates\request_info_template.html" />
     <ElementFile Location="Pages\appLauncher.html" />
+    <ElementFile Location="Pages\partials\managers_partial.new.html" />
+    <ElementFile Location="Pages\partials\managers_partial.html" />
     <ElementManifest Location="Scripts\Elements.xml" />
     <ElementFile Location="Scripts\App.js" />
     <ElementFile Location="Scripts\jquery-1.9.1.min.map" />
@@ -58,6 +60,7 @@
     <ElementFile Location="Scripts\lib\angular-cookies.js" />
     <ElementFile Location="Scripts\services\ContextService.js" />
     <ElementFile Location="Scripts\services\ManagerService.js" />
+    <ElementFile Location="Scripts\controllers\ManagerController.js" />
     <ElementManifest Location="Content\Elements.xml" />
     <ElementFile Location="Content\global.scss" />
     <ElementFile Location="Content\icomoon.css" />

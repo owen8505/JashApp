@@ -1,0 +1,33 @@
+<li class="mandatory-field-label">Campos obligatorios <em class="mandatory-field">*</em></li>
+<li><h3>Datos generales</h3></li>
+<li>
+    <label for="manager-name">Nombre: <em class="mandatory-field">*</em></label>
+    <input id="manager-name" type="text" class="form-control" ng-model="selectedItem.managerName">
+</li>
+<li>
+    <label for="manager-mail">Correo electronico: <em class="mandatory-field">*</em></label>
+    <input id="manager-mail" type="email" class="form-control" ng-model="selectedItem.mail">
+</li>
+<li>
+    <label for="manager-phone">Teléfono:</label>
+    <input id="manager-phone" type="text" class="form-control" ng-model="selectedItem.phone">
+</li>
+<li>
+    <label for="manager-cellphone">Celular:</label>
+    <input id="manager-cellphone" type="text" class="form-control" ng-model="selectedItem.cellphone">
+</li>
+<li>
+    <label for="manager-zone">Región:</label>
+    <span class="third-width">
+        <button id="certificate-zone" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="zonesDropdown">
+            <span ng-if="!selectedItem.zone">Selecciona una zona</span><span ng-if="selectedItem.zone">{{ selectedItem.zone.title }}</span>
+            <span class="caret"></span>
+        </button>
+    </span>
+</li>
+<li>
+    <label for="manager-score">Calificación:</label>
+    <span class="third-width">
+        <input id="manager-score" type="text" class="form-control" ng-model="selectedItem.score">
+    </span>
+</li>

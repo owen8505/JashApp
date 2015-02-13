@@ -97,6 +97,17 @@
                 templateUrl: 'Pages/partials/catalogs_partial.html',
                 title: 'Catálogos',
                 settings: { section: 'Catálogos' }
+            }).state('managers', {
+                url: '/managers',
+                templateUrl: 'Pages/partials/managers_partial.html',
+                title: 'Gestores',
+                settings: { section: 'Gestores' },
+            }).state('managers.new', {
+                url: '/new',
+                templateUrl: 'Pages/partials/managers_partial.new.html',
+                title: 'Gestores',
+                settings: { section: 'Nuevo Gestor' },
+                state: 1
             });
 
         }])

@@ -17,8 +17,10 @@
     <File Path="Pages\partials\users_partial.html" Url="Pages/partials/users_partial.html" ReplaceContent="TRUE" />
     <File Path="Pages\templates\certificate_new_template.html" Url="Pages/templates/certificate_new_template.html" ReplaceContent="TRUE" />
     <File Path="Pages\templates\credit_new_template.html" Url="Pages/templates/credit_new_template.html" ReplaceContent="TRUE" />
-    <File Path="Pages\templates\manager_detail_template.html" Url="Pages/templates/manager_detail_template.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\manager_new_template.html" Url="Pages/templates/manager_new_template.html" ReplaceContent="TRUE" />
     <File Path="Pages\templates\request_info_template.html" Url="Pages/templates/request_info_template.html" ReplaceContent="TRUE" />
     <File Path="Pages\appLauncher.html" Url="appLauncher.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\managers_partial.new.html" Url="Pages/partials/managers_partial.new.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\managers_partial.html" Url="Pages/partials/managers_partial.html" ReplaceContent="TRUE" />
   </Module>
 </Elements>

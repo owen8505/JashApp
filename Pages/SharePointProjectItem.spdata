@@ -18,8 +18,10 @@
     <ProjectItemFile Source="partials\users_partial.html" Target="Pages\partials\" Type="ElementFile" />
     <ProjectItemFile Source="templates\certificate_new_template.html" Target="Pages\templates\" Type="ElementFile" />
     <ProjectItemFile Source="templates\credit_new_template.html" Target="Pages\templates\" Type="ElementFile" />
-    <ProjectItemFile Source="templates\manager_detail_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\manager_new_template.html" Target="Pages\templates\" Type="ElementFile" />
     <ProjectItemFile Source="templates\request_info_template.html" Target="Pages\templates\" Type="ElementFile" />
     <ProjectItemFile Source="appLauncher.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\managers_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\managers_partial.html" Target="Pages\partials\" Type="ElementFile" />
   </Files>
 </ProjectItem>
