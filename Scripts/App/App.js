@@ -118,7 +118,17 @@
                 templateUrl: 'Pages/partials/parcels_partial.new.html',
                 title: 'Paqueterías',
                 settings: { section: 'Nueva Paquetería' },
-                state: 1
+                state: 1                
+            }).state('zones', {
+                url: '/zones',
+                templateUrl: 'Pages/partials/zones_partial.html',
+                title: 'Regiones',
+                settings: { section: 'Zonas' },
+            }).state('zones.new', {
+                url: '/new',
+                templateUrl: 'Pages/partials/zones_partial.new.html',
+                title: 'Regiones',
+                settings: { section: 'Nueva Zona' }
             });
 
         }])

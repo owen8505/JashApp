@@ -3,6 +3,7 @@
 var Jash = angular.module('Jash');
 
 Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'CertificateService', 'CreditService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, CertificateService, CreditService, DEFAULT_VALUES) {
+    $scope.spWeb;
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
@@ -32,7 +33,12 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.currentSection = section;
     };
 
-    $scope.initController = function() {
+    $scope.initController = function () {
+
+        if (!$scope.spWeb) {
+            $scope.spWeb = ContextService.getSpWeb();
+        }
+        
         // Sección seleccionada
         $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
 
@@ -56,10 +62,8 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
             })
         );
         
-    };
-
-    $scope.$on('initRootController', function () {
-        $scope.initController();
-    });   
-
+    };  
+    
+    $scope.initController();
+                    
 }]);

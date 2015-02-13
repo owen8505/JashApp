@@ -1,4 +1,4 @@
-﻿Jash.factory('ContextService', ['$cookieStore', '$window', '$resource', '$state', function ($cookieStore, $window, $resource, $state) {
+﻿Jash.factory('ContextService', ['$rootScope', '$cookieStore', '$window', '$resource', '$state', function ($rootScope, $cookieStore, $window, $resource, $state) {
 
     var spWeb = {
         appWebUrl: '',
@@ -18,7 +18,7 @@
     };
 
     var createAppContext = function () {
-        var appWebUrl = decodeURIComponent(queryString['SPAppWebUrl']);   
+        var appWebUrl = decodeURIComponent(queryString['SPAppWebUrl']);
         var hostUrl = decodeURIComponent(queryString['SPHostUrl']);        
         var clientTag = decodeURIComponent(queryString['SPClientTag']);
         var productNumber = decodeURIComponent(queryString['SPProductNumber']);        
@@ -53,11 +53,13 @@
         
         queryString = getQueryString();        
         
-        if (!queryString['SPHostUrl']) {
+        if (!queryString['SPHostUrl']) {            
             loadAppContext();
-        } else {
+        } else {            
             createAppContext();
-        }        
+        }
+        console.log('ACABE')
+        $rootScope.$broadcast('initRootController');
     };   
  
     init();

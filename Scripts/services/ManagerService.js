@@ -15,18 +15,18 @@
            function () {                             
                var listItemEnumerator = items.getEnumerator();               
                 while (listItemEnumerator.moveNext()) {
-                    var oListItem = listItemEnumerator.get_current();
+                    var item = listItemEnumerator.get_current();
 
                     var manager = {
-                        id: oListItem.get_id(),
-                        name: oListItem.get_item('Title'),
-                        phone: oListItem.get_item('Telefono'),
-                        cellphone: oListItem.get_item('Celular'),
-                        mail: oListItem.get_item('Correo_x0020_electronico'),
-                        zone: { id: oListItem.get_item('Region').get_lookupId(), title: oListItem.get_item('Region').get_lookupValue() },
-                        score: oListItem.get_item('Calificacion'),
-                        active: oListItem.get_item('Activa')
-                    };                    
+                        id: item.get_id(),
+                        name: item.get_item('Title'),
+                        phone: (item.get_item('Telefono')) ? item.get_item('Telefono') : undefined,
+                        cellphone: (item.get_item('Celular')) ? item.get_item('Celular') : undefined,
+                        mail: item.get_item('Correo_x0020_electronico'),
+                        zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                        score: (item.get_item('Calificacion')) ? item.get_item('Calificacion') : undefined,
+                        active: (item.get_item('Activa')) ? item.get_item('Activa') : false
+                    };
                     
                     managers.push(manager);
                 }
@@ -57,46 +57,56 @@
     };
 
     var saveManager = function (manager) {
-        console.log(manager)
+
         var itemInfo = new SP.ListItemCreationInformation();
-        var item = itemInfo.addItem(itemInfo);
+        var item = list.addItem(itemInfo);
         item.set_item('Title', manager.name);
         item.set_item('Correo_x0020_electronico', manager.mail);
         item.set_item('Celular', manager.cellphone);
         item.set_item('Telefono', manager.phone);
         item.set_item('Calificacion', manager.score);
-        item.set_item('Active', manager.active);
+        item.set_item('Activa', manager.active);
         item.update();
 
         context.load(item);
 
         context.executeQueryAsync(
            function () {
-               console.log(item);
+
+               var manager = {
+                   id: item.get_id(),
+                   name: item.get_item('Title'),
+                   phone: (item.get_item('Telefono'))? item.get_item('Telefono') : undefined,
+                   cellphone: (item.get_item('Celular')) ? item.get_item('Celular') : undefined,
+                   mail: item.get_item('Correo_x0020_electronico'),
+                   zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                   score:(item.get_item('Calificacion')) ? item.get_item('Calificacion') : undefined,
+                   active: (item.get_item('Activa')) ? item.get_item('Activa') : false
+               };
+                
+               managers.push(manager);                              
 
            },
             function (response, args) {
                 console.log(args.get_message())
             }
         );
-
-        //manager.push(manager);
-        //return managers;
+        
     };
 
     var init = function () {
-        SPWeb = ContextService.getSpWeb();
-        console.log(SPWeb)
+        SPWeb = ContextService.getSpWeb();        
         context = new SP.ClientContext(SPWeb.appWebUrl);        
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);        
-        //list = appContext.get_web().get_lists().getByTitle('Gestores');
+        list = appContext.get_web().get_lists().getByTitle('Gestores');
     };
 
     init();
 
     return {
         getAllManagers: getAllManagers,
-        createManager: createManager
+        createManager: createManager,
+        saveManager: saveManager
     }
 
 }]);

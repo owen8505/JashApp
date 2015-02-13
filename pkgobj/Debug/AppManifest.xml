@@ -8,7 +8,7 @@
 >
   <Properties>
     <Title>Jash App</Title>
-    <StartPage>~appWebUrl/appLauncher.html?{StandardTokens}</StartPage>
+    <StartPage>~appWebUrl/app.html?{StandardTokens}</StartPage>
   </Properties>
 
   <AppPrincipal>

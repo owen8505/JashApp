@@ -1,8 +1,8 @@
-<section id="Catalogs" class="section-container">
+<section id="Catalogs" class="section-container" ng-controller="CatalogController as CatalogCtrl">
 
-    <!-- Sección de certificados -->
+    <!-- Sección de gestores -->
     <div class="section">
-        <div class="last-certificates-section">
+        <div class="last-managers-section">
             <h4 class="subtitle-section">Gestores</h4>
             <div>
                 <div class="unavailable-message" ng-if="!managers.length">
@@ -24,8 +24,8 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="manager in managers">
-                            <td><a ui-sref="managers.edit({id:manager.id})">{{ manager.id }}</a></td>
-                            <td>{{ manager.name }}</td>
+                            <td>{{ manager.id }}</td>
+                            <td><a class="link" ui-sref="managers.edit({id:manager.id})">{{ manager.name }}</a></td>
                             <td>{{ manager.phone }}</td>
                             <td>{{ manager.cellphone }}</td>
                             <td>{{ manager.mail }}</td>
@@ -40,6 +40,38 @@
 
             <div class="action-button-holder">
                 <a ui-sref="managers.new" class="btn btn-default" title="Nuevo Gestor"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de paqueterías -->
+    <div class="section">
+        <div class="last-parcels-section">
+            <h4 class="subtitle-section">Paqueterías</h4>
+            <div>
+                <div class="unavailable-message" ng-if="parcels && !parcels.length">
+                    Por el momento no hay elementos en el catálogo de gestores.
+                </div>
+                <div ng-if="managers && managers.length">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="parcel in parcels">
+                                <td><a ui-sref="parcels.edit({id:parcel.id})">{{ parcel.id }}</a></td>
+                                <td>{{ parcel.title }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="action-button-holder">
+                <a ui-sref="parcels.new" class="btn btn-default" title="Nueva Paquetería"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
     </div>

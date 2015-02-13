@@ -4,12 +4,12 @@
         <fieldset>
             <legend ng-bind="titleState"></legend>
             <ol>
-                <ng-include src="'Pages/templates/manager_new_template.html'"></ng-include>
+                <ng-include src="'Pages/templates/zone_new_template.html'"></ng-include>
             </ol>
             <ol>
                 <li class="action-button-holder">
                     <a ui-sref="catalogs" class="btn btn-default">Cancelar</a>
-                    <a class="btn btn-success" ng-class="" ng-click="saveManager()" ng-disabled="!isValidForm(['name','mail'])">Guardar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="saveZone()" ng-disabled="!isValidForm(['name'])">Guardar</a>
                 </li>
             </ol>
         </fieldset>

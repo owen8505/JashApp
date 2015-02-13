@@ -7,11 +7,10 @@ Jash.controller('ManagerController', ['$scope', '$rootScope', '$state', 'Manager
     $scope.zonesDropdown = [];
 
     $scope.initController = function () {
-
+        console.log($scope.managers)
         switch ($state.current.state) {
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
-                $scope.selectedItem = angular.copy(ManagerService.createManager());
-                console.log($scope.selectedItem);
+                $scope.selectedItem = angular.copy(ManagerService.createManager());                
                 break;
         }
 
@@ -24,14 +23,28 @@ Jash.controller('ManagerController', ['$scope', '$rootScope', '$state', 'Manager
 
     };
 
-    $scope.saveManager = function () {
+    $scope.saveManager = function () {        
         ManagerService.saveManager($scope.selectedItem);
+        $scope.managers = ManagerService.getAllManagers();
+        //$state.go('catalogs');
     };
 
     $scope.setZone = function (zoneIndex) {
         if ($scope.selectedItem) {
             $scope.selectedItem.zone = $scope.zones[zoneIndex];
         }
+    };
+
+    $scope.isValidForm = function (fields) {        
+        var isValidForm = true;
+        for (var indexField in fields) {
+            var fieldName = fields[indexField];            
+            if (!$scope.selectedItem[fieldName]){
+                isValidForm = false;
+                break;
+            }
+        }   
+        return isValidForm;
     };
 
     $scope.initController();

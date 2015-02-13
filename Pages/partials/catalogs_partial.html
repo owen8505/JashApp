@@ -1,4 +1,4 @@
-<section id="Catalogs" class="section-container">
+<section id="Catalogs" class="section-container" ng-controller="CatalogController as CatalogCtrl">
 
     <!-- Sección de gestores -->
     <div class="section">
@@ -24,8 +24,8 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="manager in managers">
-                            <td><a ui-sref="managers.edit({id:manager.id})">{{ manager.id }}</a></td>
-                            <td>{{ manager.name }}</td>
+                            <td>{{ manager.id }}</td>
+                            <td><a class="link" ui-sref="managers.edit({id:manager.id})">{{ manager.name }}</a></td>
                             <td>{{ manager.phone }}</td>
                             <td>{{ manager.cellphone }}</td>
                             <td>{{ manager.mail }}</td>

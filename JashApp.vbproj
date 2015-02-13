@@ -71,7 +71,6 @@
     <Content Include="Content\ng-quick-date.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Images\Logo_Jash.png" />
-    <Content Include="Pages\appLauncher.html" />
     <Content Include="Pages\Elements.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -83,6 +82,8 @@
     </None>
     <Content Include="Pages\app.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
+    <Content Include="Pages\partials\zones_partial.new.html" />
+    <Content Include="Pages\partials\zones_partial.html" />
     <Content Include="Pages\partials\managers_partial.html" />
     <Content Include="Pages\partials\certificates_partial.edit.html" />
     <Content Include="Pages\partials\certificates_partial.html" />
@@ -99,16 +100,17 @@
     <Content Include="Pages\partials\users_partial.html" />
     <Content Include="Pages\templates\certificate_new_template.html" />
     <Content Include="Pages\templates\credit_new_template.html" />
+    <Content Include="Pages\templates\zone_new_template.html" />
     <Content Include="Pages\templates\manager_new_template.html" />
     <Content Include="Pages\templates\request_info_template.html" />
     <Content Include="Scripts\appchrome.js" />
     <Content Include="Scripts\App\App.js" />
     <Content Include="Scripts\App\config.exceptionHandler.js" />
     <Content Include="Scripts\App\config.js" />
+    <Content Include="Scripts\controllers\CatalogController.js" />
     <Content Include="Scripts\controllers\CertificateController.js" />
     <Content Include="Scripts\controllers\CreditController.js" />
     <Content Include="Scripts\controllers\DashboardController.js" />
-    <Content Include="Scripts\controllers\LauncherController.js" />
     <Content Include="Scripts\controllers\ManagerController.js" />
     <Content Include="Scripts\controllers\RootController.js" />
     <Content Include="Scripts\Elements.xml" />

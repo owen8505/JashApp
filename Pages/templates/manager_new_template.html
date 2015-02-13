@@ -2,11 +2,11 @@
 <li><h3>Datos generales</h3></li>
 <li>
     <label for="manager-name">Nombre: <em class="mandatory-field">*</em></label>
-    <input id="manager-name" type="text" class="form-control" ng-model="selectedItem.managerName">
+    <input id="manager-name" type="text" class="form-control" ng-model="selectedItem.name">
 </li>
 <li>
     <label for="manager-mail">Correo electronico: <em class="mandatory-field">*</em></label>
-    <input id="manager-mail" type="email" class="form-control" ng-model="selectedItem.mail">
+    <input id="manager-mail" type="text" class="form-control" ng-model="selectedItem.mail">
 </li>
 <li>
     <label for="manager-phone">Teléfono:</label>
@@ -28,6 +28,6 @@
 <li>
     <label for="manager-score">Calificación:</label>
     <span class="third-width">
-        <input id="manager-score" type="text" class="form-control" ng-model="selectedItem.score">
+        <input id="manager-score" type="text" class="form-control" maxlength="2" min="1" max="10" ng-model="selectedItem.score">
     </span>
 </li>

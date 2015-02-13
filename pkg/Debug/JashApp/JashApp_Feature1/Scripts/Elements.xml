@@ -33,10 +33,10 @@
     <File Path="Scripts\modernizr.js" Url="Scripts/modernizr.js" ReplaceContent="TRUE" />
     <File Path="Scripts\prefixfree.js" Url="Scripts/prefixfree.js" ReplaceContent="TRUE" />
     <File Path="Scripts\prefixfree.min.js" Url="Scripts/prefixfree.min.js" ReplaceContent="TRUE" />
-    <File Path="Scripts\controllers\LauncherController.js" Url="Scripts/controllers/LauncherController.js" ReplaceContent="TRUE" />
     <File Path="Scripts\lib\angular-cookies.js" Url="Scripts/lib/angular-cookies.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\ContextService.js" Url="Scripts/services/ContextService.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\ManagerService.js" Url="Scripts/services/ManagerService.js" ReplaceContent="TRUE" />
     <File Path="Scripts\controllers\ManagerController.js" Url="Scripts/controllers/ManagerController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\CatalogController.js" Url="Scripts/controllers/CatalogController.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>
