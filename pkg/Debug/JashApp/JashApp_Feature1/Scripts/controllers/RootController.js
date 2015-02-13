@@ -51,8 +51,8 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();
         context.load(user);
-
-        context.executeQueryAsync(
+        // /_api/web/currentuser
+        /*context.executeQueryAsync(
             Function.createDelegate(this, function (data) {
                 $scope.userName = user.get_title();
                 console.log($scope.userName)
@@ -61,7 +61,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
             Function.createDelegate(this, function (response) {
                 console.log(response)
             })
-        );
+        );*/
 
         ManagerService.getAllManagers();
         
