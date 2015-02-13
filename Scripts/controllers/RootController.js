@@ -20,15 +20,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         { id: 0, title: 'DHL' },
         { id: 1, title: 'Fedex' },
         { id: 2, title: 'Estafeta' }
-    ];
-
-    // Catálogo de gestores
-    $scope.managers = ManagerService.getAllManagers();
-
-    $scope.warningList = CertificateService.getWarningCertificates();
-
-    $scope.certificates = CertificateService.getAllCertificates();
-    $scope.credits = CreditService.getAllCredits();
+    ];    
 
     // Función que determina si una sección está seleccionada
     $scope.isCurrentSection = function(section){
@@ -42,7 +34,13 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
 
     $scope.initController = function() {
         // Sección seleccionada
-        $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];        
+        $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
+
+        // Catálogo de gestores
+        $scope.managers = ManagerService.getAllManagers();
+        $scope.warningList = CertificateService.getWarningCertificates();
+        $scope.certificates = CertificateService.getAllCertificates();
+        $scope.credits = CreditService.getAllCredits();
 
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();
@@ -60,6 +58,8 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         
     };
 
-    $scope.initController();
+    $scope.$on('initRootController', function () {
+        $scope.initController();
+    });   
 
 }]);

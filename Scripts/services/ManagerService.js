@@ -86,9 +86,10 @@
 
     var init = function () {
         SPWeb = ContextService.getSpWeb();
+        console.log(SPWeb)
         context = new SP.ClientContext(SPWeb.appWebUrl);        
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);        
-        list = appContext.get_web().get_lists().getByTitle('Gestores');
+        //list = appContext.get_web().get_lists().getByTitle('Gestores');
     };
 
     init();
