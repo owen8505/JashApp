@@ -3,14 +3,31 @@
 Jash.controller('ManagerController', ['$scope', '$rootScope', '$state', 'ManagerService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, ManagerService, DEFAULT_VALUES) {
 
     $scope.selectedItem = undefined;
-
     $scope.zonesDropdown = [];
 
+    $scope.$on('itemSaved', function () {
+        $state.go('catalogs');
+    });
+
+    $scope.$on('itemUpdated', function () {
+        $state.go('catalogs');
+    });
+
+    $scope.$on('itemDeleted', function () {
+        $state.go('catalogs');
+    });
+
     $scope.initController = function () {
-        console.log($scope.managers)
+        
         switch ($state.current.state) {
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
                 $scope.selectedItem = angular.copy(ManagerService.createManager());                
+                break;
+            case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
+                $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
+                if ($state.params) {                    
+                    $scope.selectedItem = angular.copy(ManagerService.getManagerById($state.params.id));
+                }
                 break;
         }
 
@@ -25,8 +42,14 @@ Jash.controller('ManagerController', ['$scope', '$rootScope', '$state', 'Manager
 
     $scope.saveManager = function () {        
         ManagerService.saveManager($scope.selectedItem);
-        $scope.managers = ManagerService.getAllManagers();
-        //$state.go('catalogs');
+    };
+
+    $scope.updateManager = function () {        
+        ManagerService.updateManager($scope.selectedItem);
+    };
+
+    $scope.deleteManager = function () {
+        ManagerService.deleteManager($scope.selectedItem);
     };
 
     $scope.setZone = function (zoneIndex) {

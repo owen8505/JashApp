@@ -3,7 +3,9 @@
 var Jash = angular.module('Jash');
 
 Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'CertificateService', 'CreditService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, CertificateService, CreditService, DEFAULT_VALUES) {
-    
+    $scope.spWeb,
+    $scope.manager, $scope.warningList, $scope.certificates, $scope.credits;
+
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
 
@@ -12,8 +14,8 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
 
     // Catálogo de Regiones
     $scope.zones = [
-        {id:0, title:'Ciudad de méxico'},
-        {id:1, title:'Toluca'}
+        {id:3, title:'Ciudad de méxico'},
+        {id:4, title:'Toluca'}
     ];
 
     $scope.parcels = [
@@ -32,7 +34,12 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.currentSection = section;
     };
 
-    $scope.initController = function() {
+    $scope.initController = function () {
+
+        if (!$scope.spWeb) {
+            $scope.spWeb = ContextService.getSpWeb();
+        }
+        
         // Sección seleccionada
         $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
 
@@ -56,11 +63,8 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
             })
         );
         
-    };
-
-    $scope.$on('initRootController', function () {
-        console.log('ENTRE AL ROOT')
-        //$scope.initController();
-    });   
-
+    };  
+    
+    $scope.initController();
+                    
 }]);

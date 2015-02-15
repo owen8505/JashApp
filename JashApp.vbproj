@@ -82,6 +82,7 @@
     </None>
     <Content Include="Pages\app.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
+    <Content Include="Pages\partials\managers_partial.edit.html" />
     <Content Include="Pages\partials\zones_partial.new.html" />
     <Content Include="Pages\partials\zones_partial.html" />
     <Content Include="Pages\partials\managers_partial.html" />

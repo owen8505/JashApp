@@ -1,10 +1,10 @@
 ﻿Jash.factory('ContextService', ['$rootScope', '$cookieStore', '$window', '$resource', '$state', function ($rootScope, $cookieStore, $window, $resource, $state) {
 
     var spWeb = {
-        appWebUrl: '',
-        hostUrl: '',        
-        clientTag: '',
-        productNumber: ''        
+        appWebUrl: undefined,
+        hostUrl: undefined,        
+        clientTag: undefined,
+        productNumber: undefined     
         
     };
 
@@ -58,13 +58,16 @@
         } else {            
             createAppContext();
         }
-        console.log('ACABE')
-        $rootScope.$broadcast('initRootController');
+        
     };   
- 
-    init();
+    
 
     var getSpWeb = function () {
+
+        if (!spWeb.appWebUrl) {
+            init();            
+        }
+
         return spWeb;
     };
 

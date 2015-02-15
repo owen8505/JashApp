@@ -1,0 +1,21 @@
+﻿<div class="section-content">
+    <form id="certificate-form" class="item-form">
+        <fieldset>
+            <legend ng-bind="titleState"></legend>
+            <ol>
+                <ng-include src="'Pages/templates/manager_new_template.html'"></ng-include>
+                <li>
+                    <label for="manager-active">Activo:</label>
+                    <input id="manager-active" type="checkbox" ng-model="selectedItem.active">
+                </li>
+            </ol>
+            <ol>
+                <li class="action-button-holder">
+                    <a class="btn btn-danger delete-button" ng-click="deleteManager()">Eliminar</a>
+                    <a ui-sref="catalogs" class="btn btn-default">Cancelar</a>
+                    <a class="btn btn-success" ng-click="updateManager()" ng-disabled="!isValidForm(['name','mail'])">Guardar</a>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>

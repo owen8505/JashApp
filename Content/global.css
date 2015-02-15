@@ -254,6 +254,9 @@ table {
   vertical-align: middle;
   width: 10px; }
 
+.link {
+  cursor: pointer; }
+
 .mandatory-field {
   color: #BF0000;
   display: inline-block;
@@ -358,6 +361,8 @@ table {
   .content .action-button-holder {
     margin: 3rem 0 0;
     text-align: right; }
+    .content .action-button-holder .delete-button {
+      float: left; }
   .content .section-container {
     margin: 1rem 0;
     padding: 1rem; }

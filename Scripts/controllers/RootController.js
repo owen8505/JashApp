@@ -3,7 +3,8 @@
 var Jash = angular.module('Jash');
 
 Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'CertificateService', 'CreditService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, CertificateService, CreditService, DEFAULT_VALUES) {
-    $scope.spWeb;
+    $scope.spWeb,
+    $scope.manager, $scope.warningList, $scope.certificates, $scope.credits;
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
@@ -13,8 +14,8 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
 
     // Catálogo de Regiones
     $scope.zones = [
-        {id:0, title:'Ciudad de méxico'},
-        {id:1, title:'Toluca'}
+        {id:3, title:'Ciudad de méxico'},
+        {id:4, title:'Toluca'}
     ];
 
     $scope.parcels = [

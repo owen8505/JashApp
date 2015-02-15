@@ -10,9 +10,9 @@
                 CATALOGS: 2
             },
             SECTIONS: [
-                {nav:1, title:'Resumen', icon:'icon-home', state:'.dashboard'},
+                {nav:1, title:'Resumen', icon:'icon-home2', state:'.dashboard'},
                 {nav:2, title:'Usuarios', icon:'icon-users', state:'.users'},
-                {nav:3, title:'Catálogos', icon:'icon-cogs', state:'.catalogs'}
+                {nav: 3, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs' }
             ],
             SUBSECTION: {
                 ALL: 0,
@@ -108,6 +108,12 @@
                 title: 'Gestores',
                 settings: { section: 'Nuevo Gestor' },
                 state: 1
+            }).state('managers.edit', {
+                url: '/:id/edit',
+                templateUrl: 'Pages/partials/managers_partial.edit.html',
+                title: 'Gestores',
+                settings: { section: 'Editar Gestor' },
+                state: 3
             }).state('parcels', {
                 url: '/parcels',
                 templateUrl: 'Pages/partials/parcels_partial.html',

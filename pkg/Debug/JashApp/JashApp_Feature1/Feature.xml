@@ -25,6 +25,7 @@
     <ElementFile Location="Pages\partials\zones_partial.html" />
     <ElementFile Location="Pages\partials\zones_partial.new.html" />
     <ElementFile Location="Pages\templates\zone_new_template.html" />
+    <ElementFile Location="Pages\partials\managers_partial.edit.html" />
     <ElementManifest Location="Scripts\Elements.xml" />
     <ElementFile Location="Scripts\App.js" />
     <ElementFile Location="Scripts\jquery-1.9.1.min.map" />

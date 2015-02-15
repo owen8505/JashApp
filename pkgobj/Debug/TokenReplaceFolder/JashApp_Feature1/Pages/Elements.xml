@@ -24,5 +24,6 @@
     <File Path="Pages\partials\zones_partial.html" Url="Pages/partials/zones_partial.html" ReplaceContent="TRUE" />
     <File Path="Pages\partials\zones_partial.new.html" Url="Pages/partials/zones_partial.new.html" ReplaceContent="TRUE" />
     <File Path="Pages\templates\zone_new_template.html" Url="Pages/templates/zone_new_template.html" ReplaceContent="TRUE" />
+    <File Path="Pages\partials\managers_partial.edit.html" Url="Pages/partials/managers_partial.edit.html" ReplaceContent="TRUE" />
   </Module>
 </Elements>
