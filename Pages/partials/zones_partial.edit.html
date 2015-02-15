@@ -1,0 +1,21 @@
+﻿<div class="section-content">
+    <form id="zone-form" class="item-form">
+        <fieldset>
+            <legend ng-bind="titleState"></legend>
+            <ol>
+                <ng-include src="'Pages/templates/zone_new_template.html'"></ng-include>
+                <li>
+                    <label for="zone-active">Activo:</label>
+                    <input id="zone-active" type="checkbox" ng-model="selectedItem.active">
+                </li>
+            </ol>
+            <ol>
+                <li class="action-button-holder">
+                    <a class="btn btn-danger delete-button" ng-click="deleteZone()">Eliminar</a>
+                    <a ui-sref="catalogs" class="btn btn-default">Cancelar</a>
+                    <a class="btn btn-success" ng-click="updateZone()" ng-disabled="!isValidForm(['name'])">Guardar</a>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>

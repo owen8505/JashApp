@@ -82,6 +82,7 @@
     </None>
     <Content Include="Pages\app.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
+    <Content Include="Pages\partials\zones_partial.edit.html" />
     <Content Include="Pages\partials\managers_partial.edit.html" />
     <Content Include="Pages\partials\zones_partial.new.html" />
     <Content Include="Pages\partials\zones_partial.html" />
@@ -113,6 +114,8 @@
     <Content Include="Scripts\controllers\CreditController.js" />
     <Content Include="Scripts\controllers\DashboardController.js" />
     <Content Include="Scripts\controllers\ManagerController.js" />
+    <Content Include="Scripts\controllers\ZoneController.js" />
+    <Content Include="Scripts\controllers\ParcelController.js" />
     <Content Include="Scripts\controllers\RootController.js" />
     <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />
@@ -137,6 +140,8 @@
     <Content Include="Scripts\services\ContextService.js" />
     <Content Include="Scripts\services\CreditService.js" />
     <Content Include="Scripts\services\ManagerService.js" />
+    <Content Include="Scripts\services\ZoneService.js" />
+    <Content Include="Scripts\services\ParcelService.js" />
     <Content Include="Scripts\vendor\jquery-2.1.3.min.js" />
     <Content Include="Scripts\vendor\modernizr.js" />
     <Content Include="Scripts\vendor\moment-with-locales.js" />

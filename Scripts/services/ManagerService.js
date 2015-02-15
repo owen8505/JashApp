@@ -79,7 +79,6 @@
     };
 
     var saveManager = function (manager) {
-        console.log(manager.zone.id)
         var itemInfo = new SP.ListItemCreationInformation();
         var item = list.addItem(itemInfo);
         item.set_item('Title', manager.name);
@@ -90,7 +89,6 @@
         item.set_item('Calificacion', manager.score);
         item.set_item('Activa', manager.active);
         item.update();
-
 
         context.load(item);
         context.executeQueryAsync(

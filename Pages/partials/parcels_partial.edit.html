@@ -1,0 +1,17 @@
+﻿<div class="section-content">
+    <form id="parcel-form" class="item-form">
+        <fieldset>
+            <legend ng-bind="titleState"></legend>
+            <ol>
+                <ng-include src="'Pages/templates/parcel_new_template.html'"></ng-include>
+            </ol>
+            <ol>
+                <li class="action-button-holder">
+                    <a class="btn btn-danger delete-button" ng-click="deleteParcel()">Eliminar</a>
+                    <a ui-sref="catalogs" class="btn btn-default">Cancelar</a>
+                    <a class="btn btn-success" ng-click="updateParcel()" ng-disabled="!isValidForm(['name'])">Guardar</a>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>

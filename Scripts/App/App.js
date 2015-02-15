@@ -80,7 +80,7 @@
                 url: '/credits',
                 templateUrl: 'Pages/partials/credits_partial.html',
                 title: 'Créditos',
-                settings: { section: 'Créditos' },
+                settings: { section: 'Créditos' }
             }).state('credits.new', {
                 url: '/new',
                 templateUrl: 'Pages/partials/credits_partial.new.html',
@@ -101,7 +101,7 @@
                 url: '/managers',
                 templateUrl: 'Pages/partials/managers_partial.html',
                 title: 'Gestores',
-                settings: { section: 'Gestores' },
+                settings: { section: 'Gestores' }
             }).state('managers.new', {
                 url: '/new',
                 templateUrl: 'Pages/partials/managers_partial.new.html',
@@ -118,23 +118,36 @@
                 url: '/parcels',
                 templateUrl: 'Pages/partials/parcels_partial.html',
                 title: 'Paqueterías',
-                settings: { section: 'Paqueterías' },
+                settings: { section: 'Paqueterías' }
             }).state('parcels.new', {
                 url: '/new',
                 templateUrl: 'Pages/partials/parcels_partial.new.html',
                 title: 'Paqueterías',
                 settings: { section: 'Nueva Paquetería' },
-                state: 1                
+                state: 1
+            }).state('parcels.edit', {
+                url: '/:id/edit',
+                templateUrl: 'Pages/partials/parcels_partial.edit.html',
+                title: 'Paqueterías',
+                settings: { section: 'Editar Paquetería' },
+                state: 3
             }).state('zones', {
                 url: '/zones',
                 templateUrl: 'Pages/partials/zones_partial.html',
                 title: 'Regiones',
-                settings: { section: 'Zonas' },
+                settings: { section: 'Reqiones' }
             }).state('zones.new', {
                 url: '/new',
                 templateUrl: 'Pages/partials/zones_partial.new.html',
                 title: 'Regiones',
-                settings: { section: 'Nueva Zona' }
+                settings: { section: 'Nueva Región' },
+                state: 1
+            }).state('zones.edit', {
+                url: '/:id/edit',
+                templateUrl: 'Pages/partials/zones_partial.edit.html',
+                title: 'Regiones',
+                settings: { section: 'Editar Región' },
+                state: 3
             });
 
         }])

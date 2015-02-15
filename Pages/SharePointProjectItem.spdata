@@ -26,5 +26,10 @@
     <ProjectItemFile Source="partials\zones_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
     <ProjectItemFile Source="templates\zone_new_template.html" Target="Pages\templates\" Type="ElementFile" />
     <ProjectItemFile Source="partials\managers_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\parcels_partial.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\parcels_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\parcel_new_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\parcels_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\zones_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
   </Files>
 </ProjectItem>
