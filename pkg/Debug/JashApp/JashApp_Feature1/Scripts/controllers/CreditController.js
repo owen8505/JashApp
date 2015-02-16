@@ -12,6 +12,18 @@ Jash.controller('CreditController',['$scope','$rootScope', '$state', 'CreditServ
     $scope.managersDropdown = [];
     $scope.zonesDropdown = [];
 
+    $scope.$on('itemSaved', function () {
+        $state.go('dashboard');
+    });
+
+    $scope.$on('itemUpdated', function () {
+        $state.go('dashboard');
+    });
+
+    $scope.$on('itemDeleted', function () {
+        $state.go('dashboard');
+    });
+
 
     $scope.initController = function(){
 
@@ -59,9 +71,8 @@ Jash.controller('CreditController',['$scope','$rootScope', '$state', 'CreditServ
     };
 
     $scope.saveCredit = function(){
-        $scope.changeCreditStatus();
-        $scope.selectedItem = undefined;
-        $state.go('dashboard');
+        //$scope.changeCreditStatus();        
+        
     };
 
     $scope.changeCreditStatus = function (){

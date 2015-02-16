@@ -1,4 +1,6 @@
-﻿Jash.factory('ZoneService', ['$rootScope', '$resource', 'ContextService', function ($rootScope, $resource, ContextService) {
+﻿'use strict';
+
+Jash.factory('ZoneService', ['$rootScope', '$resource', 'ContextService', function ($rootScope, $resource, ContextService) {
 
     var zones = [];
     var SPWeb, context, appContext, list;
@@ -20,40 +22,40 @@
         for (var zoneIndex = 0; zoneIndex < zones.length; zoneIndex++) {
 
             if (zones[zoneIndex].id == zoneId) {
-                zones.splice(zoneIndex,1);
+                zones.splice(zoneIndex, 1);
                 break;
             }
         }
     };
 
     var getAllZones = function () {
-                
+
         // Variable del query CAML
-        var queryCAML = '';        
+        var queryCAML = '';
         // Variable que almacena los elementos de la lista de SP
         var items = list.getItems(queryCAML);
         // Cargamos y ejecutamos la lista
-        context.load(items);        
+        context.load(items);
         context.executeQueryAsync(
-           function () {                             
-               var listItemEnumerator = items.getEnumerator();               
-                while (listItemEnumerator.moveNext()) {
-                    var item = listItemEnumerator.get_current();
+           function () {
+               var listItemEnumerator = items.getEnumerator();
+               while (listItemEnumerator.moveNext()) {
+                   var item = listItemEnumerator.get_current();
 
-                    var zone = {
-                        id: item.get_id(),
-                        name: item.get_item('Title'),
-                        active: (item.get_item('Activa')) ? item.get_item('Activa') : false
-                    };
+                   var zone = {
+                       id: item.get_id(),
+                       name: item.get_item('Title'),
+                       active: (item.get_item('Activa')) ? item.get_item('Activa') : false
+                   };
 
-                    zones.push(zone);
-                }
-                
-            },
+                   zones.push(zone);
+               }
+
+           },
             function (response, args) {
                 console.log(args.get_message())
             }
-        );                   
+        );
 
         return zones;
     };
@@ -81,7 +83,7 @@
         context.executeQueryAsync(
            function () {
 
-               if(zone.id == 0){
+               if (zone.id == 0) {
                    zone.id = item.get_id();
                    zones.push(zone);
                }
@@ -93,7 +95,7 @@
                 console.log(args.get_message())
             }
         );
-        
+
     };
 
     var updateZone = function (zone) {
@@ -137,9 +139,9 @@
     };
 
     var init = function () {
-        SPWeb = ContextService.getSpWeb();        
-        context = new SP.ClientContext(SPWeb.appWebUrl);        
-        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);        
+        SPWeb = ContextService.getSpWeb();
+        context = new SP.ClientContext(SPWeb.appWebUrl);
+        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
         list = appContext.get_web().get_lists().getByTitle('Regiones');
     };
 

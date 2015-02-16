@@ -38,9 +38,9 @@
     <ProjectItemFile Source="services\ContextService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="services\ManagerService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="controllers\ManagerController.js" Target="Scripts\controllers\" Type="ElementFile" />
-    <ProjectItemFile Source="controllers\ParcelController.js" Target="Scripts\controllers\" Type="ElementFile" />
-    <ProjectItemFile Source="services\ParcelService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="controllers\CatalogController.js" Target="Scripts\controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="services\ParcelService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="controllers\ParcelController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="controllers\ZoneController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="services\ZoneService.js" Target="Scripts\services\" Type="ElementFile" />
   </Files>

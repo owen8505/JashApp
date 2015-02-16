@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 
 var Jash = angular.module('Jash');
 
@@ -47,7 +47,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.managers = ManagerService.getAllManagers();
         $scope.warningList = CertificateService.getWarningCertificates();
         $scope.certificates = CertificateService.getAllCertificates();
-        $scope.credits = CreditService.getAllCredits();
+        $scope.credits = CreditService.getAllCredits();        
 
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();

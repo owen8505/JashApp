@@ -1,4 +1,4 @@
-Jash.factory('CreditService', ["$http", "$q", "DEFAULT_VALUES", function($http, $q, DEFAULT_VALUES){
+Jash.factory('CreditService', ["$http", "$q", "ContextService", "DEFAULT_VALUES", function ($http, $q, ContextService, DEFAULT_VALUES) {
 
     var credits = [];
     var warningList = [
@@ -118,7 +118,10 @@ Jash.factory('CreditService', ["$http", "$q", "DEFAULT_VALUES", function($http, 
     };
 
     var saveCredit = function (credit) {
-        credit.push(credit);
+        
+
+
+
         return credits;
     };
 
@@ -145,6 +148,15 @@ Jash.factory('CreditService', ["$http", "$q", "DEFAULT_VALUES", function($http, 
 
         return credits;
     };
+
+    var init = function () {
+        SPWeb = ContextService.getSpWeb();
+        context = new SP.ClientContext(SPWeb.appWebUrl);
+        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
+        list = appContext.get_web().get_lists().getByTitle('Certificados');
+    };
+
+    init();
 
     return {
         createCredit : createCredit,

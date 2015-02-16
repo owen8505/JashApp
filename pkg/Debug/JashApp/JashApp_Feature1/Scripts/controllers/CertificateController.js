@@ -16,6 +16,10 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
     $scope.zonesDropdown = [];
 
 
+    $scope.$on('itemSaved', function () {
+        $state.go('dashboard');
+    });
+
     $scope.initController = function(){
 
         switch ($state.current.state){
@@ -62,27 +66,8 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
     };
 
     $scope.saveCertificate = function(){
-        $scope.changeCertificateStatus();
-        $scope.selectedItem = undefined;
-        $state.go('dashboard');
-    };
-
-    $scope.changeCertificateStatus = function (){
-        switch ($scope.selectedItem.status.code){
-            case 1:
-                if($scope.selectedItem.manager){
-                    $scope.selectedItem.status = {code:2, title:'En espera de confirmación'}
-                    $scope.certificates = CertificateService.updateCertificate($scope.selectedItem);
-                }else{
-                    $scope.certificates = CertificateService.saveCertificate($scope.selectedItem);
-                }
-                break;
-            case 2:
-                if($scope.selectedItem.payment){
-                    $scope.selectedItem.status = {code:3, title:'En espera de documentación'}
-                }
-                break;
-        }
+        CertificateService.updateCertificate($scope.selectedItem);
+        $scope.selectedItem = undefined;        
     };
 
     $scope.setZone = function(zoneIndex){

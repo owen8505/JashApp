@@ -1,8 +1,8 @@
-'use strict';
+ 'use strict';
 
 var Jash = angular.module('Jash');
 
-Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'CertificateService', 'CreditService', 'ParcelService', 'ZoneService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, CertificateService, CreditService, ParcelService, ZoneService, DEFAULT_VALUES) {
+Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'ParcelService', 'ZoneService', 'CertificateService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, ParcelService, ZoneService, CertificateService, DEFAULT_VALUES) {
     $scope.spWeb,
     $scope.manager, $scope.warningList, $scope.certificates, $scope.credits;
 
@@ -37,7 +37,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.zones = ZoneService.getAllZones();
         $scope.warningList = CertificateService.getWarningCertificates();
         $scope.certificates = CertificateService.getAllCertificates();
-        $scope.credits = CreditService.getAllCredits();
+        //$scope.credits = CreditService.getAllCredits();        
 
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();

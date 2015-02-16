@@ -1,4 +1,4 @@
-Jash.factory('CertificateService', ["$http", "$q", "DEFAULT_VALUES", function($http, $q, DEFAULT_VALUES){
+Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService", "DEFAULT_VALUES", function($http, $q, $rootScope, ContextService, DEFAULT_VALUES){
 
     var certificates = [];
     var warningList = [
@@ -78,8 +78,85 @@ Jash.factory('CertificateService', ["$http", "$q", "DEFAULT_VALUES", function($h
     };
 
     var getAllCertificates = function () {
+
+        certificates = [];
+        var queryCAML = '';
+        var items = list.getItems(queryCAML);
+
+        context.load(items);        
+        context.executeQueryAsync(
+             function () {
+                 var listItemEnumerator = items.getEnumerator();
+                 while (listItemEnumerator.moveNext()) {
+                     var item = listItemEnumerator.get_current();
+
+                     var certificate = {
+                         id: item.get_id(),
+                         folio: item.get_item('Title'),
+                         creationDate: new moment(item.get_item('Creacion')),
+                         deliveryDate: new moment(item.get_item('Entrega')),
+                         owner: item.get_item('Propietario'),
+                         inscription: item.get_item('Inscripcion'),
+                         description: item.get_item('Descripcion'),
+                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
+                     };                     
+
+                     certificate.attachments = getDocuments('Adjuntos de certificados', certificate.folio);
+                     certificates.push(certificate);
+                 }
+
+             },
+            function (response, args) {
+                console.log(args.get_message())
+            }
+        );
+
         return certificates;
     }
+
+    var getDocuments = function (libraryName, folio) {
+
+        var documents = [];
+
+        var library = appContext.get_web().get_lists().getByTitle(libraryName);
+        var queryString = '<View Scope=\'RecursiveAll\'><Query>' +
+                            '<Where>' +
+                               '<Eq><FieldRef Name=\'Folio\' /><Value Type=\'Text\'>' + folio + '</Value></Eq>' +
+                            '</Where>' +
+                          '</Query></View>';        
+        var queryCAML = new SP.CamlQuery();        
+        queryCAML.set_viewXml(queryString);
+        
+        var items = library.getItems(queryCAML);
+        
+        context.load(items, "Include(File)");
+        context.executeQueryAsync(
+             function () {
+                 
+                 var listItemEnumerator = items.getEnumerator();
+                 while (listItemEnumerator.moveNext()) {
+                     var item = listItemEnumerator.get_current();                     
+                     var file = item.get_file();
+                     
+                     var document = {
+                         name: file.get_name(),
+                         title: file.get_title(),
+                         url: file.get_linkingUrl()
+                     };
+                     
+                     documents.push(document);
+                     
+                 }
+
+             },
+            function (response, args) {               
+                console.log(args.get_message())
+            }
+        );
+        
+        return documents;
+
+    };
 
     var getWarningCertificates = function () {
         return warningList;
@@ -100,7 +177,7 @@ Jash.factory('CertificateService', ["$http", "$q", "DEFAULT_VALUES", function($h
             description: undefined,
             inscription: undefined,
             attachments: [],
-            status: {code:1, title:'Nuevo'},
+            status: {id:1, title:'Nuevo'},
             zone: undefined,
             manager: undefined,
             committedDate: undefined,
@@ -110,17 +187,54 @@ Jash.factory('CertificateService', ["$http", "$q", "DEFAULT_VALUES", function($h
             trackingNumber: undefined,
             documents: [],
             invoices: [],
-            cashed: false
+            cashed: false,            
 
-        };
+        };        
 
         return certificate;
     };
 
     var saveCertificate = function (certificate) {
-        certificates.push(certificate);
-        return certificates;
+
+        var itemInfo = new SP.ListItemCreationInformation();
+        var item = list.addItem(itemInfo);
+
+        item.set_item('Title', certificate.folio);
+        item.set_item('Creacion', certificate.creationDate.toISOString());
+        item.set_item('Entrega', certificate.deliveryDate.toISOString());
+        item.set_item('Propietario', certificate.owner);
+        item.set_item('Descripcion', certificate.description);
+        item.set_item('Inscripcion', certificate.inscription);
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(certificate.status.id));        
+        item.update();
+
+        context.load(item);
+        context.executeQueryAsync(
+            function () {
+
+                if (certificate.id == 0) {
+                    certificate.id = item.get_id();
+                    certificates.push(certificate);
+                }
+
+                $rootScope.$broadcast('itemSaved');
+                
+
+            },
+            function (response, args) {
+                console.log(args.get_message());
+            }
+      );
+               
     };
+
+    var init = function () {
+        SPWeb = ContextService.getSpWeb();
+        context = new SP.ClientContext(SPWeb.appWebUrl);
+        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
+        list = appContext.get_web().get_lists().getByTitle('Certificados');
+    };
+
 
     var updateCertificate = function (certificate) {
         var originalCertificate = getCertificateById(certificate.id);
@@ -145,6 +259,8 @@ Jash.factory('CertificateService', ["$http", "$q", "DEFAULT_VALUES", function($h
 
         return certificates;
     };
+
+    init();
 
     return {
         createCertificate : createCertificate,
