@@ -66,7 +66,7 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
     };
 
     $scope.saveCertificate = function(){
-        CertificateService.updateCertificate($scope.selectedItem);
+        CertificateService.saveCertificate($scope.selectedItem);
         $scope.selectedItem = undefined;        
     };
 
@@ -98,32 +98,6 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
             console.log($scope.selectedItem.parcel)
         }
     };
-
-    $scope.isValidForm = function(){
-        var isValidForm = false;
-        if($scope.selectedItem){
-            switch($scope.selectedItem.status.code){
-                case 1:
-                    if($scope.selectedItem.owner && $scope.selectedItem.inscription && $scope.selectedItem.description && $scope.selectedItem.folio){
-                        isValidForm = true;
-                    }
-                    break;
-                case 2:
-                    isValidForm = true;
-                    break;
-                case 3:
-                    isValidForm = true;
-                    break;
-                case 4:
-                    isValidForm = true;
-                    break;
-                case 5:
-                    isValidForm = true;
-                    break;
-            }
-        }
-        return isValidForm;
-    }
 
     $scope.isManagerSelected = function(){
         var isManagerSelected = false;
@@ -159,9 +133,13 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
         if($scope.selectedItem){
 
             var attachment = {
-                name: attachmentName,
+                folio: 0,
+                name: file.get_name(),
+                title: attachmentName,
+                url: file.get_linkingUrl(),
                 attachmentFile: $scope.attachmentElement.files[0]
             };
+            
 
             $scope.selectedItem.attachments.push(attachment)
             
@@ -205,6 +183,21 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
             console.log(invoice)
 
         }
+    };
+
+    $scope.isValidForm = function (fields) {
+        var isValidForm = true;
+        if ($scope.selectedItem) {
+            for (var indexField in fields) {
+                var fieldName = fields[indexField];
+                if (!$scope.selectedItem[fieldName]) {
+                    isValidForm = false;
+                    break;
+                }
+            }
+        }
+        
+        return isValidForm;
     };
 
     $scope.initController();

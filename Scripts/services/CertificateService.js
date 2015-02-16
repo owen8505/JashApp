@@ -129,20 +129,21 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         
         var items = library.getItems(queryCAML);
         
-        context.load(items, "Include(File)");
+        context.load(items);
         context.executeQueryAsync(
              function () {
                  
                  var listItemEnumerator = items.getEnumerator();
                  while (listItemEnumerator.moveNext()) {
                      var item = listItemEnumerator.get_current();                     
-                     var file = item.get_file();
+                    var file = item.get_file();                     
                      
                      var document = {
+                         filio: file.get_folio(),
                          name: file.get_name(),
                          title: file.get_title(),
                          url: file.get_linkingUrl()
-                     };
+                     };                     
                      
                      documents.push(document);
                      
@@ -158,6 +159,12 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
 
     };
 
+    var saveDocument = function () {
+
+
+
+    };
+
     var getWarningCertificates = function () {
         return warningList;
     }
@@ -168,8 +175,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
 
         var certificate = {
             id: 0,
-            type: 'CERTIFICATE',
-            anomaly: false,
+            type: 'CERTIFICATE',            
             folio: undefined,
             creationDate: now,
             deliveryDate: getDeliveryDate(now),
@@ -239,7 +245,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
     var updateCertificate = function (certificate) {
         var originalCertificate = getCertificateById(certificate.id);
 
-        originalCertificate.anomaly = certificate.anomaly;
         originalCertificate.folio = certificate.folio;
         originalCertificate.owner = certificate.owner;
         originalCertificate.description = certificate.description;
