@@ -22,6 +22,10 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.currentSection = section;
     };
 
+    $scope.$on('applyChanges', function () {
+        $scope.$apply();
+    });
+
     $scope.initController = function () {
 
         if (!$scope.spWeb) {
@@ -36,7 +40,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.parcels = ParcelService.getAllParcels();
         $scope.zones = ZoneService.getAllZones();
         $scope.warningList = CertificateService.getWarningCertificates();
-        $scope.certificates = CertificateService.getLastCertificates();
+        $scope.lastCertificates = CertificateService.getLastCertificates();
         //$scope.credits = CreditService.getAllCredits();        
 
         var context = SP.ClientContext.get_current();

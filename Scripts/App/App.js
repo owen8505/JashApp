@@ -29,7 +29,8 @@
             ITEM_STATES: {
                 NEW: {code:1, title:'Nuevo'},
                 VIEW: {code:2, title:'Ver'},
-                EDIT: {code:3, title:'Editar'}
+                EDIT: {code:3, title:'Editar'},
+                LIST: {code:4, title:'Lista'}
             },
             DELIVERY_RANGES: {
                 CERTIFICATE: 10,
@@ -52,12 +53,7 @@
                 url: '/certificates',
                 templateUrl: 'Pages/partials/certificates_partial.html',
                 title: 'Certificados',
-                settings: { section: 'Certificados' },
-            }).state('certificates.list', {
-                url: '/list',
-                templateUrl: 'Pages/partials/certificates_partial.list.html',
-                title: 'Certificados',
-                settings: { section: 'Lista de Certificados' }
+                settings: { section: 'Certificados' }
             }).state('certificates.new', {
                 url: '/new',
                 templateUrl: 'Pages/partials/certificates_partial.new.html',
@@ -76,6 +72,12 @@
                 title: 'Certificados',
                 settings: { section: 'Editar Certificado' },
                 state: 3
+            }).state('certificates.list', {
+                url: '/list',
+                templateUrl: 'Pages/partials/certificates_partial.list.html',
+                title: 'Certificados',
+                settings: { section: 'Lista de Certificados' },
+                state: 4
             }).state('credits', {
                 url: '/credits',
                 templateUrl: 'Pages/partials/credits_partial.html',

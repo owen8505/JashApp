@@ -66,12 +66,14 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                          owner: item.get_item('Propietario'),
                          inscription: item.get_item('Inscripcion'),
                          description: item.get_item('Descripcion'),
-                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined
                      };
 
                      certificate.attachments = getDocuments(attachmentLibraryName, certificate.folio);
                      lastCertificates.push(certificate);
                  }
+
+                 $rootScope.$broadcast('applyChanges');
 
              },
             function (response, args) {
@@ -110,6 +112,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                      certificates.push(certificate);
                  }
 
+                 $rootScope.$broadcast('applyChanges');
              },
             function (response, args) {
                 console.log(args.get_message())
@@ -280,6 +283,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
 
                 $rootScope.$broadcast('itemSaved');
                 
+
             },
             function (response, args) {
                 console.log(args.get_message());

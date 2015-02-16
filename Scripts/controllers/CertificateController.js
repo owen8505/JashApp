@@ -27,19 +27,19 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.NEW.title;
                 $scope.createCertificate();
                 break;
-
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
                 if($state.params){
                     $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id));
                 }
-
                 break;
-
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.VIEW.title;
                 break;
-
+            case DEFAULT_VALUES.ITEM_STATES.LIST.code:
+                $scope.titleState = DEFAULT_VALUES.ITEM_STATES.LIST.title;
+                $scope.certificates = CertificateService.getAllCertificates();
+                break;
             default :
                 break;
         }
