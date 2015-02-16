@@ -2,7 +2,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
 
     var certificates = [];
     var lastCertificates = [];
-    var warningList = [];
+    var warningList = [];    
+    var SPWeb, context, appContext, list;
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
@@ -179,47 +180,55 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
     var saveDocuments = function (libraryName, folio, documentsArray) {
         
         angular.forEach(documentsArray, function (document) {
-            if (document.folio == 0) {
-                var reader = new FileReader();
-                reader.onload = function (result) {
+            
+            var reader = new FileReader();
+            reader.onload = function () {
 
-                    var fileData = '';
-                    var byteArray = new Unit8Array(result.target.result);
+                var library = appContext.get_web().get_lists().getByTitle(libraryName);
+                var fileCreateInfo = new SP.FileCreationInformation();                
+                fileCreateInfo.set_url(document.attachmentFile.name);
+                fileCreateInfo.set_overwrite(true);
+                fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
 
-                    for (var i = 0; i < byteArray.byteLength; i++) {
-                        fileData += String.fromCharCode(byteArray[i])
-                    }
-                    reader.readAsArrayBuffer(document.attachmentFile);
+                var arr = convertDataURIToBinary(this.result);
+                for (var i = 0; i < arr.length; ++i) {
+                    fileCreateInfo.get_content().append(arr[i]);                    
+                }
 
-                    var content = new SP.Base64EncodedByteArray();
-                    for (var b = 0; b < bytes.length; b++) {
-                        content.append(bytes[b]);
-                    }
+                this.newFile = library.get_rootFolder().get_files().add(fileCreateInfo);
+            };
+            reader.readAsDataURL(document.attachmentFile);
 
-                    var fileInfo = new SP.FileCreationInformation();
-                    fileInfo.set_content(content);
-                    fileInfo.set_overwrite(true);
-                    fileInfo.set_url(document.name);
-
-                    this.files = appContext.get_web().get_lists().getByTitle(libraryName);
-                    context.load(this.files);
-                    this.files.add(createInfo);
-                    context.executeQueryAsync(
-                        function () {               
-                            console.log('GUARDE EL ARCHIVO')
-                        },
-                        function (response, args) {
-                            console.log(args.get_message());
-                        }
-                    );
-                };
-            }
+            context.load(this.newFile);
+            context.executeQueryAsync(
+                function () {
+                    console.log('Elemento guardado')
+                },
+                function (response, args) {
+                    console.log(args.get_message());
+                }
+            );
+            
         });
     };
 
+    var convertDataURIToBinary = function(dataURI){
+        var BASE64_MARKER = ';base64,';
+        var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+        var base64 = dataURI.substring(base64Index);
+        var raw = window.atob(base64);
+        var rawLength = raw.length;
+        var array = new Uint8Array(new ArrayBuffer(rawLength));
+ 
+        for (i = 0; i < rawLength; i++){
+            array[i] = raw.charCodeAt(i);
+        }
+        return array;
+    }
+
     var getWarningCertificates = function () {
         return warningList;
-    }
+    };
 
     var createCertificate = function () {
 
@@ -271,14 +280,16 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
             function () {
 
                 if (certificate.id == 0) {
+
                     certificate.id = item.get_id();
                     certificate.attachments = saveDocuments(attachmentLibraryName, certificate.folio, certificate.attachments);
-                    certificates.push(certificate);
-                    
+
                     if (lastCertificates.length > 4) {
-                        //deleteCertificateById(certificate.id, lastCertificates);                        
+                        lastCertificates.splice(1, 1);
                     }
                     lastCertificates.push(certificate);
+                    certificates.push(certificate);
+                    
                 }
 
                 $rootScope.$broadcast('itemSaved');
