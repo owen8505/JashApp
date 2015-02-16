@@ -131,18 +131,16 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
     $scope.addAttachment = function(attachmentName){
                 
         if($scope.selectedItem){
-
+            var file = $scope.attachmentElement.files[0];
             var attachment = {
                 folio: 0,
-                name: file.get_name(),
+                name: file.name,
                 title: attachmentName,
-                url: file.get_linkingUrl(),
-                attachmentFile: $scope.attachmentElement.files[0]
+                url: undefined,
+                attachmentFile: file
             };
             
-
-            $scope.selectedItem.attachments.push(attachment)
-            
+            $scope.selectedItem.attachments.push(attachment)            
             angular.element($scope.attachmentElement).val(null);
             $scope.attachmentElement = undefined;
             $scope.attachmentName = undefined;

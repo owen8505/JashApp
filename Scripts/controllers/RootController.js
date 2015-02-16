@@ -36,7 +36,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.parcels = ParcelService.getAllParcels();
         $scope.zones = ZoneService.getAllZones();
         $scope.warningList = CertificateService.getWarningCertificates();
-        $scope.certificates = CertificateService.getAllCertificates();
+        $scope.certificates = CertificateService.getLastCertificates();
         //$scope.credits = CreditService.getAllCredits();        
 
         var context = SP.ClientContext.get_current();

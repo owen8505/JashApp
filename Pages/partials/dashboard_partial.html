@@ -64,7 +64,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="certificate in certificates | limitTo: 5 ">
+                        <tr ng-repeat="certificate in certificates | orderBy:['-id', '-folio'] ">
                             <td><a ui-sref="certificates.edit({id:certificate.id})">{{ certificate.folio }}</a></td>
                             <td>{{ certificate.owner }}</td>
                             <td>{{ certificate.description }}</td>
