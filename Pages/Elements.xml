@@ -18,7 +18,6 @@
     <File Path="Pages\templates\certificate_new_template.html" Url="Pages/templates/certificate_new_template.html" ReplaceContent="TRUE" />
     <File Path="Pages\templates\credit_new_template.html" Url="Pages/templates/credit_new_template.html" ReplaceContent="TRUE" />
     <File Path="Pages\templates\manager_new_template.html" Url="Pages/templates/manager_new_template.html" ReplaceContent="TRUE" />
-    <File Path="Pages\templates\request_info_template.html" Url="Pages/templates/request_info_template.html" ReplaceContent="TRUE" />
     <File Path="Pages\partials\managers_partial.new.html" Url="Pages/partials/managers_partial.new.html" ReplaceContent="TRUE" />
     <File Path="Pages\partials\managers_partial.html" Url="Pages/partials/managers_partial.html" ReplaceContent="TRUE" />       
     <File Path="Pages\partials\zones_partial.html" Url="Pages/partials/zones_partial.html" ReplaceContent="TRUE" />
@@ -30,5 +29,7 @@
     <File Path="Pages\templates\parcel_new_template.html" Url="Pages/templates/parcel_new_template.html" ReplaceContent="TRUE" />
     <File Path="Pages\partials\parcels_partial.edit.html" Url="Pages/partials/parcels_partial.edit.html" ReplaceContent="TRUE" />
     <File Path="Pages\partials\zones_partial.edit.html" Url="Pages/partials/zones_partial.edit.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\request_info_template.html" Url="Pages/templates/request_info_template.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\manager_detail_template.html" Url="Pages/templates/manager_detail_template.html" ReplaceContent="TRUE" />
   </Module>
 </Elements>

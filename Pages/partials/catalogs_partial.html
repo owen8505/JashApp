@@ -13,9 +13,9 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Teléfono</th>
-                            <th>Celular</th>
                             <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Celular</th>                            
                             <th>Región</th>
                             <th>Calificación</th>
                             <th>Activo</th>
@@ -24,9 +24,9 @@
                         <tbody>
                             <tr ng-repeat="manager in managers | orderBy:['-active', 'id']">
                                 <td><a class="link" ui-sref="managers.edit({id:manager.id})">{{ manager.name }}</a></td>
+                                <td>{{ manager.mail }}</td>
                                 <td>{{ manager.phone }}</td>
                                 <td>{{ manager.cellphone }}</td>
-                                <td>{{ manager.mail }}</td>
                                 <td>{{ manager.zone.title }}</td>
                                 <td>{{ manager.score }}</td>
                                 <td><span ng-if="manager.active" class="icon icon-check-circle-o"></span></td>

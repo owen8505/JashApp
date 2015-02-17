@@ -1,14 +1,18 @@
-<div class="popover">
+﻿<div class="popover" id="request-info-popover">
     <div class="arrow"></div>
     <h3 class="popover-title" ng-bind="title" ng-show="title"></h3>
     <div class="popover-content">
         <form name="popoverForm">
             <li>
-                <label for="certificate-mail-observation">Observaciones:</label>
-                <textarea id="certificate-mail-observation" ng-model="observations"></textarea>
+                <label for="certificate-mail-subjects">Título:</label>
+                <input id="certificate-mail-subjects" type="text" placeholder="Ej. Solicitud de documentos" class="form-control" ng-model="subject">
             </li>
             <li>
-                <a type="button" class="btn btn-primary" ng-click="sendMail(observations)">Enviar correo</a>
+                <label for="certificate-mail-observation">Observaciones:</label>
+                <textarea id="certificate-mail-observation" ng-model="observations" placeholder="Ej. Favor de enviarme los documentos" class="form-control"></textarea>
+            </li>
+            <li>
+                <a type="button" class="btn btn-primary" ng-click="sendMail(subject, observations)" ng-disabled="!isValidEmailForm([subject,observations])">Enviar correo</a>
             </li>
         </form>
     </div>

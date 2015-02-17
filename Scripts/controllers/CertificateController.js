@@ -1,9 +1,10 @@
 'use strict';
 
-Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'CertificateService', 'DEFAULT_VALUES' ,function($scope, $rootScope, $state, CertificateService, DEFAULT_VALUES){
+Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', 'CertificateService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CertificateService, DEFAULT_VALUES) {
 
     //Certificado seleccionado
     $scope.selectedItem = undefined;
+    $scope.subject = undefined;
     $scope.observations = undefined;
     $scope.attachmentElement = undefined;
     $scope.attachmentName = undefined
@@ -13,25 +14,29 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
 
     $scope.parcelsDropdown = [];
     $scope.managersDropdown = [];
-    $scope.zonesDropdown = [];
+    $scope.zonesDropdown = [];    
 
 
     $scope.$on('itemSaved', function () {
         $state.go('dashboard');
     });
 
-    $scope.initController = function(){
+    $scope.$on('mailSent', function () {
+        var popoverElement = angular.element('#request-info-trigger');        
+    });
 
+    $scope.initController = function(){
+        
         switch ($state.current.state){
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.NEW.title;
                 $scope.createCertificate();
                 break;
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
-                $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
-                if($state.params){
+                $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;                
+                if ($state.params) {                    
                     $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id));
-                }
+                }                
                 break;
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.VIEW.title;
@@ -44,16 +49,16 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
                 break;
         }
 
-        angular.forEach($scope.zones, function (zone, index) {
+        angular.forEach($scope.zones, function (zone, index) {            
             $scope.zonesDropdown.push({
-                text: zone.title,
+                text: zone.name,
                 click: 'setZone('+index+')'
             });
         });
 
         angular.forEach($scope.parcels, function (parcel, index) {
             $scope.parcelsDropdown.push({
-                text: parcel.title,
+                text: parcel.name,
                 click: 'setParcel('+index+')'
             });
         });
@@ -71,12 +76,14 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
     };
 
     $scope.setZone = function(zoneIndex){
-        if($scope.selectedItem){
+        if ($scope.selectedItem) {
+            
             $scope.selectedItem.zone = $scope.zones[zoneIndex];
             $scope.managersDropdown = [];
-
-            angular.forEach($scope.managers, function (manager, index) {
-                if($scope.selectedItem.zone.id == manager.zone.id){
+            
+            angular.forEach($scope.managers, function (manager, index) {                
+                if ($scope.selectedItem.zone.id == manager.zone.id) {
+                    
                     $scope.managersDropdown.push({
                         text: manager.name,
                         click: 'setManager('+index+')'
@@ -113,8 +120,8 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
       return true;
     };
 
-    $scope.sendMail = function(observations){
-        console.log(observations)
+    $scope.sendMail = function (subject,observations) {        
+        CertificateService.sendMail($scope.selectedItem.manager, subject, observations);
     };
 
     $scope.setCommittedDate = function(committedDate){
@@ -183,11 +190,15 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
         }
     };
 
-    $scope.isValidForm = function (fields) {
+    $scope.openRequestInfo = function () {
+        
+    };    
+
+    $scope.isValidForm = function (fields) {        
         var isValidForm = true;
         if ($scope.selectedItem) {
             for (var indexField in fields) {
-                var fieldName = fields[indexField];
+                var fieldName = fields[indexField];                
                 if (!$scope.selectedItem[fieldName]) {
                     isValidForm = false;
                     break;
@@ -195,6 +206,20 @@ Jash.controller('CertificateController',['$scope','$rootScope', '$state', 'Certi
             }
         }
         
+        return isValidForm;
+    };
+
+    $scope.isValidEmailForm = function (fields) {
+        var isValidForm = true;
+        if ($scope.selectedItem) {
+            for (var indexField in fields) {
+                var field = fields[indexField];
+                if (!field) {
+                    isValidForm = false;
+                    break;
+                }
+            }
+        }
         return isValidForm;
     };
 

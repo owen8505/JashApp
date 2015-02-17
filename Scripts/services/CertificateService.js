@@ -10,23 +10,23 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         return copyDate.add(DEFAULT_VALUES.DELIVERY_RANGES.CERTIFICATE, 'days');
     };
 
-    var getCertificateById = function(certificateId){
+    var getCertificateById = function (certificateId) {        
         var certificate = undefined;
-        for(var certificateIndex=0; certificateIndex<certificates.length; certificateIndex++){
+        for (var certificateIndex = 0; certificateIndex < certificates.length; certificateIndex++) {
+            
             if(certificates[certificateIndex].id == certificateId){
                 certificate = certificates[certificateIndex];
-                break;
+                return certificate;
             }
         }
 
-        for(var certificateIndex=0; certificateIndex<warningList.length; certificateIndex++){
-            if(warningList[certificateIndex].id == certificateId){
-                certificate = warningList[certificateIndex];
-                break;
+        for (var certificateIndex = 0; certificateIndex < lastCertificates.length; certificateIndex++) {            
+            if (lastCertificates[certificateIndex].id == certificateId) {
+                certificate = lastCertificates[certificateIndex];
+                return certificate;
             }
         }
-
-        return certificate;
+        
     };
 
     var deleteCertificateById = function (certificateId, certificatesArray) {
@@ -60,6 +60,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                      var item = listItemEnumerator.get_current();
 
                      var certificate = {
+                         type: 'CERTIFICATE',
                          id: item.get_id(),
                          folio: item.get_item('Title'),
                          creationDate: new moment(item.get_item('Creacion')),
@@ -67,7 +68,17 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                          owner: item.get_item('Propietario'),
                          inscription: item.get_item('Inscripcion'),
                          description: item.get_item('Descripcion'),
-                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined
+                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         payment: item.get_item('Pagado'),
+                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         documents: [],
+                         invoices: [],
+                         cashed: item.get_item('Cobrado')
                      };
 
                      certificate.attachments = getDocuments(attachmentLibraryName, certificate.folio);
@@ -99,6 +110,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                      var item = listItemEnumerator.get_current();
 
                      var certificate = {
+                         type: 'CERTIFICATE',
                          id: item.get_id(),
                          folio: item.get_item('Title'),
                          creationDate: new moment(item.get_item('Creacion')),
@@ -107,7 +119,17 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                          inscription: item.get_item('Inscripcion'),
                          description: item.get_item('Descripcion'),
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
-                     };                     
+                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         payment: item.get_item('Pagado'),
+                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         documents: [],
+                         invoices: [],
+                         cashed: item.get_item('Cobrado')
+                     };
 
                      certificate.attachments = getDocuments(attachmentLibraryName, certificate.folio);
                      certificates.push(certificate);
@@ -323,6 +345,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         context = new SP.ClientContext(SPWeb.appWebUrl);
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
         list = appContext.get_web().get_lists().getByTitle('Certificados');
+        mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
 
         attachmentLibraryName = 'Adjuntos de certificados';
     };
@@ -351,6 +374,28 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         return certificates;
     };
 
+    var sendMail = function (manager, subject, observations) {        
+        var itemInfo = new SP.ListItemCreationInformation();
+        var item = mailList.addItem(itemInfo);
+
+        item.set_item('Title', subject);
+        item.set_item('toEmail', manager.mail);
+        item.set_item('bodyEmail', observations);
+        item.update();
+
+        context.load(item);
+        context.executeQueryAsync(
+            function () {
+                console.log('ENVIE EL CORREO')
+                $rootScope.$broadcast('mailSent');
+            },
+            function (response, args) {
+                console.log(args.get_message());
+            }
+      );
+
+    };
+
     init();
 
     return {
@@ -360,7 +405,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         getWarningCertificates: getWarningCertificates,
         getCertificateById: getCertificateById,
         updateCertificate: updateCertificate,
-        saveCertificate: saveCertificate
+        saveCertificate: saveCertificate,
+        sendMail: sendMail
 
     }
 

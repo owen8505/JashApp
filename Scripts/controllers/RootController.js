@@ -23,7 +23,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
     };
 
     $scope.$on('applyChanges', function () {
-        $scope.$apply();
+        $scope.$apply();        
     });
 
     $scope.initController = function () {

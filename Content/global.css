@@ -104,7 +104,7 @@ input:-moz-placeholder {
 table {
   border: 1px solid #F1F1F2;
   margin: 0rem auto;
-  width: 96%; }
+  width: 100%; }
   table th, table td {
     padding: 0.6rem 1rem;
     text-align: left; }
