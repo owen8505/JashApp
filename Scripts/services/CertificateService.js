@@ -3,7 +3,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
     var certificates = [];
     var lastCertificates = [];
     var warningList = [];    
-    var SPWeb, context, appContext, list;
+    var SPWeb, context, appContext, list, attachmentLibraryName, fileList;
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
@@ -152,7 +152,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                          function () {
 
                              var document = {
-                                 filio: item.get_item('Folio'),
+                                 folio: item.get_item('Folio'),
                                  name: file.get_name(),
                                  title: file.get_title(),
                                  url: file.get_linkingUrl()
@@ -178,14 +178,13 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
     };
 
     var saveDocuments = function (libraryName, folio, documentsArray) {
-        
+
         angular.forEach(documentsArray, function (document) {
-            
             var reader = new FileReader();
             reader.onload = function () {
-
                 var library = appContext.get_web().get_lists().getByTitle(libraryName);
-                var fileCreateInfo = new SP.FileCreationInformation();                
+
+                var fileCreateInfo = new SP.FileCreationInformation();
                 fileCreateInfo.set_url(document.attachmentFile.name);
                 fileCreateInfo.set_overwrite(true);
                 fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
@@ -195,19 +194,35 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                     fileCreateInfo.get_content().append(arr[i]);                    
                 }
 
-                this.newFile = library.get_rootFolder().get_files().add(fileCreateInfo);
-            };
-            reader.readAsDataURL(document.attachmentFile);
+                var newFile = library.get_rootFolder().get_files().add(fileCreateInfo);
 
-            context.load(this.newFile);
-            context.executeQueryAsync(
-                function () {
-                    console.log('Elemento guardado')
-                },
-                function (response, args) {
-                    console.log(args.get_message());
-                }
-            );
+                context.load(newFile, 'ListItemAllFields');
+                context.executeQueryAsync(
+                    function () {
+                        var fileList = appContext.get_web().get_lists().getByTitle(libraryName);
+                        var item = fileList.getItemById(newFile.get_listItemAllFields().get_id());
+
+                        item.set_item('Folio', folio);
+                        item.update();
+
+                        context.load(item);
+                        context.executeQueryAsync(
+                            function () {
+                                console.log('Success');
+                            },
+                            function (response, args) {
+                                console.log(args.get_message());
+                            }
+                        );
+
+                    },
+                    function (response, args) {
+                        console.log(args.get_message());
+                    }
+                );
+            };
+
+            reader.readAsDataURL(document.attachmentFile);
             
         });
     };
@@ -310,7 +325,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         list = appContext.get_web().get_lists().getByTitle('Certificados');
 
         attachmentLibraryName = 'Adjuntos de certificados';
-
     };
 
 
