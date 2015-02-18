@@ -1,4 +1,4 @@
-Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService", "DEFAULT_VALUES", function($http, $q, $rootScope, ContextService, DEFAULT_VALUES){
+Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore", "ContextService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, ContextService, DEFAULT_VALUES) {
 
     var certificates = [];
     var lastCertificates = [];
@@ -338,17 +338,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
             }
       );
                
-    };
-
-    var init = function () {
-        SPWeb = ContextService.getSpWeb();
-        context = new SP.ClientContext(SPWeb.appWebUrl);
-        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
-        list = appContext.get_web().get_lists().getByTitle('Certificados');
-        mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
-
-        attachmentLibraryName = 'Adjuntos de certificados';
-    };
+    };    
 
 
     var updateCertificate = function (certificate) {
@@ -394,6 +384,30 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
             }
       );
 
+    };
+
+    var init = function () {
+        SPWeb = ContextService.getSpWeb();
+        context = new SP.ClientContext(SPWeb.appWebUrl);
+        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
+        list = appContext.get_web().get_lists().getByTitle('Certificados');
+        mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
+
+        console.log($cookieStore.get('rtFa'))
+        
+        $.ajax({
+            url: SPWeb.hostUrl + '/_api/web/lists/getByTitle(\'Certificados\')/items/',
+            type: "GET",
+            headers: { 'accept': 'application/json;odata=verbose'},
+            success: function (data, status, jqXHR) {
+                console.log(data)
+            },
+            error: function (jqXRH, status, message) {
+                console.log(message)
+            }
+        });
+        
+        attachmentLibraryName = 'Adjuntos de certificados';
     };
 
     init();

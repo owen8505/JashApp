@@ -43,110 +43,110 @@
 
             $stateProvider.state('home', {
                 url: '',
-                templateUrl: 'Pages/partials/dashboard_partial.html',
+                templateUrl: '../Pages/partials/dashboard_partial.html',
                 title: 'Resumen',
             }).state('dashboard', {
                 url: '/dashboard',
-                templateUrl: 'Pages/partials/dashboard_partial.html',
+                templateUrl: '../Pages/partials/dashboard_partial.html',
                 title: 'Resumen',
             }).state('certificates', {
                 url: '/certificates',
-                templateUrl: 'Pages/partials/certificates_partial.html',
+                templateUrl: 'partials/certificates_partial.html',
                 title: 'Certificados',
                 settings: { section: 'Certificados' }
             }).state('certificates.new', {
                 url: '/new',
-                templateUrl: 'Pages/partials/certificates_partial.new.html',
+                templateUrl: 'partials/certificates_partial.new.html',
                 title: 'Certificados',
                 settings: { section: 'Nuevo Certificado' },
                 state: 1
             }).state('certificates.view', {
                 url: '/:id/view',
-                templateUrl: 'Pages/partials/certificates_partial.view.html',
+                templateUrl: 'partials/certificates_partial.view.html',
                 title: 'Certificados',
                 settings: { section: 'Ver Certificado' },
                 state: 2
             }).state('certificates.edit', {
                 url: '/:id/edit',
-                templateUrl: 'Pages/partials/certificates_partial.edit.html',
+                templateUrl: 'partials/certificates_partial.edit.html',
                 title: 'Certificados',
                 settings: { section: 'Editar Certificado' },
                 state: 3
             }).state('certificates.list', {
                 url: '/list',
-                templateUrl: 'Pages/partials/certificates_partial.list.html',
+                templateUrl: 'partials/certificates_partial.list.html',
                 title: 'Certificados',
                 settings: { section: 'Lista de Certificados' },
                 state: 4
             }).state('credits', {
                 url: '/credits',
-                templateUrl: 'Pages/partials/credits_partial.html',
+                templateUrl: 'partials/credits_partial.html',
                 title: 'Créditos',
                 settings: { section: 'Créditos' }
             }).state('credits.new', {
                 url: '/new',
-                templateUrl: 'Pages/partials/credits_partial.new.html',
+                templateUrl: 'partials/credits_partial.new.html',
                 title: 'Créditos',
                 settings: { section: 'Nuevo Crédito' },
                 state: 1
             }).state('users', {
                 url: '/users',
-                templateUrl: 'Pages/partials/users_partial.html',
+                templateUrl: 'partials/users_partial.html',
                 title: 'Usuarios',
                 settings: { section: 'Usuarios' }
             }).state('catalogs', {
                 url: '/catalogs',
-                templateUrl: 'Pages/partials/catalogs_partial.html',
+                templateUrl: 'partials/catalogs_partial.html',
                 title: 'Catálogos',
                 settings: { section: 'Catálogos' }
             }).state('managers', {
                 url: '/managers',
-                templateUrl: 'Pages/partials/managers_partial.html',
+                templateUrl: 'partials/managers_partial.html',
                 title: 'Gestores',
                 settings: { section: 'Gestores' }
             }).state('managers.new', {
                 url: '/new',
-                templateUrl: 'Pages/partials/managers_partial.new.html',
+                templateUrl: 'partials/managers_partial.new.html',
                 title: 'Gestores',
                 settings: { section: 'Nuevo Gestor' },
                 state: 1
             }).state('managers.edit', {
                 url: '/:id/edit',
-                templateUrl: 'Pages/partials/managers_partial.edit.html',
+                templateUrl: 'partials/managers_partial.edit.html',
                 title: 'Gestores',
                 settings: { section: 'Editar Gestor' },
                 state: 3
             }).state('parcels', {
                 url: '/parcels',
-                templateUrl: 'Pages/partials/parcels_partial.html',
+                templateUrl: 'partials/parcels_partial.html',
                 title: 'Paqueterías',
                 settings: { section: 'Paqueterías' }
             }).state('parcels.new', {
                 url: '/new',
-                templateUrl: 'Pages/partials/parcels_partial.new.html',
+                templateUrl: 'partials/parcels_partial.new.html',
                 title: 'Paqueterías',
                 settings: { section: 'Nueva Paquetería' },
                 state: 1
             }).state('parcels.edit', {
                 url: '/:id/edit',
-                templateUrl: 'Pages/partials/parcels_partial.edit.html',
+                templateUrl: 'partials/parcels_partial.edit.html',
                 title: 'Paqueterías',
                 settings: { section: 'Editar Paquetería' },
                 state: 3
             }).state('zones', {
                 url: '/zones',
-                templateUrl: 'Pages/partials/zones_partial.html',
+                templateUrl: 'partials/zones_partial.html',
                 title: 'Regiones',
                 settings: { section: 'Reqiones' }
             }).state('zones.new', {
                 url: '/new',
-                templateUrl: 'Pages/partials/zones_partial.new.html',
+                templateUrl: 'partials/zones_partial.new.html',
                 title: 'Regiones',
                 settings: { section: 'Nueva Región' },
                 state: 1
             }).state('zones.edit', {
                 url: '/:id/edit',
-                templateUrl: 'Pages/partials/zones_partial.edit.html',
+                templateUrl: 'partials/zones_partial.edit.html',
                 title: 'Regiones',
                 settings: { section: 'Editar Región' },
                 state: 3

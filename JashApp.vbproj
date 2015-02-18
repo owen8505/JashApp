@@ -71,6 +71,7 @@
     <Content Include="Content\ng-quick-date.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Images\Logo_Jash.png" />
+    <Content Include="Pages\app.aspx" />
     <Content Include="Pages\Elements.xml">
       <SubType>Designer</SubType>
     </Content>

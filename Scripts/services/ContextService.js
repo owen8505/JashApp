@@ -4,7 +4,8 @@
         appWebUrl: undefined,
         hostUrl: undefined,        
         clientTag: undefined,
-        productNumber: undefined     
+        productNumber: undefined,
+        requestdigest: undefined,
         
     };
 
@@ -14,7 +15,19 @@
         spWeb.appWebUrl = $cookieStore.get('SPAppWebUrl');
         spWeb.hostUrl = $cookieStore.get('SPHostUrl');        
         spWeb.clientTag = $cookieStore.get('SPClientTag');
-        spWeb.productNumber = $cookieStore.get('SPProductNumber');                
+        spWeb.productNumber = $cookieStore.get('SPProductNumber');
+
+        $.ajax({
+            url: spWeb.appWebUrl + "/_api/contextinfo",
+            method: "POST",
+            headers: { "Accept": "application/json; odata=verbose" },
+            success: function (data) {
+                spWeb.requestdigest = data.d.GetContextWebInformation.FormDigestValue;
+            },
+            error: function (data, errorCode, errorMessage) {
+                alert(errorMessage)
+            }
+        });
     };
 
     var createAppContext = function () {
@@ -27,8 +40,8 @@
         $cookieStore.put('SPHostUrl', hostUrl);        
         $cookieStore.put('SPClientTag', clientTag);
         $cookieStore.put('SPProductNumber', productNumber);        
-
-        $window.location.href = appWebUrl + '/app.html';
+                
+        $window.location.href = appWebUrl + '/Pages/app.aspx';
     };
 
     var getQueryString = function () {
