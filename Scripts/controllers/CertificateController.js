@@ -75,6 +75,10 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         $scope.selectedItem = undefined;        
     };
 
+    $scope.updateCertificate = function () {
+        CertificateService.updateCertificate($scope.selectedItem);
+    };
+
     $scope.setZone = function(zoneIndex){
         if ($scope.selectedItem) {
             

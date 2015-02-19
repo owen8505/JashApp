@@ -3,7 +3,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
     var certificates = [];
     var lastCertificates = [];
     var warningList = [];    
-    var SPWeb, context, appContext, list, attachmentLibraryName, fileList;
+    var SPWeb, context, appContext, list, attachmentLibraryName, fileList, mailList;
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
@@ -12,21 +12,13 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     var getCertificateById = function (certificateId) {        
         var certificate = undefined;
-        for (var certificateIndex = 0; certificateIndex < certificates.length; certificateIndex++) {
-            
-            if(certificates[certificateIndex].id == certificateId){
-                certificate = certificates[certificateIndex];
-                return certificate;
-            }
-        }
-
-        for (var certificateIndex = 0; certificateIndex < lastCertificates.length; certificateIndex++) {            
+        for (var certificateIndex = 0; certificateIndex < lastCertificates.length; certificateIndex++) {
             if (lastCertificates[certificateIndex].id == certificateId) {
                 certificate = lastCertificates[certificateIndex];
-                return certificate;
+                break;
             }
         }
-        
+        return certificate;
     };
 
     var deleteCertificateById = function (certificateId, certificatesArray) {
@@ -70,7 +62,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          description: item.get_item('Descripcion'),
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
                          zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
-                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), title: item.get_item('Gestor').get_lookupValue() } : undefined,
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          payment: item.get_item('Pagado'),
@@ -120,7 +112,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          description: item.get_item('Descripcion'),
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
                          zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
-                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), title: item.get_item('Gestor').get_lookupValue() } : undefined,
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          payment: item.get_item('Pagado'),
@@ -338,30 +330,54 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             }
       );
                
-    };    
-
+    };
 
     var updateCertificate = function (certificate) {
-        var originalCertificate = getCertificateById(certificate.id);
 
-        originalCertificate.folio = certificate.folio;
-        originalCertificate.owner = certificate.owner;
-        originalCertificate.description = certificate.description;
-        originalCertificate.inscription = certificate.inscription;
-        originalCertificate.attachments = certificate.attachments;
-        originalCertificate.status = certificate.attachments;
-        originalCertificate.zone = certificate.zone;
-        originalCertificate.manager = certificate.manager;
-        originalCertificate.committedDate = certificate.committedDate;
-        originalCertificate.cost = certificate.cost;
-        originalCertificate.payment = certificate.payment;
-        originalCertificate.parcel = certificate.parcel;
-        originalCertificate.trackingNumber = certificate.trackingNumber;
-        originalCertificate.documents = certificate.documents;
-        originalCertificate.invoices = certificate.invoices;
-        originalCertificate.cashed = certificate.cashed;
+        var item = list.getItemById(certificate.id);
+        item.set_item('Title', certificate.folio);
+        item.set_item('Creacion', certificate.creationDate.toISOString());
+        item.set_item('Entrega', certificate.deliveryDate.toISOString());
+        item.set_item('Propietario', certificate.owner);
+        item.set_item('Descripcion', certificate.description);
+        item.set_item('Inscripcion', certificate.inscription);
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(certificate.status.id));
+        item.set_item('Region', new SP.FieldLookupValue().set_lookupId((certificate.zone ? certificate.zone.id : undefined )));
+        item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((certificate.manager ? certificate.manager.id : undefined )));
+        item.set_item('Comprometida', certificate.committedDate.toISOString());
+        item.set_item('Costo', certificate.cost);
+        item.set_item('Pagado', certificate.payment);
+        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((certificate.parcel ? certificate.parcel.id : undefined )));
+        item.set_item('Guia', certificate.trackingNumber);
+        item.set_item('Cobrado', certificate.cashed);
+        item.update();
 
-        return certificates;
+        context.load(item);
+        context.executeQueryAsync(
+            function () {
+                var originalElement = getCertificateById(certificate.id);
+                originalElement.folio = certificate.folio;
+                originalElement.creationDate = certificate.creationDate;
+                originalElement.deliveryDate = certificate.deliveryDate;
+                originalElement.description = certificate.description;
+                originalElement.inscription = certificate.inscription;
+                originalElement.status = certificate.status;
+                originalElement.zone = certificate.zone;
+                originalElement.manager = certificate.manager;
+                originalElement.committedDate = certificate.committedDate;
+                originalElement.cost = certificate.cost;
+                originalElement.payment = certificate.payment;
+                originalElement.parcel = certificate.parcel;
+                originalElement.trackingNumber = certificate.trackingNumber;
+                originalElement.cashed = certificate.cashed;
+
+                $rootScope.$broadcast('itemUpdated');
+            },
+
+            function (response, args) {
+                console.log(args.get_message());
+            }
+        );
     };
 
     var sendMail = function (manager, subject, observations) {        
@@ -392,20 +408,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
         list = appContext.get_web().get_lists().getByTitle('Certificados');
         mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
-
-        console.log($cookieStore.get('rtFa'))
-        
-        $.ajax({
-            url: SPWeb.hostUrl + '/_api/web/lists/getByTitle(\'Certificados\')/items/',
-            type: "GET",
-            headers: { 'accept': 'application/json;odata=verbose'},
-            success: function (data, status, jqXHR) {
-                console.log(data)
-            },
-            error: function (jqXRH, status, message) {
-                console.log(message)
-            }
-        });
         
         attachmentLibraryName = 'Adjuntos de certificados';
     };

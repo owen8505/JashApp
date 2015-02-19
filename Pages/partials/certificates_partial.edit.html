@@ -29,8 +29,8 @@
                     </button>
 
                     </span>
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="Pages/templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span>
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="Pages/templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span>
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
                 </li>
                 <li>
                     <label for="certificate-cost">Costo de derechos:</label>
@@ -88,7 +88,7 @@
             <ol>
                 <li class="action-button-holder">
                     <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
-                    <a class="btn btn-success" ng-class="" ng-click="saveCertificate()" ng-disabled="!isValidForm()">Guardar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="updateCertificate()" ng-disabled="!isValidForm()">Guardar</a>
                 </li>
             </ol>
         </fieldset>
