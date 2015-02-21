@@ -36,7 +36,7 @@
                         <td>{{ item.creationDate | formatDate }}</td>
                         <td>{{ item.deliveryDate | formatDate }}</td>
                         <td>{{ item.committedDate }}</td>
-                        <td>{{ item.status.title }}</td>
+                        <td>{{ item.status.name }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -65,11 +65,11 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="certificate in lastCertificates | orderBy:['-id', '-folio'] ">
-                            <td><a ui-sref="certificates.edit({id:certificate.id})">{{ certificate.folio }}</a></td>
+                            <td><a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.folio }}</a></td>
                             <td>{{ certificate.owner }}</td>
                             <td>{{ certificate.description }}</td>
                             <td>{{ certificate.inscription }}</td>
-                            <td>{{ certificate.status.title }}</td>
+                            <td>{{ certificate.status.name }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -108,7 +108,7 @@
                             <td>{{ credit.owner }}</td>
                             <td>{{ credit.description }}</td>
                             <td>{{ credit.inscription }}</td>
-                            <td>{{ credit.status.title }}</td>
+                            <td>{{ credit.status.name }}</td>
                         </tr>
                         </tbody>
                     </table>

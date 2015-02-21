@@ -35,6 +35,15 @@
             DELIVERY_RANGES: {
                 CERTIFICATE: 10,
                 CREDIT: 10
+            },
+            CERTIFICATE_STATUS: {
+                NEW: {CODE: 1, NAME: 'Nuevo'},
+                WAITING_CONFIRMATION: {CODE: 2, NAME: 'En espera de confirmación'},
+                WAITING_SHIPPING: {CODE: 3, NAME: 'En espera de envío'},
+                WAITING_DOCS: {CODE: 4, NAME: 'En espera de documentos'},
+                DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
+                DELIVERED: {CODE: 6, NAME: 'Entregado'},
+                CASHED: {CODE: 7, NAME: 'Cobrado'}
             }
         })
 
@@ -67,7 +76,7 @@
                 settings: { section: 'Ver Certificado' },
                 state: 2
             }).state('certificates.edit', {
-                url: '/:id/edit',
+                url: '/:id/:mode/edit',
                 templateUrl: 'partials/certificates_partial.edit.html',
                 title: 'Certificados',
                 settings: { section: 'Editar Certificado' },
@@ -154,10 +163,10 @@
 
         }])
 
-        .run(function($location, $rootScope){
-            $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-                $rootScope.sectionTitle = current.$$route.title;
-                $rootScope.selectedSection = current.$$route.settings.section;
+        .run(function($rootScope){
+            $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                $rootScope.sectionTitle = toState.title;
+                $rootScope.previousState = fromState.name;
             });
         })
 

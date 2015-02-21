@@ -99,6 +99,7 @@
     <script src="../Scripts/services/ContextService.js"></script>
     <script src="../Scripts/services/ManagerService.js"></script>
     <script src="../Scripts/services/ParcelService.js"></script>
+    <script src="../Scripts/services/StatusService.js"></script>
     <script src="../Scripts/services/ZoneService.js"></script>
     <!-- Directives -->
 

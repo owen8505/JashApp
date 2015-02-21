@@ -138,6 +138,7 @@
     <Content Include="Scripts\modernizr.js" />
     <Content Include="Scripts\prefixfree.js" />
     <Content Include="Scripts\prefixfree.min.js" />
+    <Content Include="Scripts\services\StatusService.js" />
     <Content Include="Scripts\services\CertificateService.js" />
     <Content Include="Scripts\services\ContextService.js" />
     <Content Include="Scripts\services\CreditService.js" />

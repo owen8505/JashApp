@@ -2,9 +2,11 @@
 
 var Jash = angular.module('Jash');
 
-Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'ParcelService', 'ZoneService', 'CertificateService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, ParcelService, ZoneService, CertificateService, DEFAULT_VALUES) {
+Jash.controller('RootController', ['$scope', '$rootScope', '$state', 'ContextService', 'ManagerService', 'ParcelService', 'StatusService', 'ZoneService', 'CertificateService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, ContextService, ManagerService, ParcelService, StatusService, ZoneService, CertificateService, DEFAULT_VALUES) {
     $scope.spWeb,
     $scope.manager, $scope.warningList, $scope.certificates, $scope.credits;
+
+    $scope.CERTIFICATE_STATUS = DEFAULT_VALUES.CERTIFICATE_STATUS;
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
@@ -20,6 +22,11 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
     // Función que selecciona la sección enviada como parámetro
     $scope.setCurrentSection = function (section) {
         $scope.currentSection = section;
+    };
+
+    // Función que redirige a la última página visitada
+    $scope.historyBack = function () {
+        $state.go($rootScope.previousState);
     };
 
     $scope.$on('applyChanges', function () {
@@ -40,8 +47,9 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
         $scope.parcels = ParcelService.getAllParcels();
         $scope.zones = ZoneService.getAllZones();
         $scope.warningList = CertificateService.getWarningCertificates();
-        $scope.lastCertificates = CertificateService.getLastCertificates();
-        //$scope.credits = CreditService.getAllCredits();        
+        //$scope.credits = CreditService.getAllCredits();
+
+        $scope.statuses = StatusService.getAllStatuses();
 
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();

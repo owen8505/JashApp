@@ -42,5 +42,6 @@
     <File Path="Scripts\controllers\ParcelController.js" Url="Scripts/controllers/ParcelController.js" ReplaceContent="TRUE" />
     <File Path="Scripts\controllers\ZoneController.js" Url="Scripts/controllers/ZoneController.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\ZoneService.js" Url="Scripts/services/ZoneService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\services\StatusService.js" Url="Scripts/services/StatusService.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

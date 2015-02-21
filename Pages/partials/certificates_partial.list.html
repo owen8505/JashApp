@@ -18,8 +18,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="certificate in certificates | limitTo: 5 ">
-                        <td><a ui-sref="certificates.edit({id:certificate.id})">{{ certificate.folio }}</a></td>
+                    <tr ng-repeat="certificate in certificates ">
+                        <td><a ui-sref="certificates.edit({id:certificate.id, mode:'all'})">{{ certificate.folio }}</a></td>
                         <td>{{ certificate.owner }}</td>
                         <td>{{ certificate.description }}</td>
                         <td>{{ certificate.inscription }}</td>
