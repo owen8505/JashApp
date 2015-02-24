@@ -1,5 +1,11 @@
-c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\JashApp.pdb
-c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\JashApp.xml
-c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.dll
-c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.xml
-c:\users\luisantonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.pdb
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\JashApp.pdb
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\JashApp.xml
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.dll
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.xml
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.pdb
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\JashApp.vbprojResolveAssemblyReference.cache
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\obj\Debug\AC2C1ABA-CCF6-44D4-8127-588FD4D0A860-DeferredValidationErrors.xml
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\Microsoft.SharePoint.DesignTime.Activities.16.0.dll
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\Newtonsoft.Json.dll
+C:\Users\LuisAntonio\documents\visual studio 2013\Projects\JashApp\JashApp\bin\Debug\System.Net.Http.Formatting.xml

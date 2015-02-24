@@ -2,13 +2,15 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SharePointSiteUrl>https://gestoria.sharepoint.com/sites/app/</SharePointSiteUrl>
+    <WorkflowDebuggingClientSecret>+hZCQTf/UzhV24xWkqr02Cl8VTlo4mLXF9OTCYQIstY=</WorkflowDebuggingClientSecret>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{C1CDDADD-2546-481F-9697-4EA41081F2FC}">
         <ProjectStore>
-          <AppInstanceId>5f160fe4-4908-41dd-be05-dbbfa075aa3d</AppInstanceId>
-          <AppInstancePackageModifiedTime>2015-02-15T21:19:40.4979189Z</AppInstancePackageModifiedTime>
+          <AppInstanceId>f921c940-7487-48db-9548-df37552c648d</AppInstanceId>
+          <AppInstancePackageModifiedTime>2015-02-19T21:48:52.9536758Z</AppInstancePackageModifiedTime>
+          <IsWorkflowDebuggingEnabled>false</IsWorkflowDebuggingEnabled>
         </ProjectStore>
       </FlavorProperties>
     </VisualStudio>

@@ -504,7 +504,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
         list = appContext.get_web().get_lists().getByTitle('Certificados');
         mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
-        
         attachmentLibraryName = 'Adjuntos de certificados';
     };
 

@@ -2,10 +2,14 @@
 
 <%@ Page Language="C#" %>
 
-<%@ Register TagPrefix="SharePoint"
-    Namespace="Microsoft.SharePoint.WebControls"
-    Assembly="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Import Namespace="Microsoft.SharePoint" %>
+<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="PublishingWebControls" Namespace="Microsoft.SharePoint.Publishing.WebControls" Assembly="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="SearchWebControls" Namespace="Microsoft.Office.Server.Search.WebControls" Assembly="Microsoft.Office.Server.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+
+
+<WebPartPages:AllowFraming runat="server" />
 
 <html lang="es-mx" xmlns="http://www.w3.org/1999/xhtml" ng-app="Jash">
 <head>
@@ -29,9 +33,10 @@
 
 </head>
 <body ng-controller="RootController as RootCtrl">
-           
-    <input type="hidden" name="__REQUESTDIGEST" />    
+    <WebPartPages:SPWebPartManager id="m" runat="Server"/>        
+    <input type="hidden" name="__REQUESTDIGEST" />                     
 
+        
     <div class="top-bar container-fluid">
         <div class="row">
             <h1 class="logo col-lg-10">

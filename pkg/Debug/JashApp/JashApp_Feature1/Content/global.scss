@@ -204,7 +204,7 @@ input:-moz-placeholder {
 table{
     border: 1px solid $color-gray-1;
     margin: 0rem auto;
-    width: 96%;
+    width: 100%;
 
     th,td{
         padding: 0.6rem 1rem;
@@ -272,6 +272,23 @@ table{
     margin: 0.6rem 0.4rem 0 0;
     padding: 0.5rem;
     vertical-align: middle;
+
+    .icon:hover{
+        color: $color-light-red;
+    }
+}
+
+.attachment-link-disabled{
+    background: white;
+    border: 1px solid $color-border-gray-1;
+    border-radius: 5px;
+    color: $color-gray-5;
+    cursor: default;
+    display: inline-block;
+    margin: 0.6rem 0.4rem 0 0;
+    padding: 0.5rem;
+    pointer-events: none;
+    vertical-align: middle;   
 
     .icon:hover{
         color: $color-light-red;

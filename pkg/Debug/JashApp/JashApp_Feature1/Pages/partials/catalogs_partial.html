@@ -1,32 +1,32 @@
 <section id="Catalogs" class="section-container" ng-controller="CatalogController as CatalogCtrl">
 
-    <!-- Secci�n de gestores -->
+    <!-- Secci�n de gestores -->
     <div class="section">
         <div class="last-managers-section">
             <h4 class="subtitle-section">Gestores</h4>
             <div>
                 <div class="unavailable-message" ng-if="!managers.length">
-                    Por el momento no hay elementos en el cat�logo de gestores.
+                    Por el momento no hay elementos en el catálogo de gestores.
                 </div>
                 <div ng-if="managers.length">
                     <table>
                         <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Tel�fono</th>
-                            <th>Celular</th>
                             <th>Correo</th>
-                            <th>Regi�n</th>
-                            <th>Calificaci�n</th>
+                            <th>Teléfono</th>
+                            <th>Celular</th>                            
+                            <th>Región</th>
+                            <th>Calificación</th>
                             <th>Activo</th>
                         </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="manager in managers | orderBy:['-active', 'id']">
                                 <td><a class="link" ui-sref="managers.edit({id:manager.id})">{{ manager.name }}</a></td>
+                                <td>{{ manager.mail }}</td>
                                 <td>{{ manager.phone }}</td>
                                 <td>{{ manager.cellphone }}</td>
-                                <td>{{ manager.mail }}</td>
                                 <td>{{ manager.zone.title }}</td>
                                 <td>{{ manager.score }}</td>
                                 <td><span ng-if="manager.active" class="icon icon-check-circle-o"></span></td>
@@ -42,13 +42,13 @@
         </div>
     </div>
 
-    <!-- Secci�n de paqueter�as -->
+    <!-- Sección de paqueterías -->
     <div class="section">
         <div class="last-parcels-section">
-            <h4 class="subtitle-section">Paqueter�as</h4>
+            <h4 class="subtitle-section">Paqueterías</h4>
             <div>
                 <div class="unavailable-message" ng-if="parcels && !parcels.length">
-                    Por el momento no hay elementos en el cat�logo de gestores.
+                    Por el momento no hay elementos en el catálogo de paqueterías.
                 </div>
                 <div ng-if="managers && managers.length">
                     <table>
@@ -59,9 +59,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="parcel in parcels">
-                                <td><a ui-sref="parcels.edit({id:parcel.id})">{{ parcel.id }}</a></td>
-                                <td>{{ parcel.title }}</td>
+                            <tr ng-repeat="parcel in parcels | orderBy:['id']">
+                                <td><a class="link" ui-sref="parcels.edit({id:parcel.id})">{{ parcel.id }}</a></td>
+                                <td>{{ parcel.name }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -69,7 +69,41 @@
             </div>
 
             <div class="action-button-holder">
-                <a ui-sref="parcels.new" class="btn btn-default" title="Nueva Paqueter�a"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+                <a ui-sref="parcels.new" class="btn btn-default" title="Nueva Paquetería"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de regiones -->
+    <div class="section">
+        <div class="last-zones-section">
+            <h4 class="subtitle-section">Regiones</h4>
+            <div>
+                <div class="unavailable-message" ng-if="zones && !zones.length">
+                    Por el momento no hay elementos en el catálogo de regiones.
+                </div>
+                <div ng-if="zones && zones.length">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Activo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="zone in zones | orderBy:['id']">
+                            <td><a class="link" ui-sref="zones.edit({id:zone.id})">{{ zone.id }}</a></td>
+                            <td>{{ zone.name }}</td>
+                            <td><span ng-if="zone.active" class="icon icon-check-circle-o"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="action-button-holder">
+                <a ui-sref="zones.new" class="btn btn-default" title="Nueva Región"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
     </div>

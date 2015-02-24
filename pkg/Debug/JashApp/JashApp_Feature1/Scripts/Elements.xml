@@ -38,5 +38,10 @@
     <File Path="Scripts\services\ManagerService.js" Url="Scripts/services/ManagerService.js" ReplaceContent="TRUE" />
     <File Path="Scripts\controllers\ManagerController.js" Url="Scripts/controllers/ManagerController.js" ReplaceContent="TRUE" />
     <File Path="Scripts\controllers\CatalogController.js" Url="Scripts/controllers/CatalogController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\services\ParcelService.js" Url="Scripts/services/ParcelService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\ParcelController.js" Url="Scripts/controllers/ParcelController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\ZoneController.js" Url="Scripts/controllers/ZoneController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\services\ZoneService.js" Url="Scripts/services/ZoneService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\vendor\fullcalendar.min.js" Url="Scripts/vendor/fullcalendar.min.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

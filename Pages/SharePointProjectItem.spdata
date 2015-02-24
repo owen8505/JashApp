@@ -33,5 +33,6 @@
     <ProjectItemFile Source="templates\request_info_template.html" Target="Pages\templates\" Type="ElementFile" />
     <ProjectItemFile Source="templates\manager_detail_template.html" Target="Pages\templates\" Type="ElementFile" />
     <ProjectItemFile Source="app.aspx" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\calendar_partial.html" Target="Pages\partials\" Type="ElementFile" />
   </Files>
 </ProjectItem>

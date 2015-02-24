@@ -1,80 +1,99 @@
-Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService", "DEFAULT_VALUES", function($http, $q, $rootScope, ContextService, DEFAULT_VALUES){
+Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore", "ContextService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, ContextService, DEFAULT_VALUES) {
 
     var certificates = [];
-    var warningList = [
-        {
-            id: 1,
-            type: 'CERTIFICATE',
-            anomaly: true,
-            folio: 3033,
-            creationDate: moment().locale('es'),
-            deliveryDate: moment().locale('es'),
-            owner: undefined,
-            description: undefined,
-            inscription: undefined,
-            attachments: [],
-            status: {code:1, title:'Nuevo'},
-            zone: undefined,
-            manager: undefined,
-            committedDate: undefined,
-            cost: undefined,
-            payment: false,
-            parcel: undefined,
-            trackingNumber: undefined,
-            documents: [],
-            invoices: [],
-            cashed: false
+    var lastCertificates = [];
+    var warningList = [];    
+    var SPWeb, context, appContext, list, attachmentLibraryName, fileList;
 
-        },
-        {
-            id: 2,
-            type: 'CERTIFICATE',
-            anomaly: true,
-            folio: 3034,
-            creationDate: moment().locale('es'),
-            deliveryDate: moment().locale('es'),
-            owner: undefined,
-            description: undefined,
-            inscription: undefined,
-            attachments: [],
-            status: {code:1, title:'Nuevo'},
-            zone: undefined,
-            manager: undefined,
-            committedDate: undefined,
-            cost: undefined,
-            payment: false,
-            parcel: undefined,
-            trackingNumber: undefined,
-            documents: [],
-            invoices: [],
-            cashed: false
-
-        }
-    ];
-
-    var getDeliveryDate = function(date){
+    var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
         return copyDate.add(DEFAULT_VALUES.DELIVERY_RANGES.CERTIFICATE, 'days');
+    };
 
-    }
-
-    var getCertificateById = function(certificateId){
+    var getCertificateById = function (certificateId) {        
         var certificate = undefined;
-        for(var certificateIndex=0; certificateIndex<certificates.length; certificateIndex++){
+        for (var certificateIndex = 0; certificateIndex < certificates.length; certificateIndex++) {
+            
             if(certificates[certificateIndex].id == certificateId){
                 certificate = certificates[certificateIndex];
-                break;
+                return certificate;
             }
         }
 
-        for(var certificateIndex=0; certificateIndex<warningList.length; certificateIndex++){
-            if(warningList[certificateIndex].id == certificateId){
-                certificate = warningList[certificateIndex];
+        for (var certificateIndex = 0; certificateIndex < lastCertificates.length; certificateIndex++) {            
+            if (lastCertificates[certificateIndex].id == certificateId) {
+                certificate = lastCertificates[certificateIndex];
+                return certificate;
+            }
+        }
+        
+    };
+
+    var deleteCertificateById = function (certificateId, certificatesArray) {
+        var certificate = undefined;
+        for (var certificateIndex = 0; certificateIndex < certificatesArray.length; certificateIndex++) {
+
+            if (certificatesArray[certificateIndex].id == certificateId) {
+                certificatesArray.splice(certificateIndex, 1);
                 break;
             }
         }
+    };
 
-        return certificate;
+    var getLastCertificates = function () {
+        lastCertificates = [];
+
+        var queryString = '<View><Query>' +
+                            '<OrderBy>' +
+                               '<FieldRef Name=\'ID\' Ascending="FALSE" /><FieldRef Name=\'Folio\' Ascending="FALSE" />' +
+                            '</OrderBy>' +
+                          '</Query><RowLimit>5</RowLimit></View></View>';
+        var queryCAML = new SP.CamlQuery();
+        queryCAML.set_viewXml(queryString);
+
+        var items = list.getItems(queryCAML);
+        context.load(items);
+        context.executeQueryAsync(
+             function () {
+                 var listItemEnumerator = items.getEnumerator();
+                 while (listItemEnumerator.moveNext()) {
+                     var item = listItemEnumerator.get_current();
+
+                     var certificate = {
+                         type: 'CERTIFICATE',
+                         id: item.get_id(),
+                         folio: item.get_item('Title'),
+                         creationDate: new moment(item.get_item('Creacion')),
+                         deliveryDate: new moment(item.get_item('Entrega')),
+                         owner: item.get_item('Propietario'),
+                         inscription: item.get_item('Inscripcion'),
+                         description: item.get_item('Descripcion'),
+                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         payment: item.get_item('Pagado'),
+                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         documents: [],
+                         invoices: [],
+                         cashed: item.get_item('Cobrado')
+                     };
+
+                     certificate.attachments = getDocuments(attachmentLibraryName, certificate.folio);
+                     lastCertificates.push(certificate);
+                 }
+
+                 $rootScope.$broadcast('applyChanges');
+
+             },
+            function (response, args) {
+                console.log(args.get_message())
+            }
+        );
+
+        return lastCertificates;
     };
 
     var getAllCertificates = function () {
@@ -91,17 +110,32 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
                      var item = listItemEnumerator.get_current();
 
                      var certificate = {
+                         type: 'CERTIFICATE',
                          id: item.get_id(),
                          folio: item.get_item('Title'),
                          creationDate: new moment(item.get_item('Creacion')),
                          deliveryDate: new moment(item.get_item('Entrega')),
                          owner: item.get_item('Propietario'),
                          inscription: item.get_item('Inscripcion'),
-                         description: item.get_item('Descripcion')                         
-                     };                     
+                         description: item.get_item('Descripcion'),
+                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), title: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         payment: item.get_item('Pagado'),
+                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         documents: [],
+                         invoices: [],
+                         cashed: item.get_item('Cobrado')
+                     };
+
+                     certificate.attachments = getDocuments(attachmentLibraryName, certificate.folio);
                      certificates.push(certificate);
                  }
 
+                 $rootScope.$broadcast('applyChanges');
              },
             function (response, args) {
                 console.log(args.get_message())
@@ -111,9 +145,127 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         return certificates;
     }
 
+    var getDocuments = function (libraryName, folio) {
+
+        var documents = [];
+
+        var library = appContext.get_web().get_lists().getByTitle(libraryName);
+        var queryString = '<View Scope=\'RecursiveAll\'><Query>' +
+                            '<Where>' +
+                               '<Eq><FieldRef Name=\'Folio\' /><Value Type=\'Text\'>' + folio + '</Value></Eq>' +
+                            '</Where>' +
+                          '</Query></View>';        
+        var queryCAML = new SP.CamlQuery();        
+        queryCAML.set_viewXml(queryString);
+        
+        var items = library.getItems(queryCAML);
+        
+        context.load(items);
+        context.executeQueryAsync(
+             function () {
+                 
+                 var listItemEnumerator = items.getEnumerator();
+                 while (listItemEnumerator.moveNext()) {
+                     var item = listItemEnumerator.get_current();                     
+                     var file = item.get_file();
+
+                     context.load(file);
+                     context.executeQueryAsync(
+                         function () {
+
+                             var document = {
+                                 folio: item.get_item('Folio'),
+                                 name: file.get_name(),
+                                 title: file.get_title(),
+                                 url: file.get_linkingUrl()
+                             };
+
+                             documents.push(document);
+                         },
+                         function (response, args) {
+                             console.log(args.get_message());
+                         }
+                     );
+                     
+                 }
+
+             },
+            function (response, args) {               
+                console.log(args.get_message());
+            }
+        );
+        
+        return documents;
+
+    };
+
+    var saveDocuments = function (libraryName, folio, documentsArray) {
+
+        angular.forEach(documentsArray, function (document) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var library = appContext.get_web().get_lists().getByTitle(libraryName);
+
+                var fileCreateInfo = new SP.FileCreationInformation();
+                fileCreateInfo.set_url(document.attachmentFile.name);
+                fileCreateInfo.set_overwrite(true);
+                fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
+
+                var arr = convertDataURIToBinary(this.result);
+                for (var i = 0; i < arr.length; ++i) {
+                    fileCreateInfo.get_content().append(arr[i]);                    
+                }
+
+                var newFile = library.get_rootFolder().get_files().add(fileCreateInfo);
+
+                context.load(newFile, 'ListItemAllFields');
+                context.executeQueryAsync(
+                    function () {
+                        var fileList = appContext.get_web().get_lists().getByTitle(libraryName);
+                        var item = fileList.getItemById(newFile.get_listItemAllFields().get_id());
+
+                        item.set_item('Folio', folio);
+                        item.update();
+
+                        context.load(item);
+                        context.executeQueryAsync(
+                            function () {
+                                console.log('Success');
+                            },
+                            function (response, args) {
+                                console.log(args.get_message());
+                            }
+                        );
+
+                    },
+                    function (response, args) {
+                        console.log(args.get_message());
+                    }
+                );
+            };
+
+            reader.readAsDataURL(document.attachmentFile);
+            
+        });
+    };
+
+    var convertDataURIToBinary = function(dataURI){
+        var BASE64_MARKER = ';base64,';
+        var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+        var base64 = dataURI.substring(base64Index);
+        var raw = window.atob(base64);
+        var rawLength = raw.length;
+        var array = new Uint8Array(new ArrayBuffer(rawLength));
+ 
+        for (i = 0; i < rawLength; i++){
+            array[i] = raw.charCodeAt(i);
+        }
+        return array;
+    }
+
     var getWarningCertificates = function () {
         return warningList;
-    }
+    };
 
     var createCertificate = function () {
 
@@ -121,8 +273,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
 
         var certificate = {
             id: 0,
-            type: 'CERTIFICATE',
-            anomaly: false,
+            type: 'CERTIFICATE',            
             folio: undefined,
             creationDate: now,
             deliveryDate: getDeliveryDate(now),
@@ -130,7 +281,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
             description: undefined,
             inscription: undefined,
             attachments: [],
-            status: {id:1, code:1, title:'Nuevo'},
+            status: {id:1, title:'Nuevo'},
             zone: undefined,
             manager: undefined,
             committedDate: undefined,
@@ -158,19 +309,26 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         item.set_item('Propietario', certificate.owner);
         item.set_item('Descripcion', certificate.description);
         item.set_item('Inscripcion', certificate.inscription);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(certificate.status.id));
-        //Documento%5Fx0020%5Fa%5Fx0020%5Fentregar
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(certificate.status.id));        
         item.update();
 
         context.load(item);
         context.executeQueryAsync(
             function () {
 
-                var certificate = {
-                    id: item.get_id(),                    
-                };               
+                if (certificate.id == 0) {
 
-                certificates.push(certificate);
+                    certificate.id = item.get_id();
+                    certificate.attachments = saveDocuments(attachmentLibraryName, certificate.folio, certificate.attachments);
+
+                    if (lastCertificates.length > 4) {
+                        lastCertificates.splice(1, 1);
+                    }
+                    lastCertificates.push(certificate);
+                    certificates.push(certificate);
+                    
+                }
+
                 $rootScope.$broadcast('itemSaved');
                 
 
@@ -180,20 +338,12 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
             }
       );
                
-    };
-
-    var init = function () {
-        SPWeb = ContextService.getSpWeb();
-        context = new SP.ClientContext(SPWeb.appWebUrl);
-        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
-        list = appContext.get_web().get_lists().getByTitle('Certificados');
-    };
+    };    
 
 
     var updateCertificate = function (certificate) {
         var originalCertificate = getCertificateById(certificate.id);
 
-        originalCertificate.anomaly = certificate.anomaly;
         originalCertificate.folio = certificate.folio;
         originalCertificate.owner = certificate.owner;
         originalCertificate.description = certificate.description;
@@ -214,15 +364,48 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "ContextService
         return certificates;
     };
 
+    var sendMail = function (manager, subject, observations) {        
+        var itemInfo = new SP.ListItemCreationInformation();
+        var item = mailList.addItem(itemInfo);
+
+        item.set_item('Title', subject);
+        item.set_item('toEmail', manager.mail);
+        item.set_item('bodyEmail', observations);
+        item.update();
+
+        context.load(item);
+        context.executeQueryAsync(
+            function () {
+                console.log('ENVIE EL CORREO')
+                $rootScope.$broadcast('mailSent');
+            },
+            function (response, args) {
+                console.log(args.get_message());
+            }
+      );
+
+    };
+
+    var init = function () {
+        SPWeb = ContextService.getSpWeb();
+        context = new SP.ClientContext(SPWeb.appWebUrl);
+        appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
+        list = appContext.get_web().get_lists().getByTitle('Certificados');
+        mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');             
+        attachmentLibraryName = 'Adjuntos de certificados';
+    };
+
     init();
 
     return {
         createCertificate : createCertificate,
         getAllCertificates: getAllCertificates,
+        getLastCertificates: getLastCertificates,
         getWarningCertificates: getWarningCertificates,
         getCertificateById: getCertificateById,
         updateCertificate: updateCertificate,
-        saveCertificate: saveCertificate
+        saveCertificate: saveCertificate,
+        sendMail: sendMail
 
     }
 

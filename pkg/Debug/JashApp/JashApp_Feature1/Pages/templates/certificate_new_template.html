@@ -30,12 +30,12 @@
 </li>
 <li>
     <label for="certificate-inscription">Inscripción: <em class="mandatory-field">*</em></label>
-    <input id="certificate-inscription" type="text"  class="form-control"placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true">
+    <input id="certificate-inscription" type="text" class="form-control" placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true">
 </li>
 <li>
     <label for="certificate-attachments">Archivos adjuntos:</label>
     <span class="third-width"><input id="certificate-attachment-name" type="text" ng-model="attachmentName" class="form-control" placeholder="Ej. Copia de correo"></span>
     <span class="third-width"><input id="certificate-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ></span>
     <span class="third-width"><a class="btn btn-default" ng-click="addAttachment(attachmentName)">Añadir</a></span>
-    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" href="attachment.url" target="_blank">{{ attachment.name }} <span class="icon icon-circle-with-cross"></span></a>
+    <a ng-class="{'attachment-link':attachment.url, 'attachment-link-disabled':!attachment.url}" ng-repeat="attachment in selectedItem.attachments" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.name }} <span class="icon icon-cancel-circle"></span></a>
 </li>

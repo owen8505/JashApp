@@ -17,16 +17,18 @@
         spWeb.clientTag = $cookieStore.get('SPClientTag');
         spWeb.productNumber = $cookieStore.get('SPProductNumber');
 
-        $.ajax({
-            url: spWeb.appWebUrl + "/_api/contextinfo",
-            method: "POST",
+        var executor = new SP.RequestExecutor(spWeb.hostUrl);
+        executor.executeAsync({
+            url: spWeb.hostUrl + "/_api/web/lists/getByTitle('Agenda')/items?@target='" + spWeb.appWebUrl + "'",
+            method: "GET",
             headers: { "Accept": "application/json; odata=verbose" },
-            success: function (data) {
-                spWeb.requestdigest = data.d.GetContextWebInformation.FormDigestValue;
+            success: function () {
+
             },
-            error: function (data, errorCode, errorMessage) {
-                alert(errorMessage)
+            error: function () {
+
             }
+
         });
     };
 

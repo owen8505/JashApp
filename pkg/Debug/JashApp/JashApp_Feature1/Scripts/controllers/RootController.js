@@ -2,7 +2,7 @@
 
 var Jash = angular.module('Jash');
 
-Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'CertificateService', 'CreditService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, CertificateService, CreditService, DEFAULT_VALUES) {
+Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'ManagerService', 'ParcelService', 'ZoneService', 'CertificateService', 'DEFAULT_VALUES', function ($scope, $rootScope, ContextService, ManagerService, ParcelService, ZoneService, CertificateService, DEFAULT_VALUES) {
     $scope.spWeb,
     $scope.manager, $scope.warningList, $scope.certificates, $scope.credits;
 
@@ -11,18 +11,6 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
 
     // Nombre de usuario
     $scope.userName = 'ENTRE';
-
-    // Catálogo de Regiones
-    $scope.zones = [
-        {id:3, title:'Ciudad de méxico'},
-        {id:4, title:'Toluca'}
-    ];
-
-    $scope.parcels = [
-        { id: 0, title: 'DHL' },
-        { id: 1, title: 'Fedex' },
-        { id: 2, title: 'Estafeta' }
-    ];    
 
     // Función que determina si una sección está seleccionada
     $scope.isCurrentSection = function(section){
@@ -33,6 +21,10 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
     $scope.setCurrentSection = function (section) {
         $scope.currentSection = section;
     };
+
+    $scope.$on('applyChanges', function () {
+        $scope.$apply();        
+    });
 
     $scope.initController = function () {
 
@@ -45,9 +37,11 @@ Jash.controller('RootController', ['$scope', '$rootScope', 'ContextService', 'Ma
 
         // Catálogo de gestores
         $scope.managers = ManagerService.getAllManagers();
+        $scope.parcels = ParcelService.getAllParcels();
+        $scope.zones = ZoneService.getAllZones();
         $scope.warningList = CertificateService.getWarningCertificates();
-        $scope.certificates = CertificateService.getAllCertificates();
-        $scope.credits = CreditService.getAllCredits();        
+        $scope.lastCertificates = CertificateService.getLastCertificates();
+        //$scope.credits = CreditService.getAllCredits();        
 
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();

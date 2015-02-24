@@ -10,9 +10,10 @@
                 CATALOGS: 2
             },
             SECTIONS: [
-                {nav:1, title:'Resumen', icon:'icon-home2', state:'.dashboard'},
-                {nav:2, title:'Usuarios', icon:'icon-users', state:'.users'},
-                {nav: 3, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs' }
+                { nav: 1, title: 'Resumen', icon: 'icon-home2', state: '.dashboard' },
+                { nav: 2, title: 'Agenda', icon: 'icon-calendar', state: '.calendar' },
+                { nav: 3, title: 'Usuarios', icon: 'icon-users', state: '.users' },
+                { nav: 4, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs' }
             ],
             SUBSECTION: {
                 ALL: 0,
@@ -58,6 +59,10 @@
                 url: '/dashboard',
                 templateUrl: '../Pages/partials/dashboard_partial.html',
                 title: 'Resumen',
+            }).state('calendar', {
+                url: '/calendar',
+                templateUrl: 'partials/calendar_partial.html',
+                title: 'Calendario',
             }).state('certificates', {
                 url: '/certificates',
                 templateUrl: 'partials/certificates_partial.html',

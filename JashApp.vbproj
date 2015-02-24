@@ -46,6 +46,9 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Calendar\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{d516b6de-cbb0-4b73-9bed-3e88445a1e5d}</SharePointProjectItemId>
+    </None>
     <None Include="Content\fonts\icomoon.eot" />
     <None Include="Content\fonts\icomoon.ttf" />
     <None Include="Content\fonts\icomoon.woff" />
@@ -57,6 +60,9 @@
     <None Include="Pages\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{3fc75dc9-0442-4fb3-a5bb-f0073e779686}</SharePointProjectItemId>
     </None>
+    <Content Include="Calendar\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\icomoon.svg" />
     <Content Include="Content\global.css">
@@ -82,6 +88,7 @@
       <SharePointProjectItemId>{69fb3256-763c-4b3e-9364-82ba8379ace5}</SharePointProjectItemId>
     </None>
     <Content Include="Pages\app.html" />
+    <Content Include="Pages\partials\calendar_partial.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
     <Content Include="Pages\partials\zones_partial.edit.html" />
     <Content Include="Pages\partials\managers_partial.edit.html" />
@@ -145,6 +152,7 @@
     <Content Include="Scripts\services\ManagerService.js" />
     <Content Include="Scripts\services\ParcelService.js" />
     <Content Include="Scripts\services\ZoneService.js" />
+    <Content Include="Scripts\vendor\fullcalendar.min.js" />
     <Content Include="Scripts\vendor\jquery-2.1.3.min.js" />
     <Content Include="Scripts\vendor\modernizr.js" />
     <Content Include="Scripts\vendor\moment-with-locales.js" />

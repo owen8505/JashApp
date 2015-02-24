@@ -1,36 +1,37 @@
 <!-- Sección de certificados -->
-<div class="last-certificates-section">
-    <h4 class="subtitle-section">Certificados de Libertad de Gravamen</h4>
-    <div>
-        <div class="unavailable-message" ng-if="!certificates.length">
-            Por el momento no hay elementos que requieran atención inmediata
+<div class="section">
+    <div class="last-certificates-section">
+        <h4 class="subtitle-section">Certificados de Libertad de Gravamen</h4>
+        <div>
+            <div class="unavailable-message" ng-if="!certificates.length">
+                Por el momento no hay elementos en el catálogo de certificados
+            </div>
+            <div ng-if="certificates.length">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Folio {{ certificates.length }}</th>
+                        <th>Propietario</th>
+                        <th>Descripción</th>
+                        <th>Inscripción</th>
+                        <th>Estatus</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="certificate in certificates | limitTo: 5 ">
+                        <td><a ui-sref="certificates.edit({id:certificate.id})">{{ certificate.folio }}</a></td>
+                        <td>{{ certificate.owner }}</td>
+                        <td>{{ certificate.description }}</td>
+                        <td>{{ certificate.inscription }}</td>
+                        <td>{{ certificate.status.title }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div ng-if="certificates.length">
-            <table>
-                <thead>
-                <tr>
-                    <th>Folio</th>
-                    <th>Propietario</th>
-                    <th>Descripción</th>
-                    <th>Inscripción</th>
-                    <th>Estatus</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="certificate in certificates | limitTo: 20 | orderBy:reverse">
-                    <td>{{ certificate.id }}</td>
-                    <td>{{ certificate.owner }}</td>
-                    <td>{{ certificate.description }}</td>
-                    <td>{{ certificate.inscription }}</td>
-                    <td>{{ certificate.status.title }}</td>
-                </tr>
-                </tbody>
-            </table>
+
+        <div class="action-button-holder">
+            <a ui-sref="certificates.new" class="btn btn-default" title="Nuevo Certificado" ng-click="createCertificate()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
         </div>
     </div>
-
-    <div class="action-button-holder" ng-if="!certificates.length">
-        <a ui-sref="certificates.new" class="action-button action-button-red" title="Nuevo Certificado"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
-    </div>
-
 </div>

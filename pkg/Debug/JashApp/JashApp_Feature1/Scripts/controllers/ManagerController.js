@@ -33,7 +33,7 @@ Jash.controller('ManagerController', ['$scope', '$rootScope', '$state', 'Manager
 
         angular.forEach($scope.zones, function (zone, index) {
             $scope.zonesDropdown.push({
-                text: zone.title,
+                text: zone.name,
                 click: 'setZone(' + index + ')'
             });
         });

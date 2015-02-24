@@ -6,7 +6,7 @@
                 <span class="icon icon-warning"></span> Este elemento requiere atención inmediata.
             </div>
             <ol>
-                <ng-include src="'Pages/templates/certificate_new_template.html'"></ng-include>
+                <ng-include src="'templates/certificate_new_template.html'"></ng-include>
             </ol>
             <ol>
                 <li><h3>Datos del gestor</h3></li>
@@ -14,7 +14,7 @@
                     <label for="certificate-zone">Región:</label>
                     <span class="third-width">
                         <button id="certificate-zone" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="zonesDropdown">
-                            <span ng-if="!selectedItem.zone">Selecciona una zona</span><span ng-if="selectedItem.zone">{{ selectedItem.zone.title }}</span>
+                            <span ng-if="!selectedItem.zone">Selecciona una zona</span><span ng-if="selectedItem.zone">{{ selectedItem.zone.name }}</span>
                             <span class="caret"></span>
                         </button>
 
@@ -29,8 +29,8 @@
                     </button>
 
                     </span>
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Enviar correo" data-placement="top" data-template="/JashApp/Pages/templates/request_info_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Solicitar información</a></span>
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="/JashApp/Pages/templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="Pages/templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span>
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="Pages/templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
                 </li>
                 <li>
                     <label for="certificate-cost">Costo de derechos:</label>
@@ -60,7 +60,7 @@
                 </li>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status)">
-                <li><h3>DCertificados</h3></li>
+                <li><h3>Certificados</h3></li>
                 <li>
                     <label for="certificate-documents">Generar de certificado:</label>
                     <span class="third-width"><input id="certificate-document-name" type="text" ng-model="documentName" class="form-control" placeholder="Ej. Certificado 3035 Ricardo Rosas"></span>

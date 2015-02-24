@@ -4,7 +4,8 @@
         appWebUrl: undefined,
         hostUrl: undefined,        
         clientTag: undefined,
-        productNumber: undefined     
+        productNumber: undefined,
+        requestdigest: undefined,
         
     };
 
@@ -14,7 +15,21 @@
         spWeb.appWebUrl = $cookieStore.get('SPAppWebUrl');
         spWeb.hostUrl = $cookieStore.get('SPHostUrl');        
         spWeb.clientTag = $cookieStore.get('SPClientTag');
-        spWeb.productNumber = $cookieStore.get('SPProductNumber');                
+        spWeb.productNumber = $cookieStore.get('SPProductNumber');
+
+        var executor = new SP.RequestExecutor(spWeb.hostUrl);
+        executor.executeAsync({
+            url: spWeb.hostUrl + "/_api/web/lists/getByTitle('Agenda')/items?@target='" + spWeb.appWebUrl + "'",
+            method: "GET",
+            headers: { "Accept": "application/json; odata=verbose" },
+            success: function () {
+
+            },
+            error: function () {
+
+            }
+
+        });
     };
 
     var createAppContext = function () {
@@ -27,8 +42,8 @@
         $cookieStore.put('SPHostUrl', hostUrl);        
         $cookieStore.put('SPClientTag', clientTag);
         $cookieStore.put('SPProductNumber', productNumber);        
-
-        $window.location.href = appWebUrl + '/app.html';
+                
+        $window.location.href = appWebUrl + '/Pages/app.aspx';
     };
 
     var getQueryString = function () {
