@@ -40,7 +40,10 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
                 if ($state.params) {
                     $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
-                    $scope.setZoneById($scope.selectedItem.zone.id);
+
+                    if ($scope.selectedItem.zone) {
+                        $scope.setZoneById($scope.selectedItem.zone.id);
+                    }
                 }                
                 break;
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:

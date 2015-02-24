@@ -43,12 +43,12 @@
     <ProjectItemFile Source="controllers\ParcelController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="controllers\ZoneController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="services\ZoneService.js" Target="Scripts\services\" Type="ElementFile" />
-    <ProjectItemFile Source="services\StatusService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="vendor\fullcalendar.min.js" Target="Scripts\vendor\" Type="ElementFile" />
     <ProjectItemFile Source="lib\angular-spinner.js" Target="Scripts\lib\" Type="ElementFile" />
     <ProjectItemFile Source="lib\spin.js" Target="Scripts\lib\" Type="ElementFile" />
-    <ProjectItemFile Source="services\UserService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="controllers\UserController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="services\SearchService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="services\StatusService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="services\UserService.js" Target="Scripts\services\" Type="ElementFile" />
   </Files>
 </ProjectItem>
