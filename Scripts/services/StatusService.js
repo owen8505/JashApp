@@ -46,6 +46,8 @@ Jash.factory('StatusService', ["$http", "$q", "$rootScope", "$cookieStore", "Con
 
                     statuses.push(status);
                  }
+
+                $rootScope.$broadcast('initDataLoaded');
              },
             function (response, args) {
                 console.log(args.get_message())

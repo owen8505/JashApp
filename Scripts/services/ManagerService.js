@@ -53,6 +53,8 @@
                     
                     managers.push(manager);
                 }
+
+               $rootScope.$broadcast('initDataLoaded');
                 
             },
             function (response, args) {

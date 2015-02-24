@@ -33,8 +33,10 @@
 
 </head>
 <body ng-controller="RootController as RootCtrl">
+
     <WebPartPages:SPWebPartManager id="m" runat="Server"/>        
-    <input type="hidden" name="__REQUESTDIGEST" />                     
+    <input type="hidden" name="__REQUESTDIGEST" />
+    <span us-spinner spinner-key="main-spinner"></span>
 
         
     <div class="top-bar container-fluid">
@@ -51,7 +53,10 @@
         <div class="row">
             <nav class="col-lg-2">
                 <ul class="global-nav">
-                    <li ng-repeat="section in SECTIONS | orderBy:nav" ng-class="{'selected':isCurrentSection(section)}"><a ui-sref="{{ section.state }}" ng-click="setCurrentSection(section)"><span ng-class="section.icon"></span>{{ section.title }}</a></li>
+                    <li ng-repeat="section in SECTIONS | orderBy:nav" ng-class="{'selected':isCurrentSection(section)}">
+                        <a ng-if="section.state" ui-sref="{{ section.state }}" ng-click="setCurrentSection(section)"><span ng-class="section.icon"></span>{{ section.title }}</a>
+                        <a ng-if="!section.state && section.url" ng-href="{{ section.url }}" target="_blank"><span ng-class="section.icon"></span>{{ section.title }}</a>
+                    </li>
                 </ul>
             </nav>
             <div class="content col-lg-10">
@@ -79,6 +84,8 @@
     <script src="../Scripts/lib/angular-strap.js"></script>
     <script src="../Scripts/lib/angular-strap.tpl.js"></script>
     <script src="../Scripts/lib/ng-quick-date.min.js"></script>
+    <script src="../Scripts/lib/spin.js"></script>
+    <script src="../Scripts/lib/angular-spinner.js"></script>
 
     <!-- Angular external resources -->
     <script src="../Scripts/lib/ng-currency.js"></script>
@@ -97,6 +104,7 @@
     <script src="../Scripts/controllers/ManagerController.js"></script>
     <script src="../Scripts/controllers/ParcelController.js"></script>
     <script src="../Scripts/controllers/ZoneController.js"></script>
+    <script src="../Scripts/controllers/UserController.js"></script>
 
     <!-- Services -->
     <script src="../Scripts/services/CertificateService.js"></script>
@@ -106,6 +114,9 @@
     <script src="../Scripts/services/ParcelService.js"></script>
     <script src="../Scripts/services/StatusService.js"></script>
     <script src="../Scripts/services/ZoneService.js"></script>
+    <script src="../Scripts/services/SearchService.js"></script>
+    <script src="../Scripts/services/UserService.js"></script>
+
     <!-- Directives -->
 
 </body>

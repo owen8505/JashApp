@@ -1,6 +1,6 @@
 'use strict';
 
-Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', 'CertificateService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CertificateService, StatusService, DEFAULT_VALUES) {
+Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', 'CertificateService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CertificateService, ManagerService, StatusService, DEFAULT_VALUES) {
 
     //Certificado seleccionado
     $scope.selectedItem = undefined;
@@ -40,6 +40,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
                 if ($state.params) {
                     $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
+                    $scope.setZoneById($scope.selectedItem.zone.id);
                 }                
                 break;
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:
@@ -97,8 +98,25 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                     });
                 }
             });
+
+            //Si ya está seleccionado un gestor y el gestor no pertenece a la región seleccionada lo reseteamos
+            if($scope.selectedItem.manager && ManagerService.getManagerById($scope.selectedItem.manager.id).zone.id != $scope.selectedItem.zone.id){
+                $scope.selectedItem.manager = undefined;
+            }
         }
     };
+
+    $scope.setZoneById = function(){
+        var zoneIndex = 0;
+
+        angular.forEach($scope.zones, function(zone, index){
+           if ($scope.selectedItem.zone.id == zone.id) {
+               zoneIndex = index;
+           }
+        });
+
+        $scope.setZone(zoneIndex);
+    }
 
     $scope.setManager = function (managerIndex) {
         if($scope.selectedItem){

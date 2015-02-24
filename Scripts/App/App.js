@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ngResource', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate'])
+    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ngResource', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate', 'angularSpinner'])
 
         .value('DEFAULT_VALUES', {
             SECTION: {
@@ -10,10 +10,10 @@
                 CATALOGS: 2
             },
             SECTIONS: [
-                { nav: 1, title: 'Resumen', icon: 'icon-home2', state: '.dashboard' },
-                { nav: 2, title: 'Agenda', icon: 'icon-calendar', state: '.calendar' },
-                { nav: 3, title: 'Usuarios', icon: 'icon-users', state: '.users' },
-                { nav: 4, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs' }
+                { nav: 1, title: 'Resumen', icon: 'icon-home2', state: '.dashboard', url: '' },
+                { nav: 2, title: 'Agenda', icon: 'icon-calendar', state: '', url: 'https://gestoria.sharepoint.com/sites/app/_layouts/15/start.aspx#/Lists/Agenda/calendar.aspx' },
+                { nav: 3, title: 'Usuarios', icon: 'icon-users', state: '.users', url: '' },
+                { nav: 4, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs', url: '' }
             ],
             SUBSECTION: {
                 ALL: 0,

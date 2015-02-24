@@ -43,6 +43,8 @@
     <File Path="Scripts\controllers\ZoneController.js" Url="Scripts/controllers/ZoneController.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\ZoneService.js" Url="Scripts/services/ZoneService.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\StatusService.js" Url="Scripts/services/StatusService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\angular-spinner.js" Url="Scripts/lib/angular-spinner.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\lib\spin.js" Url="Scripts/lib/spin.js" ReplaceContent="TRUE" />
     <File Path="Scripts\vendor\fullcalendar.min.js" Url="Scripts/vendor/fullcalendar.min.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

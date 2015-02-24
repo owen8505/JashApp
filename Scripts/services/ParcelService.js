@@ -50,6 +50,8 @@ Jash.factory('ParcelService', ['$rootScope', '$resource', 'ContextService', func
                    parcels.push(parcel);
                }
 
+               $rootScope.$broadcast('initDataLoaded');
+
            },
             function (response, args) {
                 console.log(args.get_message())
