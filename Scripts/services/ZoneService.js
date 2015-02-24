@@ -51,6 +51,8 @@ Jash.factory('ZoneService', ['$rootScope', '$resource', 'ContextService', functi
                    zones.push(zone);
                }
 
+               $rootScope.$broadcast('initDataLoaded');
+
            },
             function (response, args) {
                 console.log(args.get_message())

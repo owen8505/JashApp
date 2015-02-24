@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ngResource', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate'])
+    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ngResource', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate', 'angularSpinner'])
 
         .value('DEFAULT_VALUES', {
             SECTION: {

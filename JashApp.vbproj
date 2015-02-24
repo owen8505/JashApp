@@ -129,12 +129,14 @@
     <Content Include="Scripts\lib\angular-resource.js" />
     <Content Include="Scripts\lib\angular-route.js" />
     <Content Include="Scripts\lib\angular-sanitize.js" />
+    <Content Include="Scripts\lib\angular-spinner.js" />
     <Content Include="Scripts\lib\angular-strap.js" />
     <Content Include="Scripts\lib\angular-strap.tpl.js" />
     <Content Include="Scripts\lib\angular-ui-router.min.js" />
     <Content Include="Scripts\lib\angular.js" />
     <Content Include="Scripts\lib\ng-currency.js" />
     <Content Include="Scripts\lib\ng-quick-date.min.js" />
+    <Content Include="Scripts\lib\spin.js" />
     <Content Include="Scripts\modernizr.js" />
     <Content Include="Scripts\prefixfree.js" />
     <Content Include="Scripts\prefixfree.min.js" />

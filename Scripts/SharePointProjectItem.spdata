@@ -44,5 +44,7 @@
     <ProjectItemFile Source="controllers\ZoneController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="services\ZoneService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="services\StatusService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="lib\angular-spinner.js" Target="Scripts\lib\" Type="ElementFile" />
+    <ProjectItemFile Source="lib\spin.js" Target="Scripts\lib\" Type="ElementFile" />
   </Files>
 </ProjectItem>

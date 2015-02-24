@@ -30,7 +30,9 @@
 </head>
 <body ng-controller="RootController as RootCtrl">
            
-    <input type="hidden" name="__REQUESTDIGEST" />    
+    <input type="hidden" name="__REQUESTDIGEST" />
+
+    <span us-spinner spinner-key="main-spinner"></span>
 
     <div class="top-bar container-fluid">
         <div class="row">
@@ -74,6 +76,8 @@
     <script src="../Scripts/lib/angular-strap.js"></script>
     <script src="../Scripts/lib/angular-strap.tpl.js"></script>
     <script src="../Scripts/lib/ng-quick-date.min.js"></script>
+    <script src="../Scripts/lib/spin.js"></script>
+    <script src="../Scripts/lib/angular-spinner.js"></script>
 
     <!-- Angular external resources -->
     <script src="../Scripts/lib/ng-currency.js"></script>
