@@ -53,6 +53,8 @@
                     
                     managers.push(manager);
                 }
+
+               $rootScope.$broadcast('initDataLoaded');
                 
             },
             function (response, args) {
@@ -127,11 +129,11 @@
                var originalElement = getManagerById(manager.id);
                originalElement.name = manager.name;
                originalElement.mail = manager.mail;
-               originalElement.phone = manager.phone,
-               originalElement.cellphone = manager.cellphone,
-               originalElement.zone = manager.zone,
-               originalElement.score = manager.score,
-               originalElement.active = manager.active
+               originalElement.phone = manager.phone;
+               originalElement.cellphone = manager.cellphone;
+               originalElement.zone = manager.zone;
+               originalElement.score = manager.score;
+               originalElement.active = manager.active;
 
                $rootScope.$broadcast('itemUpdated');
            },

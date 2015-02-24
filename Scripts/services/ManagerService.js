@@ -46,7 +46,7 @@
                         phone: (item.get_item('Telefono')) ? item.get_item('Telefono') : undefined,
                         cellphone: (item.get_item('Celular')) ? item.get_item('Celular') : undefined,
                         mail: item.get_item('Correo_x0020_electronico'),
-                        zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), title: item.get_item('Region').get_lookupValue() } : undefined,
+                        zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                         score: (item.get_item('Calificacion')) ? item.get_item('Calificacion') : undefined,
                         active: (item.get_item('Activa')) ? item.get_item('Activa') : false
                     };                    

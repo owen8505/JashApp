@@ -34,6 +34,7 @@
     <ElementFile Location="Pages\templates\manager_detail_template.html" />
     <ElementFile Location="Pages\app.aspx" />
     <ElementFile Location="Pages\partials\calendar_partial.html" />
+    <ElementFile Location="Pages\templates\search_template.html" />
     <ElementManifest Location="Scripts\Elements.xml" />
     <ElementFile Location="Scripts\App.js" />
     <ElementFile Location="Scripts\jquery-1.9.1.min.map" />
@@ -76,7 +77,13 @@
     <ElementFile Location="Scripts\controllers\ParcelController.js" />
     <ElementFile Location="Scripts\controllers\ZoneController.js" />
     <ElementFile Location="Scripts\services\ZoneService.js" />
+    <ElementFile Location="Scripts\services\StatusService.js" />
     <ElementFile Location="Scripts\vendor\fullcalendar.min.js" />
+    <ElementFile Location="Scripts\lib\angular-spinner.js" />
+    <ElementFile Location="Scripts\lib\spin.js" />
+    <ElementFile Location="Scripts\services\UserService.js" />
+    <ElementFile Location="Scripts\controllers\UserController.js" />
+    <ElementFile Location="Scripts\services\SearchService.js" />
     <ElementManifest Location="Content\Elements.xml" />
     <ElementFile Location="Content\global.scss" />
     <ElementFile Location="Content\icomoon.css" />

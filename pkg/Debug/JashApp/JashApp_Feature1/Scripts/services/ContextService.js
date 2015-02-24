@@ -15,21 +15,7 @@
         spWeb.appWebUrl = $cookieStore.get('SPAppWebUrl');
         spWeb.hostUrl = $cookieStore.get('SPHostUrl');        
         spWeb.clientTag = $cookieStore.get('SPClientTag');
-        spWeb.productNumber = $cookieStore.get('SPProductNumber');
-
-        var executor = new SP.RequestExecutor(spWeb.hostUrl);
-        executor.executeAsync({
-            url: spWeb.hostUrl + "/_api/web/lists/getByTitle('Agenda')/items?@target='" + spWeb.appWebUrl + "'",
-            method: "GET",
-            headers: { "Accept": "application/json; odata=verbose" },
-            success: function () {
-
-            },
-            error: function () {
-
-            }
-
-        });
+        spWeb.productNumber = $cookieStore.get('SPProductNumber');        
     };
 
     var createAppContext = function () {

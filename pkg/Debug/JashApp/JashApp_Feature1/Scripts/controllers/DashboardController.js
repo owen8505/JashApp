@@ -1,6 +1,6 @@
 'use strict';
 
-Jash.controller('DashboardController',['$scope','$rootScope',  'DEFAULT_VALUES' ,function($scope, $rootScope,  DEFAULT_VALUES){
+Jash.controller('DashboardController',['$scope','$rootScope', 'CertificateService', 'DEFAULT_VALUES' ,function($scope, $rootScope, CertificateService, DEFAULT_VALUES){
 
     // Catálogo de subsecciones de la aplicación
     $scope.SUBSECTIONS = DEFAULT_VALUES.SUBSECTIONS;
@@ -24,6 +24,8 @@ Jash.controller('DashboardController',['$scope','$rootScope',  'DEFAULT_VALUES' 
 
         // Susección actual
         $scope.currentSubsection = $scope.SUBSECTIONS[DEFAULT_VALUES.SUBSECTION.ALL];
+        $scope.lastCertificates = [];
+        $scope.lastCertificates = CertificateService.getLastCertificates();
     };
 
     $scope.initController();

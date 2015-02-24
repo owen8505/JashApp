@@ -431,6 +431,7 @@ table {
     box-sizing: border-box;
     display: inline-block;
     font-size: 0;
+    position: relative;
     height: 30px;
     width: 100%; }
     .content .local-search .local-search-input {
@@ -440,25 +441,9 @@ table {
       height: 100%;
       width: 93%; }
     .content .local-search .local-search-button {
-      background-color: #F1F1F2;
-      border: 1px solid #CCCCCC;
-      border-left: none;
-      box-sizing: border-box;
-      color: #2B2C2F;
-      display: inline-block;
-      margin: 0;
-      padding-top: 8px;
-      height: 36px;
-      text-align: center;
-      width: 34px;
-      vertical-align: top; }
-      .content .local-search .local-search-button span {
-        font-size: 1rem;
-        vertical-align: middle;
-        width: 100%; }
-    .content .local-search .local-search-button:hover {
-      background-color: #2B2C2F;
-      color: #CECEC6; }
+      position: absolute;
+      right: 0;
+      top: 0; }
   .content .section-content {
     margin: 1rem 0;
     padding: 1rem; }

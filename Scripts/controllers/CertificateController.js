@@ -16,6 +16,8 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     $scope.managersDropdown = [];
     $scope.zonesDropdown = [];
 
+    $scope.query = '';
+
 
     $scope.$on('itemSaved', function () {
         $scope.historyBack();
@@ -26,7 +28,9 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     });
 
     $scope.$on('mailSent', function () {
-        var popoverElement = angular.element('#request-info-trigger');        
+        $scope.subject = undefined;
+        $scope.observations = undefined;
+        
     });
 
     $scope.initController = function(){
