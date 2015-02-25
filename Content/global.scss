@@ -217,12 +217,12 @@ table{
         th{
             font-size: 1rem;
             font-weight: 400;
-        }
+        }        
 
         tr{
             background-color: $color-gray-4;
             color: white;
-        }
+        }        
 
     }
 
@@ -231,11 +231,18 @@ table{
         td{
             font-size: 14px;
             font-weight: 300;
-        }
+        }        
 
         tr:nth-child(even){
             background-color: $color-gray-1;
         }
+    }
+
+    .folio{
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 

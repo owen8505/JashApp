@@ -121,6 +121,11 @@ table {
     font-weight: 300; }
   table tbody tr:nth-child(even) {
     background-color: #F1F1F2; }
+  table .folio {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
 
 .action-button-gray {
   background-color: #CECEC6;

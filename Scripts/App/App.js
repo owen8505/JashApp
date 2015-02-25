@@ -175,6 +175,56 @@
             });
         })
 
+        .directive('ngPopover', function ($popover) {
+            return {
+                restrict: 'A',
+                replace: true,
+                scope: {                    
+                    manager: '=',
+                    sendMailFunction: '='
+                },
+                template: '<a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger">Solicitar información</a>',
+                link: function (scope, elements, attrs) {
+                                       
+                    scope.subject, scope.observations;
+
+                    scope.mailPopover = $popover(elements, {
+                        scope: scope,
+                        template: "templates/request_info_template.html",
+                        title: 'Enviar correo',
+                        autoClose: true,
+                    });
+
+                    scope.$on('mailSent', function () {
+                        scope.subject = undefined;
+                        scope.observations = undefined;
+                        scope.mailPopover.hide();
+                    });
+
+                    scope.isManagerSelected = function () {
+                        return (scope.manager) ? true : false;
+                    };
+
+                    scope.sendMail = function (subject, observations) {                        
+                        scope.sendMailFunction(subject, observations);                        
+                    };
+
+                    scope.isValidEmailForm = function (fields) {                        
+                        var isValidForm = true;                        
+                        for (var indexField in fields) {
+                            var field = fields[indexField];
+                            if (!field) {
+                                isValidForm = false;
+                                break;
+                            }
+                        }
+                        
+                        return isValidForm;
+                    };
+                }
+            }
+        })
+
         .filter('capitalize', function() {
             return function(input, scope) {
                 if (input!=null)

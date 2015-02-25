@@ -3,9 +3,7 @@
 Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', 'CertificateService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CertificateService, ManagerService, StatusService, DEFAULT_VALUES) {
 
     //Certificado seleccionado
-    $scope.selectedItem = undefined;
-    $scope.subject = undefined;
-    $scope.observations = undefined;
+    $scope.selectedItem = undefined;    
     $scope.attachmentElement = undefined;
     $scope.attachmentName = undefined;
     $scope.documentName = undefined;
@@ -25,13 +23,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     $scope.$on('itemUpdated', function () {
         $scope.historyBack();
-    });
-
-    $scope.$on('mailSent', function () {
-        $scope.subject = undefined;
-        $scope.observations = undefined;
-        
-    });
+    });    
 
     $scope.initController = function(){
 
@@ -47,7 +39,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
                     if ($scope.selectedItem.zone) {
                         $scope.setZoneById($scope.selectedItem.zone.id);
-                    }
+                    }                    
                 }                
                 break;
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:
@@ -154,8 +146,9 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         return false;
     };
 
-    $scope.sendMail = function (subject,observations) {        
-        CertificateService.sendMail($scope.selectedItem.manager, subject, observations);
+    $scope.sendMail = function (subject, observations) {
+        var manager = ManagerService.getManagerById($scope.selectedItem.manager.id);        
+        CertificateService.sendMail(manager, subject, observations);
     };
 
     $scope.setCommittedDate = function(committedDate){
