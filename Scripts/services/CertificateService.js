@@ -219,16 +219,16 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                             '<Where>' +
                                '<Eq><FieldRef Name=\'Folio\' /><Value Type=\'Text\'>' + folio + '</Value></Eq>' +
                             '</Where>' +
-                          '</Query></View>';        
+                          '</Query></View>';
         var queryCAML = new SP.CamlQuery();        
         queryCAML.set_viewXml(queryString);
         
         var items = library.getItems(queryCAML);
-        
+
         context.load(items);
         context.executeQueryAsync(
              function () {
-                 
+
                  var listItemEnumerator = items.getEnumerator();
                  while (listItemEnumerator.moveNext()) {
                      var item = listItemEnumerator.get_current();                     
@@ -266,51 +266,92 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     var saveDocuments = function (libraryName, folio, documentsArray) {
 
-        angular.forEach(documentsArray, function (document) {
-            var reader = new FileReader();
-            reader.onload = function () {
-                var library = appContext.get_web().get_lists().getByTitle(libraryName);
 
-                var fileCreateInfo = new SP.FileCreationInformation();
-                fileCreateInfo.set_url(document.attachmentFile.name);
-                fileCreateInfo.set_overwrite(true);
-                fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
+        $.ajax({
+            url: SPWeb.appWebUrl + "/_api/contextinfo",
+            method: "POST",
+            headers: { "Accept": "application/json; odata=verbose"},
+            success: function (data) {
+                var requestDigest = data.d.GetContextWebInformation.FormDigestValue;
 
-                var arr = convertDataURIToBinary(this.result);
-                for (var i = 0; i < arr.length; ++i) {
-                    fileCreateInfo.get_content().append(arr[i]);                    
-                }
+                angular.forEach(documentsArray, function (document) {
 
-                var newFile = library.get_rootFolder().get_files().add(fileCreateInfo);
+                    var reader = new FileReader();
 
-                context.load(newFile, 'ListItemAllFields');
-                context.executeQueryAsync(
-                    function () {
-                        var fileList = appContext.get_web().get_lists().getByTitle(libraryName);
-                        var item = fileList.getItemById(newFile.get_listItemAllFields().get_id());
+                    reader.onload = function (result) {
 
-                        item.set_item('Folio', folio);
-                        item.update();
+                        var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+                            "/web/lists/getbytitle('Adjuntos de certificados')/rootfolder/files/add(url='" + document.name + "',overwrite=true)?" +
+                            "@target='" + SPWeb.hostUrl + "'" +
+                            '&$expand=ListItemAllFields';
 
-                        context.load(item);
-                        context.executeQueryAsync(
-                            function () {
-                                console.log('Success');
-                            },
-                            function (response, args) {
-                                console.log(args.get_message());
-                            }
-                        );
+                        var fileData = '';
+                        var byteArray = new Uint8Array(result.target.result)
+                        for (var i = 0; i < byteArray.byteLength; i++) {
+                            fileData += String.fromCharCode(byteArray[i])
+                        }
 
-                    },
-                    function (response, args) {
-                        console.log(args.get_message());
-                    }
-                );
-            };
+                        var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
+                        executor.executeAsync(
+                            {
+                                url: url,
+                                method: "POST",
+                                headers: {
+                                    "Accept": "application/json; odata=verbose",
+                                    "X-RequestDigest": requestDigest
+                                },
+                                contentType: "application/json;odata=verbose",
+                                binaryStringRequestBody: true,
+                                body: fileData,
+                                success: function (data) {
 
-            reader.readAsDataURL(document.attachmentFile);
-            
+                                    var fileId = JSON.parse(data.body).d.ListItemAllFields.ID;
+
+                                    var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+                                        "/web/lists/getbytitle('Adjuntos de certificados')/items(" + fileId + ")?" +
+                                        "@target='" + SPWeb.hostUrl + "'";
+
+                                    executor.executeAsync(
+                                        {
+                                            url: url,
+                                            method: "POST",
+                                            body: JSON.stringify({
+                                                '__metadata': {
+                                                    'type': 'SP.Data.Adjuntos_x0020_de_x0020_certificadosItem' },
+                                                    'Folio': folio,
+                                                    'Title': document.title
+                                            }),
+                                            headers: {
+                                                "Accept": "application/json; odata=verbose",
+                                                "X-RequestDigest": requestDigest,
+                                                "IF-MATCH": "*",
+                                                "X-HTTP-Method": "MERGE",
+                                                "content-type": "application/json;odata=verbose"
+                                            },
+                                            success: function (data) {
+                                                console.log('Success');
+                                            },
+                                            error: function (response) {
+                                                console.log(response);
+                                            }
+                                        });
+
+
+                                },
+                                error: function (response) {
+                                    console.log(response);
+                                }
+                            });
+
+                    };
+
+                    reader.readAsArrayBuffer(document.attachmentFile);
+
+                });
+            },
+            error: function (data, errorCode, errorMessage) {
+                console.log(errorMessage)
+            }
         });
     };
 
@@ -321,7 +362,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         var raw = window.atob(base64);
         var rawLength = raw.length;
         var array = new Uint8Array(new ArrayBuffer(rawLength));
- 
+
         for (i = 0; i < rawLength; i++){
             array[i] = raw.charCodeAt(i);
         }
