@@ -30,7 +30,8 @@
                     </button>
 
                     </span>
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span>
+                    <!--span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span-->
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" manager="selectedItem.manager" send-mail-function="sendMail" ng-popover>Solicitar información</a></span>
                     <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
                 </li>
             </ol>

@@ -17,12 +17,21 @@
                 headers: { "Accept": "application/json; odata=verbose" },
                 success: function (data) {
                     var searchResults = eval(JSON.parse(data.body).d);
-
+                    
                     if (searchResults.query.PrimaryQueryResult) {
-                        results = searchResults.query.PrimaryQueryResult.RelevantResults.Table.Rows.results;
+                        resultsArray = searchResults.query.PrimaryQueryResult.RelevantResults.Table.Rows.results;
+                        for (var resultIndex in resultsArray) {
+                            var resultItem = resultsArray[resultIndex].Cells.results;
+                            var result = {
+                                title: resultItem[3].Value,
+                                url: resultItem[6].Value
+                            }
+                            results.push(result);                            
+                        }
+                        
                     }
 
-                    $rootScope.$broadcast('itemsFound');
+                   $rootScope.$broadcast('itemsFound');
                 },
                 error: function (data) {
 

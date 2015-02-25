@@ -1,1 +1,23 @@
-Usuarios
+<section id="Users" class="section-container">
+    <div class="section" ng-controller="UserController as userCtrl">
+        <div class="user-section">
+            <h4 class="subtitle-section">Usuarios</h4>
+            <div>                
+                <div ng-if="users.length">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in users">
+                                <td>{{ user.title }}</td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

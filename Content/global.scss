@@ -217,12 +217,12 @@ table{
         th{
             font-size: 1rem;
             font-weight: 400;
-        }
+        }        
 
         tr{
             background-color: $color-gray-4;
             color: white;
-        }
+        }        
 
     }
 
@@ -231,11 +231,18 @@ table{
         td{
             font-size: 14px;
             font-weight: 300;
-        }
+        }        
 
         tr:nth-child(even){
             background-color: $color-gray-1;
         }
+    }
+
+    .folio{
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
@@ -578,44 +585,44 @@ table{
         }
     }
 
-    .local-search{
+    .item-search{
         box-sizing: border-box;
         display: inline-block;
         font-size: 0;
+        margin-bottom: 1rem;
+        position: relative;
         height: 30px;
         width: 100%;
 
         .local-search-input{
             display: inline-block;
             font-size: 1rem;
-            padding-left: 1rem;
+            padding-left: 1rem;            
             height: 100%;
             width: 93%;
         }
-        .local-search-button{
-            background-color: $color-gray-1;
-            border: 1px solid $color-border-gray-1;
-            border-left: none;
-            box-sizing: border-box;
-            color: $color-gray-4;
-            display: inline-block;
-            margin: 0;
-            padding-top: 8px;
-            height: 36px;
-            text-align: center;
-            width: 34px;
-            vertical-align: top;
+    }
 
-            span{
-                font-size: 1rem;
-                vertical-align: middle;
-                width: 100%;
-            }
+    .local-search{
+        box-sizing: border-box;
+        display: inline-block;
+        font-size: 0;
+        position: relative;
+        height: 30px;
+        width: 100%;
+
+        .local-search-input{
+            display: inline-block;
+            font-size: 1rem;
+            padding-left: 1rem;            
+            height: 100%;
+            width: 93%;
         }
 
-        .local-search-button:hover{
-            background-color: $color-gray-4;
-            color: $color-gray-2;
+        .local-search-button{
+            position:absolute;
+            right: 0;
+            top: 0;               
         }
     }
 

@@ -1,41 +1,49 @@
 'use strict';
 
-Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', 'CertificateService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CertificateService, DEFAULT_VALUES) {
+Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', 'CertificateService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CertificateService, ManagerService, StatusService, DEFAULT_VALUES) {
 
     //Certificado seleccionado
     $scope.selectedItem = undefined;
     $scope.subject = undefined;
     $scope.observations = undefined;
     $scope.attachmentElement = undefined;
-    $scope.attachmentName = undefined
+    $scope.attachmentName = undefined;
     $scope.documentName = undefined;
     $scope.invoiceName = undefined;
     $scope.committedDate = undefined;
 
     $scope.parcelsDropdown = [];
     $scope.managersDropdown = [];
-    $scope.zonesDropdown = [];    
+    $scope.zonesDropdown = [];
 
 
     $scope.$on('itemSaved', function () {
-        $state.go('dashboard');
+        $scope.historyBack();
+    });
+
+    $scope.$on('itemUpdated', function () {
+        $scope.historyBack();
     });
 
     $scope.$on('mailSent', function () {
-        var popoverElement = angular.element('#request-info-trigger');        
+        $scope.subject = undefined;
+        $scope.observations = undefined;
+        
     });
 
     $scope.initController = function(){
-        
+
         switch ($state.current.state){
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.NEW.title;
                 $scope.createCertificate();
                 break;
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
-                $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;                
-                if ($state.params) {                    
-                    $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id));
+                $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
+                if ($state.params) {
+                    $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
+                    console.log($scope.selectedItem)
+                    //$scope.setZoneById($scope.selectedItem.zone.id);
                 }                
                 break;
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:
@@ -65,7 +73,6 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     };
 
-
     $scope.createCertificate = function () {
         $scope.selectedItem = angular.copy(CertificateService.createCertificate());
     };
@@ -73,6 +80,10 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     $scope.saveCertificate = function(){
         CertificateService.saveCertificate($scope.selectedItem);
         $scope.selectedItem = undefined;        
+    };
+
+    $scope.updateCertificate = function () {
+        CertificateService.updateCertificate($scope.selectedItem);
     };
 
     $scope.setZone = function(zoneIndex){
@@ -90,8 +101,25 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                     });
                 }
             });
+
+            //Si ya está seleccionado un gestor y el gestor no pertenece a la región seleccionada lo reseteamos
+            if($scope.selectedItem.manager && ManagerService.getManagerById($scope.selectedItem.manager.id).zone.id != $scope.selectedItem.zone.id){
+                $scope.selectedItem.manager = undefined;
+            }
         }
     };
+
+    $scope.setZoneById = function(){
+        var zoneIndex = 0;
+
+        angular.forEach($scope.zones, function(zone, index){
+           if ($scope.selectedItem.zone.id == zone.id) {
+               zoneIndex = index;
+           }
+        });
+
+        $scope.setZone(zoneIndex);
+    }
 
     $scope.setManager = function (managerIndex) {
         if($scope.selectedItem){
@@ -102,7 +130,6 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     $scope.setParcel = function (parcelIndex) {
         if($scope.selectedItem){
             $scope.selectedItem.parcel = $scope.parcels[parcelIndex];
-            console.log($scope.selectedItem.parcel)
         }
     };
 
@@ -116,8 +143,11 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         return isManagerSelected;
     };
 
-    $scope.isCurrentStatus = function (status) {
-      return true;
+    $scope.isCurrentStatus = function (status, minStatus) {
+        if(StatusService.getStatusById(status.id).code >= minStatus.CODE){
+            return true;
+        }
+        return false;
     };
 
     $scope.sendMail = function (subject,observations) {        
@@ -128,7 +158,6 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         if($scope.selectedItem){
             $scope.selectedItem.committedDate = new moment(committedDate).locale('es');
         }
-        console.log( $scope.selectedItem)
     };
 
     $scope.attachmentFilesChanged = function (elem) {
@@ -147,7 +176,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 attachmentFile: file
             };
             
-            $scope.selectedItem.attachments.push(attachment)            
+            $scope.selectedItem.attachments.push(attachment);
             angular.element($scope.attachmentElement).val(null);
             $scope.attachmentElement = undefined;
             $scope.attachmentName = undefined;
@@ -163,7 +192,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 attachmentFile: ($scope.attachmentElement) ? $scope.attachmentElement.files[0] : undefined
             };
 
-            $scope.selectedItem.documents.push(document)
+            $scope.selectedItem.documents.push(document);
             $scope.documentName = undefined;
             angular.element($scope.attachmentElement).val(null);
             $scope.attachmentElement = undefined;
@@ -181,7 +210,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 attachmentFile: ($scope.attachmentElement) ? $scope.attachmentElement.files[0] : undefined
             };
 
-            $scope.selectedItem.invoices.push(invoice)
+            $scope.selectedItem.invoices.push(invoice);
             $scope.invoiceName = undefined;
             angular.element($scope.attachmentElement).val(null);
             $scope.attachmentElement = undefined;

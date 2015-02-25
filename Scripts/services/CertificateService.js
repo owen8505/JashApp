@@ -7,7 +7,17 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
-        return copyDate.add(DEFAULT_VALUES.DELIVERY_RANGES.CERTIFICATE, 'days');
+        var days = DEFAULT_VALUES.DELIVERY_RANGES.CERTIFICATE;
+
+        while (days > 0) {
+            copyDate = copyDate.add(1, 'days');
+            // decrease "days" only if it's a weekday.
+            if (copyDate.isoWeekday() !== 6 && copyDate.isoWeekday() !== 7) {
+                days -= 1;
+            }
+        }
+
+        return copyDate;
     };
 
     var getCertificateById = function (certificateId, mode) {
@@ -528,9 +538,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
         context.load(item);
         context.executeQueryAsync(
-            function () {
-                console.log('ENVIE EL CORREO')
-                $rootScope.$broadcast('mailSent');
+            function () {                
+                $rootScope.$broadcast('mailSent');                
             },
             function (response, args) {
                 console.log(args.get_message());

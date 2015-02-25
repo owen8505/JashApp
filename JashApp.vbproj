@@ -90,6 +90,9 @@
     <Content Include="Pages\app.html" />
     <Content Include="Pages\partials\calendar_partial.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
+    <Content Include="Pages\partials\parcels_partial.edit.html" />
+    <Content Include="Pages\partials\parcels_partial.html" />
+    <Content Include="Pages\partials\parcels_partial.new.html" />
     <Content Include="Pages\partials\zones_partial.edit.html" />
     <Content Include="Pages\partials\managers_partial.edit.html" />
     <Content Include="Pages\partials\zones_partial.new.html" />
@@ -111,6 +114,7 @@
     <Content Include="Pages\templates\certificate_new_template.html" />
     <Content Include="Pages\templates\credit_new_template.html" />
     <Content Include="Pages\templates\manager_detail_template.html" />
+    <Content Include="Pages\templates\parcel_new_template.html" />
     <Content Include="Pages\templates\request_info_template.html" />
     <Content Include="Pages\templates\search_template.html" />
     <Content Include="Pages\templates\zone_new_template.html" />

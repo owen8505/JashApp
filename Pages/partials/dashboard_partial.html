@@ -1,48 +1,37 @@
 <div class="local-search">
-    <input type="search" class="form-control" placeholder="Buscar" />
+    <input type="search" class="form-control" ng-model="searchParams" placeholder="Buscar" />
+    <a class="btn btn-default local-search-button" ng-click="search(searchParams)" title="Búscar"><span class="icon-search"></span></a>
 </div>
 
-<section id="Dashboard" class="section-container" data-ng-controller="DashboardController as dashboardCtrl">
+<section id="Search" class="section-container" ng-if="searchResults">
+
+    <div class="search-section">
+        <div class="action-button-holder">
+            <a class="btn btn-default" ng-click="resetSearchParams()">Regresar</a>
+        </div>
+        <h4 class="subtitle-section">Resultados de la búsqueda</h4>
+        <div class="unavailable-message" ng-if="!searchResults.length">
+            No se encontraron resultados de búsqueda.
+        </div>
+        <div ng-if="searchResults.length">            
+            <table>
+                <tbody>
+                    <tr ng-repeat="result in searchResults ">
+                        <td><a ng-href="{{ result.url }}" target="_blank">{{ result.title }}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section id="Dashboard" class="section-container" data-ng-controller="DashboardController as dashboardCtrl" ng-if="!searchResults">
 
     <div>
         <ul class="local-nav large-12 end">
             <li ng-repeat="subsection in SUBSECTIONS" ng-class="{'selected':isCurrentSubsection(subsection)}"><a ng-click="setCurrentSubsection(subsection)">{{ subsection.title }}</a></li>
         </ul>
-    </div>
-
-    <!-- Sección de elementos con anomalías-->
-    <div class="section warnings-section" ng-if="isCurrentSubsection(SUBSECTIONS[SUBSECTION.ALL])">
-        <h4 class="subtitle-section">Requiere atención inmediata </h4>
-        <div>
-            <div class="unavailable-message" ng-if="!warningList.length">
-                Por el momento no hay elementos que requieran atención inmediata
-            </div>
-            <div ng-if="warningList.length">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Folio</th>
-                        <th>Fecha de creación</th>
-                        <th>Fecha de entrega</th>
-                        <th>Fecha gestor</th>
-                        <th>Estatus</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="item in warningList">
-                        <td>
-                            <a ng-if="isCertificate(item.type)" ui-sref="certificates.edit({id:item.id})">{{ item.folio }}</a>
-                        </td>
-                        <td>{{ item.creationDate | formatDate }}</td>
-                        <td>{{ item.deliveryDate | formatDate }}</td>
-                        <td>{{ item.committedDate }}</td>
-                        <td>{{ item.status.name }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    </div>    
 
     <!-- Sección de certificados -->
     <div class="section" ng-controller="CertificateController as certificateCrtl" ng-if="isCurrentSubsection(SUBSECTIONS[SUBSECTION.ALL]) || isCurrentSubsection(SUBSECTIONS[SUBSECTION.CERTIFICATES])">
@@ -55,22 +44,22 @@
                 <div ng-if="lastCertificates.length">
                     <table>
                         <thead>
-                        <tr>
-                            <th>Folio {{ lastCertificates.length }}</th>
-                            <th>Propietario</th>
-                            <th>Descripción</th>
-                            <th>Inscripción</th>
-                            <th>Estatus</th>
-                        </tr>
+                            <tr>
+                                <th class="folio">Folio</th>
+                                <th>Propietario</th>
+                                <th>Descripción</th>
+                                <th>Inscripción</th>
+                                <th>Estatus</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="certificate in lastCertificates | orderBy:['-id', '-folio'] ">
-                            <td><a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.folio }}</a></td>
-                            <td>{{ certificate.owner }}</td>
-                            <td>{{ certificate.description }}</td>
-                            <td>{{ certificate.inscription }}</td>
-                            <td>{{ certificate.status.name }}</td>
-                        </tr>
+                            <tr ng-repeat="certificate in lastCertificates | orderBy:['-id', '-folio'] ">
+                                <td class="folio"><span ng-class="{true:'indicator-red', false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.folio }}</a></td>
+                                <td>{{ certificate.owner }}</td>
+                                <td>{{ certificate.description }}</td>
+                                <td>{{ certificate.inscription }}</td>
+                                <td>{{ certificate.status.name }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -94,22 +83,22 @@
                 <div ng-if="credits.length">
                     <table>
                         <thead>
-                        <tr>
-                            <th>Folio {{ credits.length }}</th>
-                            <th>Propietario</th>
-                            <th>Descripción</th>
-                            <th>Inscripción</th>
-                            <th>Estatus</th>
-                        </tr>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Propietario</th>
+                                <th>Descripción</th>
+                                <th>Inscripción</th>
+                                <th>Estatus</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="credit in credits | limitTo: 5 ">
-                            <td><a ui-sref="credits.edit({id:credit.id})">{{ credit.folio }}</a></td>
-                            <td>{{ credit.owner }}</td>
-                            <td>{{ credit.description }}</td>
-                            <td>{{ credit.inscription }}</td>
-                            <td>{{ credit.status.name }}</td>
-                        </tr>
+                            <tr ng-repeat="credit in credits | limitTo: 5 ">
+                                <td><a ui-sref="credits.edit({id:credit.id})">{{ credit.folio }}</a></td>
+                                <td>{{ credit.owner }}</td>
+                                <td>{{ credit.description }}</td>
+                                <td>{{ credit.inscription }}</td>
+                                <td>{{ credit.status.name }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -5,6 +5,8 @@ var Jash = angular.module('Jash');
 Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout', 'ContextService', 'ManagerService', 'ParcelService', 'StatusService', 'ZoneService', 'SearchService', 'UserService', 'CertificateService', 'usSpinnerService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $timeout, ContextService, ManagerService, ParcelService, StatusService, ZoneService, SearchService, UserService, CertificateService, usSpinnerService, DEFAULT_VALUES) {
     $scope.spWeb,
     $scope.manager, $scope.warningList, $scope.certificates, $scope.credits;
+    $scope.searchParams = '';
+    $scope.searchResults = undefined;
 
     $scope.CERTIFICATE_STATUS = DEFAULT_VALUES.CERTIFICATE_STATUS;
 
@@ -35,9 +37,13 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
         }
     };
 
+    $scope.resetSearchParams = function () {
+        $scope.searchResults = undefined;        
+    };
+
     $scope.$on('itemsFound', function () {
         $scope.searchResults = SearchService.getSearchResults();
-        console.log($scope.searchResults[0].Cells)
+        $scope.$apply();
     });
 
     // Listener que refresca la vista cuando cambian los arreglos de angular
