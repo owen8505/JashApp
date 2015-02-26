@@ -163,10 +163,10 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     $scope.addAttachment = function(attachmentName){
                 
-        if($scope.selectedItem){
+        if($scope.selectedItem && $scope.attachmentElement && attachmentName){
             var file = $scope.attachmentElement.files[0];
             var attachment = {
-                folio: 0,
+                fileId: 0,
                 name: file.name,
                 title: attachmentName,
                 url: undefined,
@@ -178,6 +178,15 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
             $scope.attachmentElement = undefined;
             $scope.attachmentName = undefined;
         }
+    };
+
+    $scope.deleteAttachment = function(event, attachment){
+
+        // Evitamos que el documento se abra
+        event.preventDefault();
+
+        // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
+        attachment.removed = 1;
     };
 
     $scope.addDocument = function(documentName){

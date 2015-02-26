@@ -218,64 +218,167 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         );
 
         return certificates;
-    }
+    };
 
     var getDocuments = function (libraryName, folio) {
 
         var documents = [];
 
-        var library = appContext.get_web().get_lists().getByTitle(libraryName);
-        var queryString = '<View Scope=\'RecursiveAll\'><Query>' +
-                            '<Where>' +
-                               '<Eq><FieldRef Name=\'Folio\' /><Value Type=\'Text\'>' + folio + '</Value></Eq>' +
-                            '</Where>' +
-                          '</Query></View>';
-        var queryCAML = new SP.CamlQuery();        
-        queryCAML.set_viewXml(queryString);
-        
-        var items = library.getItems(queryCAML);
+        var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+            "/web/lists/getbytitle('" + libraryName + "')/items?" +
+            "@target='" + SPWeb.hostUrl + "'" +
+            "&$filter=Folio eq '" + folio + "'" +
+            "&$expand=File";
 
-        context.load(items);
-        context.executeQueryAsync(
-             function () {
+        var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
+        executor.executeAsync(
+            {
+                url: url,
+                method: "GET",
+                headers: {
+                    "Accept": "application/json; odata=verbose"
+                },
+                contentType: "application/json;odata=verbose",
+                success: function (data) {
+                    var results = eval(JSON.parse(data.body));
 
-                 var listItemEnumerator = items.getEnumerator();
-                 while (listItemEnumerator.moveNext()) {
-                     var item = listItemEnumerator.get_current();                     
-                     var file = item.get_file();
+                    angular.forEach(results.d.results, function(item){
+                        var document = {
+                            fileId: item.ID,
+                            name: item.File.Name,
+                            title: item.Title,
+                            url: item.File.ServerRelativeUrl
+                        };
 
-                     context.load(file);
-                     context.executeQueryAsync(
-                         function () {
+                        documents.push(document);
+                    });
 
-                             var document = {
-                                 folio: item.get_item('Folio'),
-                                 name: file.get_name(),
-                                 title: file.get_title(),
-                                 url: file.get_linkingUrl()
-                             };
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
 
-                             documents.push(document);
-                         },
-                         function (response, args) {
-                             console.log(args.get_message());
-                         }
-                     );
-                     
-                 }
-
-             },
-            function (response, args) {               
-                console.log(args.get_message());
-            }
-        );
-        
         return documents;
 
     };
 
-    var saveDocuments = function (libraryName, folio, documentsArray) {
+    var updateDocuments = function (libraryName, certificate) {
 
+        angular.forEach(certificate.attachments, function(document){
+            if (document.removed == 1) {
+                deleteDocuments(libraryName, certificate, document)
+            } else if (document.fileId == 0) {
+                saveDocument(libraryName, certificate, document);
+            }
+        });
+    };
+
+    var saveDocument = function(libraryName, certificate, document) {
+
+        var mode = angular.copy($state.params.mode);
+
+        $.ajax({
+            url: SPWeb.appWebUrl + "/_api/contextinfo",
+            method: "POST",
+            headers: { "Accept": "application/json; odata=verbose"},
+            success: function (data) {
+                var requestDigest = data.d.GetContextWebInformation.FormDigestValue;
+                var reader = new FileReader();
+
+                reader.onload = function (result) {
+
+                    var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+                        "/web/lists/getbytitle('" + libraryName + "')/rootfolder/files/add(url='" + document.name + "',overwrite=true)?" +
+                        "@target='" + SPWeb.hostUrl + "'" +
+                        '&$expand=ListItemAllFields';
+
+                    var fileData = '';
+                    var byteArray = new Uint8Array(result.target.result);
+                    for (var i = 0; i < byteArray.byteLength; i++) {
+                        fileData += String.fromCharCode(byteArray[i])
+                    }
+
+                    var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
+                    executor.executeAsync(
+                        {
+                            url: url,
+                            method: "POST",
+                            headers: {
+                                "Accept": "application/json; odata=verbose",
+                                "X-RequestDigest": requestDigest
+                            },
+                            contentType: "application/json;odata=verbose",
+                            binaryStringRequestBody: true,
+                            body: fileData,
+                            success: function (data) {
+
+                                var fileId = JSON.parse(data.body).d.ListItemAllFields.ID;
+                                var fileUrl = JSON.parse(data.body).d.ServerRelativeUrl;
+
+                                var libraryItem = libraryName.split(' ').join('_x0020_') + 'Item';
+
+                                var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+                                    "/web/lists/getbytitle('" + libraryName + "')/items(" + fileId + ")?" +
+                                    "@target='" + SPWeb.hostUrl + "'";
+
+                                executor.executeAsync(
+                                    {
+                                        url: url,
+                                        method: "POST",
+                                        body: JSON.stringify({
+                                            '__metadata': {
+                                                'type': 'SP.Data.' + libraryItem },
+                                            'Folio': certificate.folio,
+                                            'Title': document.title
+                                        }),
+                                        headers: {
+                                            "Accept": "application/json; odata=verbose",
+                                            "X-RequestDigest": requestDigest,
+                                            "IF-MATCH": "*",
+                                            "X-HTTP-Method": "MERGE",
+                                            "content-type": "application/json;odata=verbose"
+                                        },
+                                        success: function (data) {
+                                            var originalElement = getCertificateById(certificate.id, mode);
+
+                                            var newDocument = {
+                                                fileId: fileId,
+                                                name: document.name,
+                                                title: document.title,
+                                                url: fileUrl
+                                            };
+
+                                            originalElement.attachments.push(newDocument);
+
+                                            console.log('Success save')
+                                        },
+                                        error: function (response) {
+                                            console.log(response);
+                                        }
+                                    });
+
+
+                            },
+                            error: function (response) {
+                                console.log(response);
+                            }
+                        });
+
+                };
+
+                reader.readAsArrayBuffer(document.attachmentFile);
+
+            },
+            error: function (data, errorCode, errorMessage) {
+                console.log(errorMessage)
+            }
+        });
+    };
+
+    var deleteDocuments = function (libraryName, certificate, document) {
+
+        var mode = angular.copy($state.params.mode);
 
         $.ajax({
             url: SPWeb.appWebUrl + "/_api/contextinfo",
@@ -284,100 +387,43 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             success: function (data) {
                 var requestDigest = data.d.GetContextWebInformation.FormDigestValue;
 
-                angular.forEach(documentsArray, function (document) {
+                var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+                    "/web/lists/getbytitle('" + libraryName + "')/items('" +  document.fileId + "')?" +
+                    "@target='" + SPWeb.hostUrl + "'";
 
-                    var reader = new FileReader();
+                var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
+                executor.executeAsync(
+                    {
+                        url: url,
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json; odata=verbose",
+                            "X-RequestDigest": requestDigest,
+                            "IF-MATCH": "*",
+                            "X-HTTP-Method": "DELETE",
+                            "content-type": "application/json;odata=verbose"
+                        },
+                        success: function (data) {
+                            var originalElement = getCertificateById(certificate.id, mode);
 
-                    reader.onload = function (result) {
-
-                        var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
-                            "/web/lists/getbytitle('Adjuntos de certificados')/rootfolder/files/add(url='" + document.name + "',overwrite=true)?" +
-                            "@target='" + SPWeb.hostUrl + "'" +
-                            '&$expand=ListItemAllFields';
-
-                        var fileData = '';
-                        var byteArray = new Uint8Array(result.target.result)
-                        for (var i = 0; i < byteArray.byteLength; i++) {
-                            fileData += String.fromCharCode(byteArray[i])
-                        }
-
-                        var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
-                        executor.executeAsync(
-                            {
-                                url: url,
-                                method: "POST",
-                                headers: {
-                                    "Accept": "application/json; odata=verbose",
-                                    "X-RequestDigest": requestDigest
-                                },
-                                contentType: "application/json;odata=verbose",
-                                binaryStringRequestBody: true,
-                                body: fileData,
-                                success: function (data) {
-
-                                    var fileId = JSON.parse(data.body).d.ListItemAllFields.ID;
-
-                                    var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
-                                        "/web/lists/getbytitle('Adjuntos de certificados')/items(" + fileId + ")?" +
-                                        "@target='" + SPWeb.hostUrl + "'";
-
-                                    executor.executeAsync(
-                                        {
-                                            url: url,
-                                            method: "POST",
-                                            body: JSON.stringify({
-                                                '__metadata': {
-                                                    'type': 'SP.Data.Adjuntos_x0020_de_x0020_certificadosItem' },
-                                                    'Folio': folio,
-                                                    'Title': document.title
-                                            }),
-                                            headers: {
-                                                "Accept": "application/json; odata=verbose",
-                                                "X-RequestDigest": requestDigest,
-                                                "IF-MATCH": "*",
-                                                "X-HTTP-Method": "MERGE",
-                                                "content-type": "application/json;odata=verbose"
-                                            },
-                                            success: function (data) {
-                                                console.log('Success');
-                                            },
-                                            error: function (response) {
-                                                console.log(response);
-                                            }
-                                        });
-
-
-                                },
-                                error: function (response) {
-                                    console.log(response);
+                            for(var i=0; i<certificate.attachments.length; i++){
+                                if(certificate.attachments[i].fileId == document.fileId){
+                                    originalElement.attachments.splice(i, 1);
+                                    console.log('Success delete');
+                                    break;
                                 }
-                            });
-
-                    };
-
-                    reader.readAsArrayBuffer(document.attachmentFile);
-
-                });
+                            }
+                        },
+                        error: function (response) {
+                            console.log(response);
+                        }
+                    });
             },
             error: function (data, errorCode, errorMessage) {
                 console.log(errorMessage)
             }
         });
     };
-
-    var convertDataURIToBinary = function(dataURI){
-        var BASE64_MARKER = ';base64,';
-        var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-        var base64 = dataURI.substring(base64Index);
-        var raw = window.atob(base64);
-        var rawLength = raw.length;
-        var array = new Uint8Array(new ArrayBuffer(rawLength));
-
-        for (i = 0; i < rawLength; i++){
-            array[i] = raw.charCodeAt(i);
-        }
-        return array;
-    }
 
     var getWarningCertificates = function () {
         return warningList;
@@ -436,7 +482,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 if (certificate.id == 0) {
 
                     certificate.id = item.get_id();
-                    certificate.attachments = saveDocuments(attachmentLibraryName, certificate.folio, certificate.attachments);
+                    updateDocuments(attachmentLibraryName, certificate);
 
                     if (lastCertificates.length > 4) {
                         lastCertificates.splice(1, 1);
@@ -517,6 +563,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.trackingNumber = certificate.trackingNumber;
                 originalElement.cashed = certificate.cashed;
 
+                updateDocuments(attachmentLibraryName, certificate);
+
                 $rootScope.$broadcast('applyChanges');
                 $rootScope.$broadcast('itemUpdated');
             },
@@ -568,7 +616,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         updateCertificate: updateCertificate,
         saveCertificate: saveCertificate,
         sendMail: sendMail
-
     }
 
 }]);
