@@ -1,0 +1,16 @@
+﻿<div class="section-content" data-ng-controller="UserController as userCtrl">
+    <form id="user-form" class="item-form">
+        <fieldset>
+            <legend ng-bind="titleState"></legend>
+            <ol>
+                <ng-include src="'templates/user_new_template.html'"></ng-include>
+            </ol>
+            <ol>
+                <li class="action-button-holder">
+                    <a ui-sref="users.list" class="btn btn-default">Cancelar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="saveUser()" ng-disabled="!isValidForm(['name','mail'])">Guardar</a>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>
