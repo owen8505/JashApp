@@ -12,7 +12,7 @@
             SECTIONS: [
                 { nav: 1, title: 'Resumen', icon: 'icon-home2', state: '.dashboard', url: '' },
                 { nav: 2, title: 'Agenda', icon: 'icon-calendar', state: '', url: 'https://gestoria.sharepoint.com/sites/app/_layouts/15/start.aspx#/Lists/Agenda/calendar.aspx' },
-                { nav: 3, title: 'Usuarios', icon: 'icon-users', state: '.users', url: '' },
+                { nav: 3, title: 'Usuarios', icon: 'icon-users', state: '.users.list', url: '' },
                 { nav: 4, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs', url: '' }
             ],
             SUBSECTION: {
@@ -107,7 +107,25 @@
                 url: '/users',
                 templateUrl: 'partials/users_partial.html',
                 title: 'Usuarios',
-                settings: { section: 'Usuarios' }
+                settings: { section: 'Usuarios' }                
+            }).state('users.list', {
+                url: '/list',
+                templateUrl: 'partials/users_partial.list.html',
+                title: 'Usuarios',
+                settings: { section: 'Usuarios' },
+                state: 4
+            }).state('users.new', {
+                url: '/new',
+                templateUrl: 'partials/users_partial.new.html',
+                title: 'Usuarios',
+                settings: { section: 'Usuarios' },
+                state: 1
+            }).state('users.edit', {
+                url: '/:id/edit',
+                templateUrl: 'partials/users_partial.edit.html',
+                title: 'Usuarios',
+                settings: { section: 'Usuarios' },
+                state: 3
             }).state('catalogs', {
                 url: '/catalogs',
                 templateUrl: 'partials/catalogs_partial.html',

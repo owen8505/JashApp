@@ -93,6 +93,9 @@
     <Content Include="Pages\partials\parcels_partial.edit.html" />
     <Content Include="Pages\partials\parcels_partial.html" />
     <Content Include="Pages\partials\parcels_partial.new.html" />
+    <Content Include="Pages\partials\users_partial.edit.html" />
+    <Content Include="Pages\partials\users_partial.list.html" />
+    <Content Include="Pages\partials\users_partial.new.html" />
     <Content Include="Pages\partials\zones_partial.edit.html" />
     <Content Include="Pages\partials\managers_partial.edit.html" />
     <Content Include="Pages\partials\zones_partial.new.html" />
@@ -117,6 +120,7 @@
     <Content Include="Pages\templates\parcel_new_template.html" />
     <Content Include="Pages\templates\request_info_template.html" />
     <Content Include="Pages\templates\search_template.html" />
+    <Content Include="Pages\templates\user_new_template.html" />
     <Content Include="Pages\templates\zone_new_template.html" />
     <Content Include="Pages\templates\manager_new_template.html" />
     <Content Include="Scripts\appchrome.js" />

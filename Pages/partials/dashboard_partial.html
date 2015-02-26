@@ -53,7 +53,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="certificate in lastCertificates | orderBy:['-id', '-folio'] ">
+                            <tr ng-repeat="certificate in lastCertificates | orderBy:['anomaly', '-id', '-folio'] ">
                                 <td class="folio"><span ng-class="{true:'indicator-red', false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.folio }}</a></td>
                                 <td>{{ certificate.owner }}</td>
                                 <td>{{ certificate.description }}</td>

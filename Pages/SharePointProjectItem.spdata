@@ -35,5 +35,9 @@
     <ProjectItemFile Source="app.aspx" Target="Pages\" Type="ElementFile" />
     <ProjectItemFile Source="partials\calendar_partial.html" Target="Pages\partials\" Type="ElementFile" />
     <ProjectItemFile Source="templates\search_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\user_new_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\users_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\users_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\users_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
   </Files>
 </ProjectItem>
