@@ -170,7 +170,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 name: file.name,
                 title: attachmentName,
                 url: undefined,
-                attachmentFile: file
+                file: file
             };
             
             $scope.selectedItem.attachments.push(attachment);
@@ -189,40 +189,68 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         attachment.removed = 1;
     };
 
+    $scope.documentFilesChanged = function (elem) {
+        $scope.documentElement = (elem);
+    };
+
     $scope.addDocument = function(documentName){
 
-        if($scope.selectedItem){
-
+        if($scope.selectedItem && $scope.documentElement && documentName){
+            var file = $scope.documentElement.files[0];
             var document = {
-                name: documentName,
-                attachmentFile: ($scope.attachmentElement) ? $scope.attachmentElement.files[0] : undefined
+                fileId: 0,
+                name: file.name,
+                title: documentName,
+                url: undefined,
+                file: file
             };
 
             $scope.selectedItem.documents.push(document);
+            angular.element($scope.documentElement).val(null);
+            $scope.documentElement = undefined;
             $scope.documentName = undefined;
-            angular.element($scope.attachmentElement).val(null);
-            $scope.attachmentElement = undefined;
-
-
         }
+    };
+
+    $scope.deleteDocument = function(event, document){
+
+        // Evitamos que el documento se abra
+        event.preventDefault();
+
+        // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
+        document.removed = 1;
+    };
+
+    $scope.invoiceFilesChanged = function (elem) {
+        $scope.invoiceElement = (elem);
     };
 
     $scope.addInvoice = function(invoiceName){
 
-        if($scope.selectedItem){
-
+        if($scope.selectedItem && $scope.invoiceElement && invoiceName){
+            var file = $scope.invoiceElement.files[0];
             var invoice = {
-                name: invoiceName,
-                attachmentFile: ($scope.attachmentElement) ? $scope.attachmentElement.files[0] : undefined
+                fileId: 0,
+                name: file.name,
+                title: invoiceName,
+                url: undefined,
+                file: file
             };
 
             $scope.selectedItem.invoices.push(invoice);
+            angular.element($scope.invoiceElement).val(null);
+            $scope.invoiceElement = undefined;
             $scope.invoiceName = undefined;
-            angular.element($scope.attachmentElement).val(null);
-            $scope.attachmentElement = undefined;
-            console.log(invoice)
-
         }
+    };
+
+    $scope.deleteInvoice = function(event, invoice){
+
+        // Evitamos que el documento se abra
+        event.preventDefault();
+
+        // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
+        invoice.removed = 1;
     };
 
     $scope.openRequestInfo = function () {

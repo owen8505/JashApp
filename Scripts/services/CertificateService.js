@@ -3,7 +3,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
     var certificates = [];
     var lastCertificates = [];
     var warningList = [];    
-    var SPWeb, context, appContext, list, attachmentLibraryName, fileList, mailList;
+    var SPWeb, context, appContext, list, libraries, mailList;
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
@@ -93,8 +93,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          delivered: item.get_item('Entregado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                         documents: [],
-                         invoices: [],
                          cashed: item.get_item('Cobrado')
                      };
 
@@ -126,7 +124,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          }
                      }
 
-                     certificate.attachments = getDocuments(attachmentLibraryName, certificate.folio);
+                     certificate.attachments = getDocuments(libraries.attachments, certificate.folio);
+                     certificate.documents = getDocuments(libraries.documents, certificate.folio);
+                     certificate.invoices = getDocuments(libraries.invoices, certificate.folio);
                      lastCertificates.push(certificate);
                  }
 
@@ -173,8 +173,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          delivered: item.get_item('Entregado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                         documents: [],
-                         invoices: [],
                          cashed: item.get_item('Cobrado')
                      };
 
@@ -206,7 +204,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          }
                      }
 
-                     certificate.attachments = getDocuments(attachmentLibraryName, certificate.folio);
+                     certificate.attachments = getDocuments(libraries.attachments, certificate.folio);
+                     certificate.documents = getDocuments(libraries.documents, certificate.folio);
+                     certificate.invoices = getDocuments(libraries.invoices, certificate.folio)
                      certificates.push(certificate);
                  }
 
@@ -220,12 +220,12 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         return certificates;
     };
 
-    var getDocuments = function (libraryName, folio) {
+    var getDocuments = function (library, folio) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
-            "/web/lists/getbytitle('" + libraryName + "')/items?" +
+            "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
             "&$filter=Folio eq '" + folio + "'" +
             "&$expand=File";
@@ -263,18 +263,34 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     };
 
-    var updateDocuments = function (libraryName, certificate) {
+    var updateDocuments = function (certificate) {
 
         angular.forEach(certificate.attachments, function(document){
             if (document.removed == 1) {
-                deleteDocuments(libraryName, certificate, document)
+                deleteDocuments(libraries.attachments, certificate, document)
             } else if (document.fileId == 0) {
-                saveDocument(libraryName, certificate, document);
+                saveDocument(libraries.attachments, certificate, document);
+            }
+        });
+
+        angular.forEach(certificate.documents, function(document){
+            if (document.removed == 1) {
+                deleteDocuments(libraries.documents, certificate, document)
+            } else if (document.fileId == 0) {
+                saveDocument(libraries.documents, certificate, document);
+            }
+        });
+
+        angular.forEach(certificate.invoices, function(document){
+            if (document.removed == 1) {
+                deleteDocuments(libraries.invoices, certificate, document)
+            } else if (document.fileId == 0) {
+                saveDocument(libraries.invoices, certificate, document);
             }
         });
     };
 
-    var saveDocument = function(libraryName, certificate, document) {
+    var saveDocument = function(library, certificate, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -289,7 +305,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 reader.onload = function (result) {
 
                     var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
-                        "/web/lists/getbytitle('" + libraryName + "')/rootfolder/files/add(url='" + document.name + "',overwrite=true)?" +
+                        "/web/lists/getbytitle('" + library.name + "')/rootfolder/files/add(url='" + document.name + "',overwrite=true)?" +
                         "@target='" + SPWeb.hostUrl + "'" +
                         '&$expand=ListItemAllFields';
 
@@ -315,23 +331,37 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                                 var fileId = JSON.parse(data.body).d.ListItemAllFields.ID;
                                 var fileUrl = JSON.parse(data.body).d.ServerRelativeUrl;
+                                var libraryItem = library.name.split(' ').join('_x0020_') + 'Item';
 
-                                var libraryItem = libraryName.split(' ').join('_x0020_') + 'Item';
+                                var body = undefined;
+                                if(library.type == 'document'){
+                                    body = {
+                                        '__metadata': {
+                                            'type': 'SP.Data.' + libraryItem },
+                                        'Folio': certificate.folio,
+                                        'Title': document.title,
+                                        'Propietario': certificate.owner,
+                                        'Inscripcion': certificate.inscription,
+                                        'Descripcion': certificate.description
+                                    }
+                                } else {
+                                    body = {
+                                        '__metadata': {
+                                            'type': 'SP.Data.' + libraryItem },
+                                        'Folio': certificate.folio,
+                                        'Title': document.title
+                                    }
+                                }
 
                                 var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
-                                    "/web/lists/getbytitle('" + libraryName + "')/items(" + fileId + ")?" +
+                                    "/web/lists/getbytitle('" + library.name + "')/items(" + fileId + ")?" +
                                     "@target='" + SPWeb.hostUrl + "'";
 
                                 executor.executeAsync(
                                     {
                                         url: url,
                                         method: "POST",
-                                        body: JSON.stringify({
-                                            '__metadata': {
-                                                'type': 'SP.Data.' + libraryItem },
-                                            'Folio': certificate.folio,
-                                            'Title': document.title
-                                        }),
+                                        body: JSON.stringify(body),
                                         headers: {
                                             "Accept": "application/json; odata=verbose",
                                             "X-RequestDigest": requestDigest,
@@ -349,7 +379,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                                                 url: fileUrl
                                             };
 
-                                            originalElement.attachments.push(newDocument);
+                                            originalElement[library.arrayName].push(newDocument);
 
                                             console.log('Success save')
                                         },
@@ -367,7 +397,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                 };
 
-                reader.readAsArrayBuffer(document.attachmentFile);
+                reader.readAsArrayBuffer(document.file);
 
             },
             error: function (data, errorCode, errorMessage) {
@@ -376,7 +406,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         });
     };
 
-    var deleteDocuments = function (libraryName, certificate, document) {
+    var deleteDocuments = function (library, certificate, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -388,7 +418,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 var requestDigest = data.d.GetContextWebInformation.FormDigestValue;
 
                 var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
-                    "/web/lists/getbytitle('" + libraryName + "')/items('" +  document.fileId + "')?" +
+                    "/web/lists/getbytitle('" + library.name + "')/items('" +  document.fileId + "')?" +
                     "@target='" + SPWeb.hostUrl + "'";
 
                 var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -406,9 +436,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                         success: function (data) {
                             var originalElement = getCertificateById(certificate.id, mode);
 
-                            for(var i=0; i<certificate.attachments.length; i++){
-                                if(certificate.attachments[i].fileId == document.fileId){
-                                    originalElement.attachments.splice(i, 1);
+                            for(var i=0; i<certificate[library.arrayName].length; i++){
+                                if(certificate[library.arrayName][i].fileId == document.fileId){
+                                    originalElement[library.arrayName].splice(i, 1);
                                     console.log('Success delete');
                                     break;
                                 }
@@ -482,7 +512,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 if (certificate.id == 0) {
 
                     certificate.id = item.get_id();
-                    updateDocuments(attachmentLibraryName, certificate);
+                    updateDocuments(certificate);
 
                     if (lastCertificates.length > 4) {
                         lastCertificates.splice(1, 1);
@@ -563,7 +593,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.trackingNumber = certificate.trackingNumber;
                 originalElement.cashed = certificate.cashed;
 
-                updateDocuments(attachmentLibraryName, certificate);
+                updateDocuments(certificate);
 
                 $rootScope.$broadcast('applyChanges');
                 $rootScope.$broadcast('itemUpdated');
@@ -602,7 +632,23 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
         list = appContext.get_web().get_lists().getByTitle('Certificados');
         mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
-        attachmentLibraryName = 'Adjuntos de certificados';
+        libraries = {
+            attachments: {
+                type: 'attachment',
+                name: 'Adjuntos de certificados',
+                arrayName: 'attachments'
+            },
+            documents: {
+                type: 'document',
+                name: 'Biblioteca de certificados',
+                arrayName: 'documents'
+            },
+            invoices: {
+                type: 'invoice',
+                name: 'Facturas de certificados',
+                arrayName: 'invoices'
+            }
+        }
     };
 
     init();
