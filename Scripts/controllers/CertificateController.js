@@ -8,7 +8,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     $scope.attachmentName = undefined;
     $scope.documentName = undefined;
     $scope.invoiceName = undefined;
-    $scope.committedDate = undefined;
+    $scope.committedDate = undefined;  
 
     $scope.parcelsDropdown = [];
     $scope.managersDropdown = [];
@@ -68,6 +68,10 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         });
 
     };
+
+    $scope.isNewCertificate = function () {
+        return $scope.titleState == DEFAULT_VALUES.ITEM_STATES.NEW.title;
+    }
 
     $scope.createCertificate = function () {
         $scope.selectedItem = angular.copy(CertificateService.createCertificate());

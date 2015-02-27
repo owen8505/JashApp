@@ -39,5 +39,7 @@
     <ProjectItemFile Source="partials\users_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
     <ProjectItemFile Source="partials\users_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
     <ProjectItemFile Source="partials\users_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\invoices_partial.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\invoice_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
   </Files>
 </ProjectItem>

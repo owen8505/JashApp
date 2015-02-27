@@ -196,7 +196,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          certificate.anomaly = {
                              message: 'Aun no se cuenta con una guía de envío de los documentos.'
                          }
-                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -2 && !certificate.delivered){
+                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
                          // Si faltan dos días o menos para la fecha de entrega y no hemos generado el certificado
 
                          certificate.anomaly = {

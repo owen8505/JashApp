@@ -1,5 +1,5 @@
 
-<div class="section-content">
+<div class="section-content" data-ng-controller="CreditController as creditCtrl">
     <form id="credit-form" class="item-form">
         <fieldset>
             <legend ng-bind="titleState"></legend>
@@ -7,12 +7,12 @@
                 <span class="icon icon-warning"></span> Este elemento requiere atención inmediata.
             </div>
             <ol>
-                <ng-include src="'/JashApp/Pages/templates/credit_new_template.html'"></ng-include>
+                <ng-include src="'templates/credit_new_template.html'"></ng-include>
             </ol>
             <ol>
                 <li class="action-button-holder">
                     <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
-                    <a class="btn btn-success" ng-class="" ng-click="saveCredit()" ng-disabled="!isValidForm()">Guardar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="saveCredit()" ng-disabled="!isValidForm(['folio','owner', 'rpp','contractNumber', 'ownerAddress', 'solidary1', 'solidary1Address'])">Guardar</a>
                 </li>
             </ol>
         </fieldset>

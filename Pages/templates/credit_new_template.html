@@ -10,48 +10,52 @@
 </li>
 <li>
     <label for="credit-status">Estatus:</label>
-    <input id="credit-status" type="text" class="form-control" ng-model="selectedItem.status.title" readonly>
+    <input id="credit-status" type="text" class="form-control" ng-model="selectedItem.status.name" readonly>
 </li>
 <li>
-    <label for="credit-folio">Folio:</label>
-    <span class="third-width"><input id="credit-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true"></span>
+    <label for="credit-folio">Folio: <em class="mandatory-field">*</em></label>
+    <span class="third-width"><input id="credit-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true" numbers-only="numbers-only" ng-readonly="!isNewcredit()"></span>
+</li>
+<li ng-if="selectedItem.status.code == 2">
+    <label for="credit-committed-date">Fecha comprometida por el gestor:</label>
+    <input id="credit-committed-date" type="text" class="form-control" ng-model="selectedItem.committedDate" readonly>
 </li>
 <li>
     <label for="credit-owner">Acreditado: <em class="mandatory-field">*</em></label>
     <input id="credit-owner" type="text" class="form-control" class="form-control" placeholder="Ej. Ricardo Rosas" ng-model="selectedItem.owner" required="true">
 </li>
 <li>
-    <label for="credit-owner">Domicilio: <em class="mandatory-field">*</em></label>
-    <input id="credit-owner" type="text" class="form-control" class="form-control" placeholder="Ej. Ricardo Rosas" ng-model="selectedItem.owner" required="true">
+    <label for="credit-rpp">Búsqueda por acreditado y RPP: <em class="mandatory-field">*</em></label>
+    <input id="credit-rpp" type="text" class="form-control" class="form-control" placeholder="Ej. Industrias Mexico S.A. de C.V." ng-model="selectedItem.rpp" required="true">
 </li>
 <li>
-    <label for="credit-description">Solidario 1: <em class="mandatory-field">*</em></label>
-    <textarea id="credit-description" class="form-control" required="true" placeholder="Ej. Casa habitación" ng-model="selectedItem.description"></textarea>
+    <label for="credit-contract-number">No. de contrato coorporativo: <em class="mandatory-field">*</em></label>
+    <input id="credit-contract-number" type="text" class="form-control" class="form-control" placeholder="00789876545678987654" ng-model="selectedItem.contractNumber" required="true">
 </li>
 <li>
-    <label for="credit-description">RRPP 1: <em class="mandatory-field">*</em></label>
-    <textarea id="credit-description" class="form-control" required="true" placeholder="Ej. Casa habitación" ng-model="selectedItem.description"></textarea>
+    <label for="credit-owner-address">Domicilio: <em class="mandatory-field">*</em></label>
+    <input id="credit-owner-address" type="text" class="form-control" class="form-control" placeholder="Av. de las Fuentes No. 35, Col. Lomas de Tecamachalco, Naucalpan, Estado de México" ng-model="selectedItem.ownerAddress" required="true">
 </li>
 <li>
-    <label for="credit-inscription">Docicilio Solidario 1: <em class="mandatory-field">*</em></label>
-    <input id="credit-inscription" type="text"  class="form-control"placeholder="Ej. 3035" ng-model="selectedItem.inscription" required="true">
+    <label for="credit-solidary-1">Solidario 1 y RPP: <em class="mandatory-field">*</em></label>
+    <input id="credit-solidary-1" type="text" class="form-control" class="form-control" placeholder="Rafael Puente" ng-model="selectedItem.solidary1" required="true">
 </li>
 <li>
-    <label for="credit-inscription">Solidario 2: <em class="mandatory-field">*</em></label>
-    <input id="credit-inscription" type="text"  class="form-control"placeholder="Ej. 3035" ng-model="selectedItem.inscription" required="true">
+    <label for="credit-solidary1-address">Domicilio: <em class="mandatory-field">*</em></label>
+    <input id="credit-solidary1-address" type="text" class="form-control" class="form-control" placeholder="Av. de las Fuentes No. 35, Col. Lomas de Tecamachalco, Naucalpan, Estado de México" ng-model="selectedItem.solidary1Address" required="true">
 </li>
 <li>
-    <label for="credit-description">RRPP 2: <em class="mandatory-field">*</em></label>
-    <textarea id="credit-description" class="form-control" required="true" placeholder="Ej. Casa habitación" ng-model="selectedItem.description"></textarea>
+    <label for="credit-solidary-2">Solidario 2 y RPP: </label>
+    <input id="credit-solidary-2" type="text" class="form-control" class="form-control" placeholder="Rafael Puente" ng-model="selectedItem.solidary2" required="true">
 </li>
 <li>
-    <label for="credit-inscription">Domicilio 2: <em class="mandatory-field">*</em></label>
-    <input id="credit-inscription" type="text"  class="form-control"placeholder="Ej. 3035" ng-model="selectedItem.inscription" required="true">
+    <label for="credit-solidary2-address">Domicilio: </label>
+    <input id="credit-solidary2-address" type="text" class="form-control" class="form-control" placeholder="Av. de las Fuentes No. 35, Col. Lomas de Tecamachalco, Naucalpan, Estado de México" ng-model="selectedItem.solidary2Address" required="true">
 </li>
 <li>
     <label for="credit-attachments">Archivos adjuntos:</label>
-    <span class="third-width"><input id="credit-attachment-name" type="text" class="form-control" placeholder="Ej. Copia de correo" ng-model="attachmentName" required="true"></span>
-    <span class="third-width"><input id="credit-attachments" ng-model="newAttachmentFile" class="form-control" type="file"></span>
-    <span class="third-width"><a class="btn btn-default" ng-click="addAttachment()">Añadir</a></span>
-    <a class="attachment_link" ng-repeat="attachment in selectedItem.attachments" href="attachment.url" target="_blank"><span class=""></span> {{ attachment.name }}</a>
+    <span class="third-width"><input id="credit-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo"></span>
+    <span class="third-width"><input id="credit-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)" class="form-control" type="file"></span>
+    <span class="third-width"><a class="btn btn-default" ng-click="addAttachment(attachmentName)">Añadir</a></span>
+    <a ng-class="{'attachment-link':attachment.url, 'attachment-link-disabled':!attachment.url}" ng-repeat="attachment in selectedItem.attachments" ng-hide="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.name }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
 </li>

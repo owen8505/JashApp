@@ -90,12 +90,14 @@
     <Content Include="Pages\app.html" />
     <Content Include="Pages\partials\calendar_partial.html" />
     <Content Include="Pages\partials\catalogs_partial.html" />
+    <Content Include="Pages\partials\invoices_partial.html" />
     <Content Include="Pages\partials\parcels_partial.edit.html" />
     <Content Include="Pages\partials\parcels_partial.html" />
     <Content Include="Pages\partials\parcels_partial.new.html" />
     <Content Include="Pages\partials\users_partial.edit.html" />
     <Content Include="Pages\partials\users_partial.list.html" />
     <Content Include="Pages\partials\users_partial.new.html" />
+    <Content Include="Pages\partials\invoice_partial.list.html" />
     <Content Include="Pages\partials\zones_partial.edit.html" />
     <Content Include="Pages\partials\managers_partial.edit.html" />
     <Content Include="Pages\partials\zones_partial.new.html" />

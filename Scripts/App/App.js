@@ -7,13 +7,15 @@
             SECTION: {
                 DASHBOARD: 0,
                 USERS: 1,
-                CATALOGS: 2
+                CATALOGS: 2,
+                INVOICES: 3
             },
             SECTIONS: [
                 { nav: 1, title: 'Resumen', icon: 'icon-home2', state: '.dashboard', url: '' },
-                { nav: 2, title: 'Agenda', icon: 'icon-calendar', state: '', url: 'https://gestoria.sharepoint.com/sites/app/_layouts/15/start.aspx#/Lists/Agenda/calendar.aspx' },
-                { nav: 3, title: 'Usuarios', icon: 'icon-users', state: '.users.list', url: '' },
-                { nav: 4, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs', url: '' }
+                { nav: 2, title: 'Facturas', icon: 'icon-credit-card', state: '.invoices', url: '' },
+                { nav: 3, title: 'Agenda', icon: 'icon-calendar', state: '', url: 'https://gestoria.sharepoint.com/sites/app/_layouts/15/start.aspx#/Lists/Agenda/calendar.aspx' },
+                { nav: 4, title: 'Usuarios', icon: 'icon-users', state: '.users.list', url: '' },
+                { nav: 5, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs', url: '' }
             ],
             SUBSECTION: {
                 ALL: 0,
@@ -191,6 +193,27 @@
                 $rootScope.sectionTitle = toState.title;
                 $rootScope.previousState = fromState.name;
             });
+        })
+
+        .directive('numbersOnly', function(){
+            return {
+                require: 'ngModel',
+                link: function(scope, element, attrs, modelCtrl) {
+                    modelCtrl.$parsers.push(function (inputValue) {
+                        // this next if is necessary for when using ng-required on your input. 
+                        // In such cases, when a letter is typed first, this parser will be called
+                        // again, and the 2nd time, the value will be undefined
+                        if (inputValue == undefined) return '' 
+                        var transformedInput = inputValue.replace(/[^0-9]/g, ''); 
+                        if (transformedInput!=inputValue) {
+                            modelCtrl.$setViewValue(transformedInput);
+                            modelCtrl.$render();
+                        }         
+
+                        return transformedInput;         
+                    });
+                }
+            };
         })
 
         .directive('ngPopover', function ($popover) {
