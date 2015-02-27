@@ -1,9 +1,9 @@
-Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore", "$state", "ContextService", "StatusService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, $state, ContextService, StatusService, DEFAULT_VALUES) {
+Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore", "$state", "$timeout", "ContextService", "StatusService", "usSpinnerService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, $state, $timeout, ContextService, StatusService, usSpinnerService, DEFAULT_VALUES) {
 
     var certificates = [];
     var lastCertificates = [];
     var warningList = [];    
-    var SPWeb, context, appContext, list, libraries, mailList;
+    var SPWeb, context, appContext, list, libraries, mailList, documentsTotal, documentsProcessed;
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
@@ -265,9 +265,39 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     var updateDocuments = function (certificate) {
 
+        // Variable que lleva el conteo de cuantos documentos vamos a procesar
+        documentsTotal = 0;
+
+        // Variable que lleva el conteo de cuantos documentos han sido procesados
+        documentsProcessed = 0
+
         angular.forEach(certificate.attachments, function(document){
             if (document.removed == 1) {
-                deleteDocuments(libraries.attachments, certificate, document)
+                documentsTotal++;
+            } else if (document.fileId == 0) {
+                documentsTotal++;
+            }
+        });
+
+        angular.forEach(certificate.documents, function(document){
+            if (document.removed == 1) {
+                documentsTotal++;
+            } else if (document.fileId == 0) {
+                documentsTotal++;
+            }
+        });
+
+        angular.forEach(certificate.invoices, function(document){
+            if (document.removed == 1) {
+                documentsTotal++;
+            } else if (document.fileId == 0) {
+                documentsTotal++;
+            }
+        });
+
+        angular.forEach(certificate.attachments, function(document){
+            if (document.removed == 1) {
+                deleteDocuments(libraries.attachments, certificate, document);
             } else if (document.fileId == 0) {
                 saveDocument(libraries.attachments, certificate, document);
             }
@@ -275,7 +305,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
         angular.forEach(certificate.documents, function(document){
             if (document.removed == 1) {
-                deleteDocuments(libraries.documents, certificate, document)
+                deleteDocuments(libraries.documents, certificate, document);
             } else if (document.fileId == 0) {
                 saveDocument(libraries.documents, certificate, document);
             }
@@ -283,7 +313,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
         angular.forEach(certificate.invoices, function(document){
             if (document.removed == 1) {
-                deleteDocuments(libraries.invoices, certificate, document)
+                deleteDocuments(libraries.invoices, certificate, document);
             } else if (document.fileId == 0) {
                 saveDocument(libraries.invoices, certificate, document);
             }
@@ -381,10 +411,14 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                                             originalElement[library.arrayName].push(newDocument);
 
-                                            console.log('Success save')
+                                            documentsProcessed++;
+                                            isDocumentsProcessComplete();
                                         },
                                         error: function (response) {
                                             console.log(response);
+
+                                            documentsProcessed++;
+                                            isDocumentsProcessComplete();
                                         }
                                     });
 
@@ -392,6 +426,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                             },
                             error: function (response) {
                                 console.log(response);
+
+                                documentsProcessed++;
+                                isDocumentsProcessComplete();
                             }
                         });
 
@@ -401,7 +438,10 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
             },
             error: function (data, errorCode, errorMessage) {
-                console.log(errorMessage)
+                console.log(errorMessage);
+
+                documentsProcessed++;
+                isDocumentsProcessComplete();
             }
         });
     };
@@ -443,16 +483,34 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                                     break;
                                 }
                             }
+
+                            documentsProcessed++;
+                            isDocumentsProcessComplete()
                         },
                         error: function (response) {
                             console.log(response);
+
+                            documentsProcessed++;
+                            isDocumentsProcessComplete()
                         }
                     });
             },
             error: function (data, errorCode, errorMessage) {
-                console.log(errorMessage)
+                console.log(errorMessage);
+
+                documentsProcessed++;
+                isDocumentsProcessComplete();
             }
         });
+    };
+
+    var isDocumentsProcessComplete = function() {
+        if (documentsTotal == documentsProcessed){
+            usSpinnerService.stop('main-spinner');
+
+            $rootScope.$broadcast('applyChanges');
+            $rootScope.$broadcast('itemUpdated');
+        }
     };
 
     var getWarningCertificates = function () {
@@ -493,6 +551,10 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     var saveCertificate = function (certificate) {
 
+        $timeout(function() {
+            usSpinnerService.spin('main-spinner');
+        },0);
+
         var itemInfo = new SP.ListItemCreationInformation();
         var item = list.addItem(itemInfo);
 
@@ -532,6 +594,10 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
     };
 
     var updateCertificate = function (certificate) {
+
+        $timeout(function() {
+            usSpinnerService.spin('main-spinner');
+        },0);
 
         var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.NEW.CODE);
 
@@ -595,8 +661,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                 updateDocuments(certificate);
 
-                $rootScope.$broadcast('applyChanges');
-                $rootScope.$broadcast('itemUpdated');
             },
 
             function (response, args) {

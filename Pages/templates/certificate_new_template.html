@@ -37,5 +37,5 @@
     <span class="third-width"><input id="certificate-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo"></span>
     <span class="third-width"><input id="certificate-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ></span>
     <span class="third-width"><a class="btn btn-default" ng-click="addAttachment(attachmentName)">Añadir</a></span>
-    <a ng-class="{'attachment-link':attachment.url, 'attachment-link-disabled':!attachment.url}" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.name }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
+    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.name }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
 </li>
