@@ -2,7 +2,7 @@
 
 Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover', 'CreditService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CreditService, ManagerService, StatusService, DEFAULT_VALUES) {
 
-    //Certificado seleccionado
+    //Crédito seleccionado
     $scope.selectedItem = undefined;
     $scope.attachmentElement = undefined;
     $scope.attachmentName = undefined;
@@ -35,7 +35,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
                 if ($state.params) {
-                    $scope.selectedItem = angular.copy(CertificateService.getCreditById($state.params.id, $state.params.mode));
+                    $scope.selectedItem = angular.copy(CreditService.getCreditById($state.params.id, $state.params.mode));
 
                     if ($scope.selectedItem.zone) {
                         $scope.setZoneById($scope.selectedItem.zone.id);
@@ -74,7 +74,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
     }
 
     $scope.createCredit = function () {
-        $scope.selectedItem = angular.copy(CertificateService.createCredit());
+        $scope.selectedItem = angular.copy(CreditService.createCredit());
     };
 
     $scope.saveCredit = function () {
@@ -189,8 +189,13 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
         // Evitamos que el documento se abra
         event.preventDefault();
 
-        // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
-        attachment.removed = 1;
+        if (attachment.fileId == 0) {
+            // Es un archivo nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de archivos
+            $scope.selectedItem.attachments.splice($scope.selectedItem.attachments.indexOf(attachment), 1);
+        } else {
+            // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
+            attachment.removed = 1;
+        }
     };
 
     $scope.documentFilesChanged = function (elem) {
@@ -221,8 +226,13 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
         // Evitamos que el documento se abra
         event.preventDefault();
 
-        // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
-        document.removed = 1;
+        if (document.fileId == 0) {
+            // Es un archivo nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de archivos
+            $scope.selectedItem.documents.splice($scope.selectedItem.documents.indexOf(document), 1);
+        } else {
+            // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
+            document.removed = 1;
+        }
     };
 
     $scope.invoiceFilesChanged = function (elem) {
@@ -253,8 +263,14 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
         // Evitamos que el documento se abra
         event.preventDefault();
 
-        // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
-        invoice.removed = 1;
+        if (invoice.fileId == 0) {
+            // Es un archivo nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de archivos
+            $scope.selectedItem.invoices.splice($scope.selectedItem.invoices.indexOf(invoice), 1);
+        } else {
+            // Se le asigna removed 1 para marcar que es necesario borrar el documento y para evitar que se despliegue en el front
+            invoice.removed = 1;
+        }
+
     };
 
     $scope.openRequestInfo = function () {

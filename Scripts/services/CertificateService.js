@@ -479,7 +479,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                             for(var i=0; i<certificate[library.arrayName].length; i++){
                                 if(certificate[library.arrayName][i].fileId == document.fileId){
                                     originalElement[library.arrayName].splice(i, 1);
-                                    console.log('Success delete');
                                     break;
                                 }
                             }
@@ -705,28 +704,28 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             documents: {
                 type: 'document',
                 name: 'Biblioteca de certificados',
-                arrayName: 'documents'
-            },
-            invoices: {
-                type: 'invoice',
-                name: 'Facturas de certificados',
-                arrayName: 'invoices'
-            }
-        }
-    };
+arrayName: 'documents'
+},
+invoices: {
+    type: 'invoice',
+        name: 'Facturas de certificados',
+        arrayName: 'invoices'
+}
+}
+};
 
-    init();
+init();
 
-    return {
-        createCertificate : createCertificate,
-        getAllCertificates: getAllCertificates,
-        getLastCertificates: getLastCertificates,
-        getWarningCertificates: getWarningCertificates,
-        getCertificateById: getCertificateById,
-        updateCertificate: updateCertificate,
-        saveCertificate: saveCertificate,
-        sendMail: sendMail
-    }
+return {
+    createCertificate : createCertificate,
+    getAllCertificates: getAllCertificates,
+    getLastCertificates: getLastCertificates,
+    getWarningCertificates: getWarningCertificates,
+    getCertificateById: getCertificateById,
+    updateCertificate: updateCertificate,
+    saveCertificate: saveCertificate,
+    sendMail: sendMail
+}
 
 }]);
 
