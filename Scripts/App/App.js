@@ -149,6 +149,29 @@
                 title: 'Usuarios',
                 settings: { section: 'Usuarios' },
                 state: 3
+            }).state('invoices', {
+                url: '/invoices',
+                templateUrl: 'partials/invoices_partial.html',
+                title: 'Facturas',
+                settings: { section: 'Facturas' }
+            }).state('invoices.list', {
+                url: '/list',
+                templateUrl: 'partials/invoices_partial.list.html',
+                title: 'Invoices',
+                settings: { section: 'Facturas' },
+                state: 4
+            }).state('invoices.new', {
+                url: '/new',
+                templateUrl: 'partials/invoices_partial.new.html',
+                title: 'Facturas',
+                settings: { section: 'Facturas' },
+                state: 1
+            }).state('invoices.edit', {
+                url: '/:id/edit',
+                templateUrl: 'partials/invoices_partial.edit.html',
+                title: 'Facturas',
+                settings: { section: 'Facturas' },
+                state: 3
             }).state('catalogs', {
                 url: '/catalogs',
                 templateUrl: 'partials/catalogs_partial.html',
