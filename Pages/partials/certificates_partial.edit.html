@@ -86,21 +86,6 @@
                 </li>
             </ol>
 
-            <ol ng-if="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.DELIVERED)">
-                <li><h3>Datos de cobro</h3></li>
-                <li>
-                    <label for="certificate-invoices">Factura:</label>
-                    <span class="third-width"><input id="certificate-invoice-name" type="text" ng-model="$parent.invoiceName" class="form-control" placeholder="Ej. A-001"></span>
-                    <span class="third-width"><input id="certificate-invoices" onchange="angular.element(this).scope().invoiceFilesChanged(this)"  class="form-control" type="file" ></span>
-                    <span class="third-width"><a class="btn btn-default" ng-click="addInvoice(invoiceName)">Nueva copia</a></span>
-                    <a class="attachment-link" ng-repeat="invoice in selectedItem.invoices" ng-hide ="invoice.removed" ng-href="{{ invoice.url }}" target="_blank">{{ invoice.name }} <span class="icon icon-cancel-circle" ng-click="deleteInvoice($event, invoice)"></span></a>
-                </li>
-                <li>
-                    <label for="certificate-cashed">Cobrado:</label>
-                    <input id="certificate-cashed" type="checkbox" ng-model="selectedItem.cashed">
-                </li>
-            </ol>
-
             <ol>
                 <li class="action-button-holder">
                     <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>

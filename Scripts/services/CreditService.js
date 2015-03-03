@@ -82,12 +82,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         deliveryDate: new moment(item.get_item('Entrega')),
                         owner: item.get_item('Propietario'),
                         rpp: item.get_item('RPP'),
-                        contractNumber: item.get_item('Numero%5Fx0020%5Fde%5Fx0020%5Fcontrato'),
-                        ownerAddress: item.get_item('Direccion%5Fx0020%5Fde%5Fx0020%5Facredit'),
-                        solidary1: item.get_item('Solidario%5Fx0020%5F1'),
-                        solidary1Address: item.get_item('Direccion%5Fx0020%5Fde%5Fx0020%5Fsolidar'),
-                        solidary2: item.get_item('Solidario%5Fx0020%5F2'),
-                        solidary2Address: item.get_item('Direccion%5Fx0020%5Fde%5Fx0020%5Fsolidar0'),
+                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
+                        ownerAddress: item.get_item('Direccion_x0020_de_x0020_acredit'),
+                        solidary1: item.get_item('Solidario_x0020_1'),
+                        solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
+                        solidary2: item.get_item('Solidario_x0020_2'),
+                        solidary2Address: item.get_item('Direccion_x0020_de_x0020_solidar0'),
                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
@@ -131,7 +131,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
                     credit.attachments = getDocuments(libraries.attachments, credit.folio);
                     credit.documents = getDocuments(libraries.documents, credit.folio);
-                    credit.invoices = getDocuments(libraries.invoices, credit.folio);
                     lastCredits.push(credit);
                 }
 
@@ -167,12 +166,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         deliveryDate: new moment(item.get_item('Entrega')),
                         owner: item.get_item('Propietario'),
                         rpp: item.get_item('RPP'),
-                        contractNumber: item.get_item('Numero%5Fx0020%5Fde%5Fx0020%5Fcontrato'),
-                        ownerAddress: item.get_item('Direccion%5Fx0020%5Fde%5Fx0020%5Facredit'),
-                        solidary1: item.get_item('Solidario%5Fx0020%5F1'),
-                        solidary1Address: item.get_item('Direccion%5Fx0020%5Fde%5Fx0020%5Fsolidar'),
-                        solidary2: item.get_item('Solidario%5Fx0020%5F2'),
-                        solidary2Address: item.get_item('Direccion%5Fx0020%5Fde%5Fx0020%5Fsolidar0'),
+                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
+                        ownerAddress: item.get_item('Direccion_x0020_de_x0020_acredit'),
+                        solidary1: item.get_item('Solidario_x0020_1'),
+                        solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
+                        solidary2: item.get_item('Solidario_x0020_2'),
+                        solidary2Address: item.get_item('Direccion_x0020_de_x0020_solidar0'),
                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
@@ -216,7 +215,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
                     credit.attachments = getDocuments(libraries.attachments, credit.folio);
                     credit.documents = getDocuments(libraries.documents, credit.folio);
-                    credit.invoices = getDocuments(libraries.invoices, credit.folio)
                     credits.push(credit);
                 }
 
@@ -297,37 +295,26 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             }
         });
 
-        angular.forEach(credit.invoices, function(document){
-            if (document.removed == 1) {
-                documentsTotal++;
-            } else if (document.fileId == 0) {
-                documentsTotal++;
-            }
-        });
+        if (documentsTotal == 0){
+            isDocumentsProcessComplete();
+        } else {
+            angular.forEach(credit.attachments, function(document){
+                if (document.removed == 1) {
+                    deleteDocuments(libraries.attachments, credit, document);
+                } else if (document.fileId == 0) {
+                    saveDocument(libraries.attachments, credit, document);
+                }
+            });
 
-        angular.forEach(credit.attachments, function(document){
-            if (document.removed == 1) {
-                deleteDocuments(libraries.attachments, credit, document);
-            } else if (document.fileId == 0) {
-                saveDocument(libraries.attachments, credit, document);
-            }
-        });
+            angular.forEach(credit.documents, function(document){
+                if (document.removed == 1) {
+                    deleteDocuments(libraries.documents, credit, document);
+                } else if (document.fileId == 0) {
+                    saveDocument(libraries.documents, credit, document);
+                }
+            });
+        }
 
-        angular.forEach(credit.documents, function(document){
-            if (document.removed == 1) {
-                deleteDocuments(libraries.documents, credit, document);
-            } else if (document.fileId == 0) {
-                saveDocument(libraries.documents, credit, document);
-            }
-        });
-
-        angular.forEach(credit.invoices, function(document){
-            if (document.removed == 1) {
-                deleteDocuments(libraries.invoices, credit, document);
-            } else if (document.fileId == 0) {
-                saveDocument(libraries.invoices, credit, document);
-            }
-        });
     };
 
     var saveDocument = function(library, credit, document) {
@@ -382,9 +369,9 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                                         'Title': document.title,
                                         'Propietario': credit.owner,
                                         'RPP': credit.rpp,
-                                        'Numero%5Fx0020%5Fde%5Fx0020%5Fcontrato': credit.contractNumber,
-                                        'Solidario%5Fx0020%5F1': credit.solidary1,
-                                        'Solidario%5Fx0020%5F2': credit.solidary2
+                                        'Numero_x0020_de_x0020_contrato': credit.contractNumber,
+                                        'Solidario_x0020_1': credit.solidary1,
+                                        'Solidario_x0020_2': credit.solidary2
                                     }
                                 } else {
                                     body = {
@@ -558,7 +545,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             parcel: undefined,
             trackingNumber: undefined,
             documents: [],
-            invoices: [],
             cashed: false
         };
 
@@ -577,14 +563,14 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Title', credit.folio);
         item.set_item('Creacion', credit.creationDate.toISOString());
         item.set_item('Entrega', credit.deliveryDate.toISOString());
-        item.set_item('Acreditado', credit.owner);
+        item.set_item('Propietario', credit.owner);
         item.set_item('RPP', credit.rpp);
-        item.set_item('Numero de contrato', credit.contractNumber);
-        item.set_item('Direccion de acreditado', credit.ownerAddress);
-        item.set_item('Solidario 1', credit.solidary1);
-        item.set_item('Direccion de solidario 1', credit.solidary1Address);
-        item.set_item('Solidario 2', credit.solidary2);
-        item.set_item('Direccion de solidario 2', credit.solidary2Address);
+        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
+        item.set_item('Direccion_x0020_de_x0020_acredit', credit.ownerAddress);
+        item.set_item('Solidario_x0020_1', credit.solidary1);
+        item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
+        item.set_item('Solidario_x0020_2', credit.solidary2);
+        item.set_item('Direccion_x0020_de_x0020_solidar0', credit.solidary2Address);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(credit.status.id));
         item.update();
 
@@ -605,7 +591,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
                 }
 
-                $rootScope.$broadcast('itemSaved');
             },
             function (response, args) {
                 console.log(args.get_message());
@@ -644,12 +629,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Entrega', (credit.deliveryDate ? credit.deliveryDate.toISOString() : undefined ));
         item.set_item('Propietario', credit.owner);
         item.set_item('RPP', credit.rpp);
-        item.set_item('Numero%5Fx0020%5Fde%5Fx0020%5Fcontrato', credit.contractNumber);
-        item.set_item('Direccion%5Fx0020%5Fde%5Fx0020%5Facredit', credit.ownerAddress);
-        item.set_item('Solidario%5Fx0020%5F1', credit.solidary1);
-        item.set_item('Direccion%5Fx0020%5Fde%5Fx0020%5Fsolidar', credit.solidary1Address);
-        item.set_item('Solidario%5Fx0020%5F2', credit.solidary2);
-        item.set_item('Direccion%5Fx0020%5Fde%5Fx0020%5Fsolidar0', credit.solidary2Address);
+        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
+        item.set_item('Direccion_x0020_de_x0020_acredit', credit.ownerAddress);
+        item.set_item('Solidario_x0020_1', credit.solidary1);
+        item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
+        item.set_item('Solidario_x0020_2', credit.solidary2);
+        item.set_item('Direccion_x0020_de_x0020_solidar0', credit.solidary2Address);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
         item.set_item('Region', new SP.FieldLookupValue().set_lookupId((credit.zone ? credit.zone.id : undefined )));
         item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((credit.manager ? credit.manager.id : undefined )));
@@ -737,11 +722,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 type: 'document',
                 name: 'Biblioteca de creditos',
                 arrayName: 'documents'
-            },
-            invoices: {
-                type: 'invoice',
-                name: 'Facturas de creditos',
-                arrayName: 'invoices'
             }
         }
     };

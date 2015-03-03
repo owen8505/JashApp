@@ -67,7 +67,7 @@
 
             <div class="action-button-holder">
                 <a ui-sref="certificates.list" class="btn btn-default" title="Ver más...">Ver más...</a>
-                <a ui-sref="certificates.new" class="btn btn-default" title="Nuevo Certificado" ng-click="createCertificate()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+                <a ui-sref="certificates.new({mode:'last'})" class="btn btn-default" title="Nuevo Certificado" ng-click="createCertificate()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
     </div>
@@ -77,26 +77,26 @@
         <div class="last-credits-section">
             <h4 class="subtitle-section">Créditos PyME en mora</h4>
             <div>
-                <div class="unavailable-message" ng-if="!credits.length">
+                <div class="unavailable-message" ng-if="!lastCredits.length">
                     Por el momento no hay elementos que requieran atención inmediata
                 </div>
-                <div ng-if="credits.length">
+                <div ng-if="lastCredits.length">
                     <table>
                         <thead>
                             <tr>
                                 <th>Folio</th>
-                                <th>Propietario</th>
-                                <th>Descripción</th>
-                                <th>Inscripción</th>
+                                <th>Acreditado</th>
+                                <th>Contrato</th>
+                                <th>Solidario 1 y RPP</th>
                                 <th>Estatus</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="credit in credits | limitTo: 5 ">
-                                <td><a ui-sref="credits.edit({id:credit.id})">{{ credit.folio }}</a></td>
+                            <tr ng-repeat="credit in lastCredits | limitTo: 5 ">
+                                <td class="folio"><span ng-class="{true:'indicator-red', false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credits.edit({id:credit.id, mode:'last'})">{{ credit.folio }}</a></td>
                                 <td>{{ credit.owner }}</td>
-                                <td>{{ credit.description }}</td>
-                                <td>{{ credit.inscription }}</td>
+                                <td>{{ credit.contractNumber }}</td>
+                                <td>{{ credit.solidary1 }}</td>
                                 <td>{{ credit.status.name }}</td>
                             </tr>
                         </tbody>
@@ -105,7 +105,8 @@
             </div>
 
             <div class="action-button-holder">
-                <a ui-sref="credits.new" class="btn btn-default" title="Nuevo Crédito" ng-click="createCredit()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+                <a ui-sref="credits.list" class="btn btn-default" title="Ver más...">Ver más...</a>
+                <a ui-sref="credits.new({mode:'last'})" class="btn btn-default" title="Nuevo Crédito" ng-click="createCredit()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
     </div>

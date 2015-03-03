@@ -126,7 +126,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                      certificate.attachments = getDocuments(libraries.attachments, certificate.folio);
                      certificate.documents = getDocuments(libraries.documents, certificate.folio);
-                     certificate.invoices = getDocuments(libraries.invoices, certificate.folio);
                      lastCertificates.push(certificate);
                  }
 
@@ -206,7 +205,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                      certificate.attachments = getDocuments(libraries.attachments, certificate.folio);
                      certificate.documents = getDocuments(libraries.documents, certificate.folio);
-                     certificate.invoices = getDocuments(libraries.invoices, certificate.folio)
                      certificates.push(certificate);
                  }
 
@@ -287,14 +285,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             }
         });
 
-        angular.forEach(certificate.invoices, function(document){
-            if (document.removed == 1) {
-                documentsTotal++;
-            } else if (document.fileId == 0) {
-                documentsTotal++;
-            }
-        });
-
         angular.forEach(certificate.attachments, function(document){
             if (document.removed == 1) {
                 deleteDocuments(libraries.attachments, certificate, document);
@@ -308,14 +298,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 deleteDocuments(libraries.documents, certificate, document);
             } else if (document.fileId == 0) {
                 saveDocument(libraries.documents, certificate, document);
-            }
-        });
-
-        angular.forEach(certificate.invoices, function(document){
-            if (document.removed == 1) {
-                deleteDocuments(libraries.invoices, certificate, document);
-            } else if (document.fileId == 0) {
-                saveDocument(libraries.invoices, certificate, document);
             }
         });
     };
@@ -541,7 +523,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             parcel: undefined,
             trackingNumber: undefined,
             documents: [],
-            invoices: [],
             cashed: false
         };        
 
@@ -583,7 +564,6 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                     
                 }
 
-                $rootScope.$broadcast('itemSaved');
             },
             function (response, args) {
                 console.log(args.get_message());
@@ -704,28 +684,23 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             documents: {
                 type: 'document',
                 name: 'Biblioteca de certificados',
-arrayName: 'documents'
-},
-invoices: {
-    type: 'invoice',
-        name: 'Facturas de certificados',
-        arrayName: 'invoices'
-}
-}
-};
+                arrayName: 'documents'
+            }
+        }
+    };
 
-init();
+    init();
 
-return {
-    createCertificate : createCertificate,
-    getAllCertificates: getAllCertificates,
-    getLastCertificates: getLastCertificates,
-    getWarningCertificates: getWarningCertificates,
-    getCertificateById: getCertificateById,
-    updateCertificate: updateCertificate,
-    saveCertificate: saveCertificate,
-    sendMail: sendMail
-}
+    return {
+        createCertificate : createCertificate,
+        getAllCertificates: getAllCertificates,
+        getLastCertificates: getLastCertificates,
+        getWarningCertificates: getWarningCertificates,
+        getCertificateById: getCertificateById,
+        updateCertificate: updateCertificate,
+        saveCertificate: saveCertificate,
+        sendMail: sendMail
+    }
 
 }]);
 

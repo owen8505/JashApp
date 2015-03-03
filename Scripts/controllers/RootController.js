@@ -9,6 +9,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     $scope.searchResults = undefined;
 
     $scope.CERTIFICATE_STATUS = DEFAULT_VALUES.CERTIFICATE_STATUS;
+    $scope.CREDIT_STATUS = DEFAULT_VALUES.CREDIT_STATUS;
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
@@ -75,7 +76,6 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
         $scope.statuses = StatusService.getAllStatuses();
         $scope.users = UserService.getAllUsers();
         $scope.warningList = CertificateService.getWarningCertificates();
-        //$scope.credits = CreditService.getAllCredits();
 
         var context = SP.ClientContext.get_current();
         var user = context.get_web().get_currentUser();

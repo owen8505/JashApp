@@ -1,36 +1,41 @@
 <!-- Sección de créditos -->
-<div class="last-credits-section">
-    <h4 class="subtitle-section">Créditos PyME en mora</h4>
-    <div>
-        <div class="unavailable-message" ng-if="!credits.length">
-            Por el momento no hay elementos que requieran atención inmediata
+<div class="section" data-ng-controller="CreditController as creditCtrl">
+    <div class="last-credits-section">
+        <h4 class="subtitle-section">Créditos PyME en mora</h4>
+        <div>
+            <div class="unavailable-message" ng-if="!credits.length">
+                Por el momento no hay elementos en el catálogo de créditos
+            </div>
+            <div ng-if="credits.length">
+                <div class="item-search">
+                    <input type="search" class="form-control" ng-model="query" placeholder="Buscar" />
+                </div>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Acreditado</th>
+                        <th>Contrato</th>
+                        <th>Solidario 1 y RPP</th>
+                        <th>Estatus</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="credit in credits | filter:query | orderBy:['anomaly', '-folio', 'creationDate']">
+                        <td><span ng-class="{true:'indicator-red', false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credit.edit({id:credit.id, mode:'all'})">{{ credit.folio }}</a></td>
+                        <td>{{ credit.owner }}</td>
+                        <td>{{ credit.contractNumber }}</td>
+                        <td>{{ credit.solidary1 }}</td>
+                        <td>{{ credit.status.title }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div ng-if="credits.length">
-            <table>
-                <thead>
-                <tr>
-                    <th>Folio</th>
-                    <th>Propietario</th>
-                    <th>Descripción</th>
-                    <th>Inscripción</th>
-                    <th>Estatus</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="certificate in credits | limitTo: 20 | orderBy:reverse">
-                    <td>{{ certificate.id }}</td>
-                    <td>{{ certificate.owner }}</td>
-                    <td>{{ certificate.description }}</td>
-                    <td>{{ certificate.inscription }}</td>
-                    <td>{{ certificate.status.title }}</td>
-                </tr>
-                </tbody>
-            </table>
+
+        <div class="action-button-holder">
+            <a ui-sref="credits.new({mode:'all'})" class="btn btn-default" title="Nuevo Crédito" ng-click="createCredit()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
         </div>
     </div>
-
-    <div class="action-button-holder" ng-if="!credits.length">
-        <a ui-sref="credits.new" class="action-button action-button-red" title="Nuevo Crédito"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
-    </div>
-
 </div>

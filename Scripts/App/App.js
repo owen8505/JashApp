@@ -80,7 +80,7 @@
                 title: 'Certificados',
                 settings: { section: 'Certificados' }
             }).state('certificates.new', {
-                url: '/new',
+                url: '/:mode/new',
                 templateUrl: 'partials/certificates_partial.new.html',
                 title: 'Certificados',
                 settings: { section: 'Nuevo Certificado' },
@@ -109,11 +109,23 @@
                 title: 'Créditos',
                 settings: { section: 'Créditos' }
             }).state('credits.new', {
-                url: '/new',
+                url: '/:mode/new',
                 templateUrl: 'partials/credits_partial.new.html',
                 title: 'Créditos',
                 settings: { section: 'Nuevo Crédito' },
                 state: 1
+            }).state('credits.edit', {
+                url: '/:id/:mode/edit',
+                templateUrl: 'partials/credits_partial.edit.html',
+                title: 'Créditos',
+                settings: { section: 'Editar Crédito' },
+                state: 3
+            }).state('credits.list', {
+                url: '/list',
+                templateUrl: 'partials/credits_partial.list.html',
+                title: 'Créditos',
+                settings: { section: 'Lista de Créditos' },
+                state: 4
             }).state('users', {
                 url: '/users',
                 templateUrl: 'partials/users_partial.html',
