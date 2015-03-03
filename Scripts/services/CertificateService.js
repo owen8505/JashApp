@@ -285,21 +285,26 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             }
         });
 
-        angular.forEach(certificate.attachments, function(document){
-            if (document.removed == 1) {
-                deleteDocuments(libraries.attachments, certificate, document);
-            } else if (document.fileId == 0) {
-                saveDocument(libraries.attachments, certificate, document);
-            }
-        });
+        if (documentsTotal == 0) {
+            isDocumentsProcessComplete();
+        } else {
+            angular.forEach(certificate.attachments, function(document){
+                if (document.removed == 1) {
+                    deleteDocuments(libraries.attachments, certificate, document);
+                } else if (document.fileId == 0) {
+                    saveDocument(libraries.attachments, certificate, document);
+                }
+            });
 
-        angular.forEach(certificate.documents, function(document){
-            if (document.removed == 1) {
-                deleteDocuments(libraries.documents, certificate, document);
-            } else if (document.fileId == 0) {
-                saveDocument(libraries.documents, certificate, document);
-            }
-        });
+            angular.forEach(certificate.documents, function(document){
+                if (document.removed == 1) {
+                    deleteDocuments(libraries.documents, certificate, document);
+                } else if (document.fileId == 0) {
+                    saveDocument(libraries.documents, certificate, document);
+                }
+            });
+        }
+
     };
 
     var saveDocument = function(library, certificate, document) {

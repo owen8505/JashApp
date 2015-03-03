@@ -1,6 +1,6 @@
 <!-- Sección de créditos -->
 <div class="section" data-ng-controller="CreditController as creditCtrl">
-    <div class="last-credits-section">
+    <div class="credits-section">
         <h4 class="subtitle-section">Créditos PyME en mora</h4>
         <div>
             <div class="unavailable-message" ng-if="!credits.length">
@@ -27,7 +27,7 @@
                         <td>{{ credit.owner }}</td>
                         <td>{{ credit.contractNumber }}</td>
                         <td>{{ credit.solidary1 }}</td>
-                        <td>{{ credit.status.title }}</td>
+                        <td>{{ credit.status.name }}</td>
                     </tr>
                     </tbody>
                 </table>

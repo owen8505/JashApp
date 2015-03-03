@@ -79,7 +79,6 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     $scope.saveCertificate = function(){
         CertificateService.saveCertificate($scope.selectedItem);
-        $scope.selectedItem = undefined;        
     };
 
     $scope.updateCertificate = function () {

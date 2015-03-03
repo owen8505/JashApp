@@ -79,7 +79,6 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
     $scope.saveCredit = function () {
         CreditService.saveCredit($scope.selectedItem);
-        $scope.selectedItem = undefined;
     };
 
     $scope.updateCredit = function () {
