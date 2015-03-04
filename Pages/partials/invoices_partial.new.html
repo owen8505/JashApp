@@ -1,0 +1,20 @@
+
+<div class="section-content" data-ng-controller="InvoiceController as invoiceCtrl">
+    <form id="invoice-form" class="item-form">
+        <fieldset>
+            <legend ng-bind="titleState"></legend>
+            <div class="warning-message" ng-if="selectedItem.anomaly">
+                <span class="icon icon-warning"></span> Este elemento requiere atención inmediata.
+            </div>
+            <ol>
+                <ng-include src="'templates/invoice_new_template.html'"></ng-include>
+            </ol>
+            <ol>
+                <li class="action-button-holder">
+                    <a ui-sref="invoices.list" class="btn btn-default">Cancelar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="saveInvoice()" ng-disabled="!isValidForm(['invoiceId', 'folios'])">Guardar</a>
+                </li>
+            </ol>
+        </fieldset>
+    </form>
+</div>

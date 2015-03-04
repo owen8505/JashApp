@@ -1,0 +1,30 @@
+﻿<!-- Sección de usuarios -->
+<div class="section" data-ng-controller="InvoiceController as invoiceCtrl">
+    <div class="last-invoices-section">
+        <div>
+            <div class="unavailable-message" ng-if="!invoices.length">
+                Por el momento no hay facturas disponibles.
+            </div>
+            <div ng-if="invoices.length">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id factura</th>
+                            <th>Folios</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="invoice in invoices">
+                            <td><a class="link" ui-sref="invoices.edit({id:invoice.id})">{{ invoice.invoiceId }}</a></td>
+                            <td>{{ invoice.folios }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="action-button-holder">
+            <a ui-sref="invoices.new" class="btn btn-default" title="Nuevo Usuario"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<li class="mandatory-field-label">Campos obligatorios <em class="mandatory-field">*</em></li>
+<li><h3>Datos generales</h3></li>
+<li>
+    <label for="invoice-folio">Folio: <em class="mandatory-field">*</em></label>
+    <span class="third-width"><input id="invoice-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.invoiceId" required="true" numbers-only="numbers-only" ng-readonly="!isNewInvoice()"></span>
+</li>
+<li>
+    <label for="invoice-documents">Archivo de la factura:</label>
+    <span class="third-width"><input id="invoice-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Copia de correo"></span>
+    <span class="third-width"><input id="invoice-documents" onchange="angular.element(this).scope().documentFilesChanged(this)"  class="form-control" type="file" ></span>
+    <span class="third-width"><a class="btn btn-default" ng-click="addDocument(documentName)">Añadir</a></span>
+    <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.name }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
+</li>
+<li>
+    <label for="invoice-folios">Folios: <em class="mandatory-field">*</em></label>
+    <span class="third-width"><input id="invoice-folios" type="text" class="form-control" placeholder="Ej. 432" ng-model="selectedItem.folios" required="true"></span>
+</li>
+<li>
+    <label for="invoice-cashed">Cobrado:</label>
+    <input id="invoice-cashed" type="checkbox" ng-model="selectedItem.cashed">
+</li>

@@ -12,7 +12,7 @@
             },
             SECTIONS: [
                 { nav: 1, title: 'Resumen', icon: 'icon-home2', state: '.dashboard', url: '' },
-                { nav: 2, title: 'Facturas', icon: 'icon-credit-card', state: '.invoices', url: '' },
+                { nav: 2, title: 'Facturas', icon: 'icon-credit-card', state: '.invoices.list', url: '' },
                 { nav: 3, title: 'Agenda', icon: 'icon-calendar', state: '', url: 'https://gestoria.sharepoint.com/sites/app/_layouts/15/start.aspx#/Lists/Agenda/calendar.aspx' },
                 { nav: 4, title: 'Usuarios', icon: 'icon-users', state: '.users.list', url: '' },
                 { nav: 5, title: 'Catálogos', icon: 'icon-cog', state: '.catalogs', url: '' }

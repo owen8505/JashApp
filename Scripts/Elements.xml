@@ -49,5 +49,7 @@
     <File Path="Scripts\controllers\UserController.js" Url="Scripts/controllers/UserController.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\StatusService.js" Url="Scripts/services/StatusService.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\UserService.js" Url="Scripts/services/UserService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\InvoiceController.js" Url="Scripts/controllers/InvoiceController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\services\InvoiceService.js" Url="Scripts/services/InvoiceService.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

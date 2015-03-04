@@ -40,6 +40,9 @@
     <ProjectItemFile Source="partials\users_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
     <ProjectItemFile Source="partials\users_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
     <ProjectItemFile Source="partials\invoices_partial.html" Target="Pages\partials\" Type="ElementFile" />
-    <ProjectItemFile Source="partials\invoice_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\invoices_partial.list.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\invoices_partial.new.html" Target="Pages\partials\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\invoice_new_template.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="partials\invoices_partial.edit.html" Target="Pages\partials\" Type="ElementFile" />
   </Files>
 </ProjectItem>

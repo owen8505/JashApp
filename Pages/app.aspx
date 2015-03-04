@@ -97,25 +97,27 @@
 
     <!-- Controllers -->
     <script src="../Scripts/controllers/RootController.js"></script>
-    <script src="../Scripts/controllers/DashboardController.js"></script>
     <script src="../Scripts/controllers/CatalogController.js"></script>
     <script src="../Scripts/controllers/CertificateController.js"></script>
     <script src="../Scripts/controllers/CreditController.js"></script>
+    <script src="../Scripts/controllers/DashboardController.js"></script>
+    <script src="../Scripts/controllers/InvoiceController.js"></script>
     <script src="../Scripts/controllers/ManagerController.js"></script>
     <script src="../Scripts/controllers/ParcelController.js"></script>
-    <script src="../Scripts/controllers/ZoneController.js"></script>
     <script src="../Scripts/controllers/UserController.js"></script>
+    <script src="../Scripts/controllers/ZoneController.js"></script>
 
     <!-- Services -->
     <script src="../Scripts/services/CertificateService.js"></script>
-    <script src="../Scripts/services/CreditService.js"></script>
     <script src="../Scripts/services/ContextService.js"></script>
+    <script src="../Scripts/services/CreditService.js"></script>
+    <script src="../Scripts/services/InvoiceService.js"></script>
     <script src="../Scripts/services/ManagerService.js"></script>
     <script src="../Scripts/services/ParcelService.js"></script>
-    <script src="../Scripts/services/StatusService.js"></script>
-    <script src="../Scripts/services/ZoneService.js"></script>
     <script src="../Scripts/services/SearchService.js"></script>
+    <script src="../Scripts/services/StatusService.js"></script>
     <script src="../Scripts/services/UserService.js"></script>
+    <script src="../Scripts/services/ZoneService.js"></script>
 
     <!-- Directives -->
 
