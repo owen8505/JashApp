@@ -25,6 +25,10 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
         $scope.historyBack();
     });
 
+    $scope.$on('itemDeleted', function () {
+        $scope.historyBack();
+    });
+
     $scope.initController = function () {
 
         switch ($state.current.state) {
@@ -83,6 +87,10 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
     $scope.updateCredit = function () {
         CreditService.updateCredit($scope.selectedItem);
+    };
+
+    $scope.deleteCredit = function () {
+        CreditService.deleteCredit($scope.selectedItem);
     };
 
     $scope.setZone = function (zoneIndex) {
