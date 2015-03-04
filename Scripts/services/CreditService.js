@@ -44,8 +44,21 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         return credit;
     };
 
-    var deleteCreditById = function (creditId, creditsArray) {
+    var deleteCreditById = function (creditId, mode) {
         var credit = undefined;
+        var creditsArray = [];
+
+        switch (mode) {
+            case 'all':
+                creditsArray = credits;
+                break;
+            case 'last':
+                creditsArray = lastCredits;
+                break;
+            default:
+                break;
+        }
+
         for (var creditIndex = 0; creditIndex < creditsArray.length; creditIndex++) {
 
             if (creditsArray[creditIndex].id == creditId) {
@@ -706,6 +719,37 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
     };
 
+    var deleteCredit = function (credit) {
+
+        $timeout(function () {
+            usSpinnerService.spin('main-spinner');
+        }, 0);
+
+        var item = list.getItemById(credit.id);
+        item.deleteObject();
+
+        context.executeQueryAsync(
+           function () {
+               angular.forEach(credit.attachments, function (document) {                   
+                   document.removed = 1;                   
+               });               
+
+               angular.forEach(credit.documents, function (document) {
+                   document.removed = 1;
+               });
+
+               updateDocuments(credit);
+               deleteCreditById(credit.id);
+              
+           },
+
+           function (response, args) {
+               console.log(args.get_message());
+           }
+       );
+
+    };
+
     var init = function () {
         SPWeb = ContextService.getSpWeb();
         context = new SP.ClientContext(SPWeb.appWebUrl);
@@ -736,6 +780,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         getCreditById: getCreditById,
         updateCredit: updateCredit,
         saveCredit: saveCredit,
+        deleteCredit: deleteCredit,
         sendMail: sendMail
     }
 

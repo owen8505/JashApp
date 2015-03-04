@@ -23,7 +23,11 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     $scope.$on('itemUpdated', function () {
         $scope.historyBack();
-    });    
+    });
+
+    $scope.$on('itemDeleted', function () {
+        $scope.historyBack();
+    });
 
     $scope.initController = function(){
 
@@ -83,6 +87,10 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     $scope.updateCertificate = function () {
         CertificateService.updateCertificate($scope.selectedItem);
+    };
+
+    $scope.deleteCertificate = function () {
+        CertificateService.deleteCertificate($scope.selectedItem);
     };
 
     $scope.setZone = function(zoneIndex){

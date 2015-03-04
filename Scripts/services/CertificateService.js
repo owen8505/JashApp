@@ -44,8 +44,20 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         return certificate;
     };
 
-    var deleteCertificateById = function (certificateId, certificatesArray) {
+    var deleteCertificateById = function (certificateId, mode) {
         var certificate = undefined;
+        var certificatesArray = [];
+
+        switch (mode) {
+            case 'all':
+                certificatesArray = certificates;
+                break;
+            case 'last':
+                certificatesArray = lastCertificates;
+                break;
+            default:
+                break;
+        }
         for (var certificateIndex = 0; certificateIndex < certificatesArray.length; certificateIndex++) {
 
             if (certificatesArray[certificateIndex].id == certificateId) {
@@ -653,6 +665,37 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         );
     };
 
+    var deleteCertificate = function (certificate) {
+
+        $timeout(function () {
+            usSpinnerService.spin('main-spinner');
+        }, 0);
+
+        var item = list.getItemById(certificate.id);
+        item.deleteObject();
+
+        context.executeQueryAsync(
+           function () {
+               angular.forEach(certificate.attachments, function (document) {
+                   document.removed = 1;
+               });
+
+               angular.forEach(certificate.documents, function (document) {
+                   document.removed = 1;
+               });
+
+               updateDocuments(certificate);
+               deleteCertificateById(certificate.id);
+
+           },
+
+           function (response, args) {
+               console.log(args.get_message());
+           }
+       );
+
+    };
+
     var sendMail = function (manager, subject, observations) {        
         var itemInfo = new SP.ListItemCreationInformation();
         var item = mailList.addItem(itemInfo);
@@ -704,6 +747,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         getCertificateById: getCertificateById,
         updateCertificate: updateCertificate,
         saveCertificate: saveCertificate,
+        deleteCertificate: deleteCertificate,
         sendMail: sendMail
     }
 
