@@ -43,9 +43,13 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                         type: 'INVOICE',
                         id: item.get_id(),
                         invoiceId: item.get_item('Title'),
-                        folios: item.get_item('Folios'),
+                        folios: [],
                         cashed: item.get_item('Cobrado')
                     };
+
+                    if (item.get_item('Folios')) {
+                        invoice.folios = item.get_item('Folios').split(';')
+                    }
 
                     invoice.documents = getDocuments(libraries.documents, invoice.invoiceId);
                     invoices.push(invoice);
@@ -323,8 +327,8 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             id: 0,
             type: 'INVOICE',
             invoiceId: undefined,
-            folios: undefined,
-            cashed: undefined,
+            folios: [],
+            cashed: false,
             documents: []
         };
 
@@ -341,7 +345,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         var item = list.addItem(itemInfo);
 
         item.set_item('Title', invoice.invoiceId);
-        item.set_item('Folios', invoice.folios);
+        item.set_item('Folios', invoice.folios.join(';'));
         item.set_item('Cobrado', invoice.cashed);
 
         item.update();
@@ -375,7 +379,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
 
         var item = list.getItemById(invoice.id);
         item.set_item('Title', invoice.invoiceId);
-        item.set_item('Folios', invoice.folios);
+        item.set_item('Folios', invoice.folios.join(';'));
         item.set_item('Cobrado', invoice.cashed);
         item.update();
 

@@ -8,6 +8,8 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
     $scope.invoiceName = undefined;
     $scope.committedDate = undefined;
 
+    $scope.query = '';
+
     $scope.$on('itemUpdated', function () {
         $scope.historyBack();
     });
@@ -89,6 +91,23 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
     $scope.documentFilesChanged = function (elem) {
         $scope.documentElement = (elem);
+    };
+
+    $scope.addFolio = function (folio) {
+        if ($scope.selectedItem && folio) {
+            $scope.selectedItem.folios.push(folio);
+        }
+
+        $scope.folio = undefined;
+    };
+
+    $scope.deleteFolio = function (event, folio) {
+
+        // Evitamos que el documento se abra
+        event.preventDefault();
+
+        // Es un archivo nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de archivos
+        $scope.selectedItem.folios.splice($scope.selectedItem.folios.indexOf(folio), 1);
     };
 
     $scope.isValidForm = function (fields) {
