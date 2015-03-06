@@ -6,9 +6,10 @@
         .value('DEFAULT_VALUES', {
             SECTION: {
                 DASHBOARD: 0,
-                USERS: 1,
-                CATALOGS: 2,
-                INVOICES: 3
+                INVOICES: 1,
+                AGENDA: 2,
+                USERS: 3,
+                CATALOGS: 4
             },
             SECTIONS: [
                 { nav: 1, title: 'Resumen', icon: 'icon-home2', state: '.dashboard', url: '' },
@@ -65,7 +66,7 @@
             $stateProvider.state('home', {
                 url: '',
                 templateUrl: '../Pages/partials/dashboard_partial.html',
-                title: 'Resumen',
+                title: 'Resumen'
             }).state('dashboard', {
                 url: '/dashboard',
                 templateUrl: '../Pages/partials/dashboard_partial.html',

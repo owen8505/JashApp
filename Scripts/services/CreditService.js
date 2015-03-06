@@ -68,7 +68,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         }
     };
 
-    var getLastCredits = function () {
+    var getLastCredits = function (reload) {
         lastCredits = [];
 
         var queryString = '<View><Query>' +
@@ -147,6 +147,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                     lastCredits.push(credit);
                 }
 
+                $rootScope.$broadcast('creditsLoaded', reload);
                 $rootScope.$broadcast('applyChanges');
 
             },
@@ -158,7 +159,9 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         return lastCredits;
     };
 
-    var getAllCredits = function () {
+    var getAllCredits = function (reload) {
+
+        console.log('a')
 
         credits = [];
         var queryCAML = '';
@@ -231,6 +234,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                     credits.push(credit);
                 }
 
+                $rootScope.$broadcast('creditsLoaded', reload);
                 $rootScope.$broadcast('applyChanges');
             },
             function (response, args) {
@@ -698,6 +702,37 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         );
     };
 
+    var deleteCredit = function (credit) {
+
+        $timeout(function () {
+            usSpinnerService.spin('main-spinner');
+        }, 0);
+
+        var item = list.getItemById(credit.id);
+        item.deleteObject();
+
+        context.executeQueryAsync(
+            function () {
+                angular.forEach(credit.attachments, function (document) {
+                    document.removed = 1;
+                });
+
+                angular.forEach(credit.documents, function (document) {
+                    document.removed = 1;
+                });
+
+                updateDocuments(credit);
+                deleteCreditById(credit.id);
+
+            },
+
+            function (response, args) {
+                console.log(args.get_message());
+            }
+        );
+
+    };
+
     var sendMail = function (manager, subject, observations) {
         var itemInfo = new SP.ListItemCreationInformation();
         var item = mailList.addItem(itemInfo);
@@ -716,37 +751,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 console.log(args.get_message());
             }
         );
-
-    };
-
-    var deleteCredit = function (credit) {
-
-        $timeout(function () {
-            usSpinnerService.spin('main-spinner');
-        }, 0);
-
-        var item = list.getItemById(credit.id);
-        item.deleteObject();
-
-        context.executeQueryAsync(
-           function () {
-               angular.forEach(credit.attachments, function (document) {                   
-                   document.removed = 1;                   
-               });               
-
-               angular.forEach(credit.documents, function (document) {
-                   document.removed = 1;
-               });
-
-               updateDocuments(credit);
-               deleteCreditById(credit.id);
-              
-           },
-
-           function (response, args) {
-               console.log(args.get_message());
-           }
-       );
 
     };
 

@@ -10,11 +10,21 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
     $scope.query = '';
 
+    $scope.$on('invoicesLoaded', function ($event, reload) {
+        $rootScope.invoicesLoaded = true;
+
+        if (reload){
+            $scope.initController();
+        }
+    });
+
     $scope.$on('itemUpdated', function () {
-        $scope.historyBack();
+        $scope.historyBack('invoices.list');
     });
 
     $scope.initController = function () {
+
+        $rootScope.currentSection = DEFAULT_VALUES.SECTIONS[DEFAULT_VALUES.SECTION.INVOICES];
 
         switch ($state.current.state) {
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
@@ -23,8 +33,13 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
                 break;
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
-                if ($state.params) {
-                    $scope.selectedItem = angular.copy(InvoiceService.getInvoiceById($state.params.id));
+
+                if ($rootScope.invoicesLoaded){
+                    if ($state.params) {
+                        $scope.selectedItem = angular.copy(InvoiceService.getInvoiceById($state.params.id));
+                    }
+                } else {
+                    $scope.invoices = InvoiceService.getAllInvoices(true);
                 }
                 break;
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:
@@ -32,7 +47,7 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
                 break;
             case DEFAULT_VALUES.ITEM_STATES.LIST.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.LIST.title;
-                $scope.invoices = InvoiceService.getAllInvoices();
+                $scope.invoices = InvoiceService.getAllInvoices(false);
                 break;
             default:
                 break;
@@ -54,6 +69,10 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
     $scope.updateInvoice = function () {
         InvoiceService.updateInvoice($scope.selectedItem);
+    };
+
+    $scope.deleteInvoice = function () {
+        InvoiceService.deleteInvoice($scope.selectedItem);
     };
 
     $scope.addDocument = function (documentName) {

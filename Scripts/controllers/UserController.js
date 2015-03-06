@@ -28,7 +28,9 @@ Jash.controller('UserController', ['$scope', '$rootScope', '$state', 'UserServic
         return isValidForm;
     };
 
-    $scope.initController = function () {        
+    $scope.initController = function () {
+        $rootScope.currentSection = DEFAULT_VALUES.SECTIONS[DEFAULT_VALUES.SECTION.USERS];
+
         switch ($state.current.state) {
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
                 $scope.selectedItem = angular.copy(UserService.createUser());                

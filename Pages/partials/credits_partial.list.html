@@ -23,7 +23,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="credit in credits | filter:query | orderBy:['anomaly', '-folio', 'creationDate']">
-                        <td><span ng-class="{true:'indicator-red', false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credit.edit({id:credit.id, mode:'all'})">{{ credit.folio }}</a></td>
+                        <td><span ng-class="{true:'indicator-red', false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credits.edit({id:credit.id, mode:'all'})">{{ credit.folio }}</a></td>
                         <td>{{ credit.owner }}</td>
                         <td>{{ credit.contractNumber }}</td>
                         <td>{{ credit.solidary1 }}</td>

@@ -22,7 +22,10 @@ Jash.controller('DashboardController',['$scope','$rootScope', 'CertificateServic
 
     $scope.initController = function() {
 
-        // Susección actual
+        // Sección actual
+        $rootScope.currentSection = DEFAULT_VALUES.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
+
+        // Subsección actual
         $scope.currentSubsection = $scope.SUBSECTIONS[DEFAULT_VALUES.SUBSECTION.ALL];
         $scope.lastCertificates = [];
         $scope.lastCertificates = CertificateService.getLastCertificates();

@@ -8,6 +8,11 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     $scope.searchParams = '';
     $scope.searchResults = undefined;
 
+    $rootScope.initDataLoaded = false;
+    $rootScope.certificatesLoaded = false;
+    $rootScope.creditsLoaded = false;
+    $rootScope.invoicesLoaded = false;
+
     $scope.CERTIFICATE_STATUS = DEFAULT_VALUES.CERTIFICATE_STATUS;
     $scope.CREDIT_STATUS = DEFAULT_VALUES.CREDIT_STATUS;
 
@@ -15,11 +20,11 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
 
     // Nombre de usuario
-    $scope.userName = 'ENTRE';
+    $scope.userName = '';
 
     // Función que determina si una sección está seleccionada
     $scope.isCurrentSection = function(section){
-        return $scope.currentSection === section;
+        return $rootScope.currentSection === section;
     };
 
     // Función que selecciona la sección enviada como parámetro
@@ -28,8 +33,12 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     };
 
     // Función que redirige a la última página visitada
-    $scope.historyBack = function () {
-        $state.go($rootScope.previousState);
+    $scope.historyBack = function (defaulState) {
+        if($rootScope.previousState){
+            $state.go($rootScope.previousState);
+        } else {
+            $state.go(defaulState)
+        }
     };
 
     $scope.search = function (searchParams) {
@@ -55,7 +64,10 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     // Listener que revisa si toda la información inicial requerida ya fue obtenida
     $scope.$on('initDataLoaded', function () {
         if($scope.managers && $scope.parcels && $scope.zones && $scope.statuses) {
+            $rootScope.initDataLoaded = true;
             usSpinnerService.stop('main-spinner');
+
+            $rootScope.$broadcast('initDataComplete');
         }
 
     });
@@ -65,9 +77,6 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
         if (!$scope.spWeb) {
             $scope.spWeb = ContextService.getSpWeb();
         }
-        
-        // Sección seleccionada
-        $scope.currentSection = $scope.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
 
         // Catálogo de datos iniciales
         $scope.managers = ManagerService.getAllManagers();

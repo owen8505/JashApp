@@ -16,20 +16,28 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     $scope.query = '';
 
+    $scope.itemsLoaded = false;
 
-    $scope.$on('itemSaved', function () {
-        $scope.historyBack();
+    // Cuando cargue la inforamción necesaria en rootScope
+    $scope.$on('initDataComplete', function(){
+        $scope.initController();
+    });
+
+    $scope.$on('certificatesLoaded', function ($event, reload) {
+        $rootScope.certificatesLoaded = true;
+
+        if (reload){
+            $scope.initController();
+        }
     });
 
     $scope.$on('itemUpdated', function () {
-        $scope.historyBack();
-    });
-
-    $scope.$on('itemDeleted', function () {
-        $scope.historyBack();
+        $scope.historyBack('certificates.list');
     });
 
     $scope.initController = function(){
+
+        $rootScope.currentSection = DEFAULT_VALUES.SECTIONS[DEFAULT_VALUES.SECTION.DASHBOARD];
 
         switch ($state.current.state){
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
@@ -38,13 +46,28 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 break;
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
-                if ($state.params) {
-                    $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
 
-                    if ($scope.selectedItem.zone) {
-                        $scope.setZoneById($scope.selectedItem.zone.id);
-                    }                    
-                }                
+                if ($scope.certificatesLoaded){
+                    if ($state.params) {
+                        $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
+
+                        if ($scope.selectedItem.zone) {
+                            $scope.setZoneById($scope.selectedItem.zone.id);
+                        }
+                    }
+                } else {
+                    switch($state.params.mode) {
+                        case 'all':
+                            $scope.certificates = CertificateService.getAllCertificates(true);
+                            break;
+                        case 'last':
+                            $scope.lastCertificates = CertificateService.getLastCertificates(true);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 break;
             case DEFAULT_VALUES.ITEM_STATES.VIEW.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.VIEW.title;
@@ -151,7 +174,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     };
 
     $scope.isCurrentStatus = function (status, minStatus) {
-        if(StatusService.getStatusById(status.id).code >= minStatus.CODE){
+        if(status && StatusService.getStatusById(status.id).code >= minStatus.CODE){
             return true;
         }
         return false;
@@ -313,7 +336,10 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         return isValidForm;
     };
 
-    $scope.initController();
+    // Si entramos al controlador y ya está cargada la información inicial podemos continuar, si no esperamos al broadcast del rootScope
+    if($rootScope.initDataLoaded){
+        $scope.initController();
+    }
 
 }]);
 

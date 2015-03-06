@@ -67,7 +67,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         }
     };
 
-    var getLastCertificates = function () {
+    var getLastCertificates = function (reload) {
         lastCertificates = [];
 
         var queryString = '<View><Query>' +
@@ -141,6 +141,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                      lastCertificates.push(certificate);
                  }
 
+                 $rootScope.$broadcast('certificatesLoaded', reload);
                  $rootScope.$broadcast('applyChanges');
 
              },
@@ -152,7 +153,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         return lastCertificates;
     };
 
-    var getAllCertificates = function () {
+    var getAllCertificates = function (reload) {
 
         certificates = [];
         var queryCAML = '';
@@ -220,6 +221,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                      certificates.push(certificate);
                  }
 
+                 $rootScope.$broadcast('certificatesLoaded', reload);
                  $rootScope.$broadcast('applyChanges');
              },
             function (response, args) {

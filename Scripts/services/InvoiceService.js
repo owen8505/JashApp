@@ -26,7 +26,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         }
     };
 
-    var getAllInvoices = function () {
+    var getAllInvoices = function (reload) {
 
         invoices = [];
         var queryCAML = '';
@@ -55,6 +55,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                     invoices.push(invoice);
                 }
 
+                $rootScope.$broadcast('invoicesLoaded', reload);
                 $rootScope.$broadcast('applyChanges');
             },
             function (response, args) {
@@ -164,6 +165,8 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                         fileData += String.fromCharCode(byteArray[i])
                     }
 
+                    console.log('1');
+
                     var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
                     executor.executeAsync(
                         {
@@ -177,6 +180,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                             binaryStringRequestBody: true,
                             body: fileData,
                             success: function (data) {
+                                console.log('2');
 
                                 var fileId = JSON.parse(data.body).d.ListItemAllFields.ID;
                                 var fileUrl = JSON.parse(data.body).d.ServerRelativeUrl;
@@ -209,6 +213,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                                             "content-type": "application/json;odata=verbose"
                                         },
                                         success: function (data) {
+                                            console.log('3');
                                             var originalElement = getInvoiceById(invoice.id);
 
                                             var newDocument = {
@@ -401,6 +406,34 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         );
     };
 
+    var deleteInvoice = function (invoice) {
+
+        $timeout(function () {
+            usSpinnerService.spin('main-spinner');
+        }, 0);
+
+        var item = list.getItemById(invoice.id);
+        item.deleteObject();
+
+        context.executeQueryAsync(
+            function () {
+
+                angular.forEach(invoice.documents, function (document) {
+                    document.removed = 1;
+                });
+
+                updateDocuments(invoice);
+                deleteInvoiceById(invoice.id);
+
+            },
+
+            function (response, args) {
+                console.log(args.get_message());
+            }
+        );
+
+    };
+
     var init = function () {
         SPWeb = ContextService.getSpWeb();
         context = new SP.ClientContext(SPWeb.appWebUrl);
@@ -422,7 +455,8 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         getAllInvoices: getAllInvoices,
         getInvoiceById: getInvoiceById,
         updateInvoice: updateInvoice,
-        saveInvoice: saveInvoice
+        saveInvoice: saveInvoice,
+        deleteInvoice: deleteInvoice
     }
 
 }]);

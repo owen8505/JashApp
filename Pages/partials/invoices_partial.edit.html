@@ -11,6 +11,7 @@
             </ol>
             <ol>
                 <li class="action-button-holder">
+                    <a class="btn btn-danger delete-button" ng-click="deleteInvoice()">Eliminar</a>
                     <a ui-sref="invoices.list" class="btn btn-default">Cancelar</a>
                     <a class="btn btn-success" ng-class="" ng-click="updateInvoice()" ng-disabled="!isValidForm()">Guardar</a>
                 </li>
