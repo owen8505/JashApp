@@ -336,7 +336,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 reader.onload = function (result) {
 
                     var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
-                        "/web/lists/getbytitle('" + library.name + "')/rootfolder/files/add(url='" + document.name + "',overwrite=true)?" +
+                        "/web/lists/getbytitle('" + library.name + "')/rootfolder/files/add(url='" + document.name + "',overwrite=false)?" +
                         "@target='" + SPWeb.hostUrl + "'" +
                         '&$expand=ListItemAllFields';
 

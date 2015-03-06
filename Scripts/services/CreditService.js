@@ -386,7 +386,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                                         'Title': document.title,
                                         'Propietario': credit.owner,
                                         'RPP': credit.rpp,
-                                        'Numero_x0020_de_x0020_contrato': credit.contractNumber,
                                         'Solidario_x0020_1': credit.solidary1,
                                         'Solidario_x0020_2': credit.solidary2
                                     }

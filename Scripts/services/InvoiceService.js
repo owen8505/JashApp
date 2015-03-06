@@ -165,8 +165,6 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                         fileData += String.fromCharCode(byteArray[i])
                     }
 
-                    console.log('1');
-
                     var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
                     executor.executeAsync(
                         {
@@ -180,8 +178,6 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                             binaryStringRequestBody: true,
                             body: fileData,
                             success: function (data) {
-                                console.log('2');
-
                                 var fileId = JSON.parse(data.body).d.ListItemAllFields.ID;
                                 var fileUrl = JSON.parse(data.body).d.ServerRelativeUrl;
                                 var libraryItem = library.name.split(' ').join('_x0020_') + 'Item';
@@ -213,7 +209,6 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                                             "content-type": "application/json;odata=verbose"
                                         },
                                         success: function (data) {
-                                            console.log('3');
                                             var originalElement = getInvoiceById(invoice.id);
 
                                             var newDocument = {

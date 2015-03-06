@@ -201,7 +201,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
             var file = $scope.attachmentElement.files[0];
             var attachment = {
                 fileId: 0,
-                name: file.name,
+                name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
                 title: attachmentName,
                 url: undefined,
                 file: file
@@ -238,7 +238,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
             var file = $scope.documentElement.files[0];
             var document = {
                 fileId: 0,
-                name: file.name,
+                name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
                 title: documentName,
                 url: undefined,
                 file: file
@@ -275,7 +275,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
             var file = $scope.invoiceElement.files[0];
             var invoice = {
                 fileId: 0,
-                name: file.name,
+                name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
                 title: invoiceName,
                 url: undefined,
                 file: file

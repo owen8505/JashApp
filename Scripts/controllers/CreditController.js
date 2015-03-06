@@ -119,7 +119,6 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
         if ($scope.selectedItem) {
 
             $scope.selectedItem.zone = $scope.zones[zoneIndex];
-            console.log(angular.copy($scope.selectedItem.zone));
             $scope.managersDropdown = [];
 
             angular.forEach($scope.managers, function (manager, index) {
@@ -201,7 +200,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
             var file = $scope.attachmentElement.files[0];
             var attachment = {
                 fileId: 0,
-                name: file.name,
+                name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
                 title: attachmentName,
                 url: undefined,
                 file: file
@@ -238,7 +237,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
             var file = $scope.documentElement.files[0];
             var document = {
                 fileId: 0,
-                name: file.name,
+                name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
                 title: documentName,
                 url: undefined,
                 file: file
@@ -275,7 +274,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
             var file = $scope.invoiceElement.files[0];
             var invoice = {
                 fileId: 0,
-                name: file.name,
+                name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
                 title: invoiceName,
                 url: undefined,
                 file: file

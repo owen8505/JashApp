@@ -51,6 +51,17 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
         $scope.searchResults = undefined;        
     };
 
+    $scope.getFileBasename = function(str) {
+        var base = new String(str).substring(str.lastIndexOf('/') + 1);
+        if(base.lastIndexOf(".") != -1)
+            base = base.substring(0, base.lastIndexOf("."));
+        return base;
+    };
+
+    $scope.getFileExtension = function(str) {
+        return str.split('.').pop()
+    };
+
     $scope.$on('itemsFound', function () {
         $scope.searchResults = SearchService.getSearchResults();
         $scope.$apply();

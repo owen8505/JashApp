@@ -81,7 +81,7 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
             var file = $scope.documentElement.files[0];
             var document = {
                 fileId: 0,
-                name: file.name,
+                name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
                 title: documentName,
                 url: undefined,
                 file: file
