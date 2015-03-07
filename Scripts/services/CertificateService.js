@@ -275,46 +275,34 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     };
 
-    var updateDocuments = function (certificate) {
+    var processDocuments = function (certificate) {
 
         // Variable que lleva el conteo de cuantos documentos vamos a procesar
-        documentsTotal = 0;
+        documentsTotal = certificate.attachments.length + certificate.documents.length;
 
         // Variable que lleva el conteo de cuantos documentos han sido procesados
-        documentsProcessed = 0
-
-        angular.forEach(certificate.attachments, function(document){
-            if (document.removed == 1) {
-                documentsTotal++;
-            } else if (document.fileId == 0) {
-                documentsTotal++;
-            }
-        });
-
-        angular.forEach(certificate.documents, function(document){
-            if (document.removed == 1) {
-                documentsTotal++;
-            } else if (document.fileId == 0) {
-                documentsTotal++;
-            }
-        });
+        documentsProcessed = 0;
 
         if (documentsTotal == 0) {
             isDocumentsProcessComplete();
         } else {
             angular.forEach(certificate.attachments, function(document){
                 if (document.removed == 1) {
-                    deleteDocuments(libraries.attachments, certificate, document);
+                    deleteDocument(libraries.attachments, certificate, document);
                 } else if (document.fileId == 0) {
                     saveDocument(libraries.attachments, certificate, document);
+                } else {
+                    updateDocument(libraries.attachments, certificate, document);
                 }
             });
 
             angular.forEach(certificate.documents, function(document){
                 if (document.removed == 1) {
-                    deleteDocuments(libraries.documents, certificate, document);
+                    deleteDocument(libraries.documents, certificate, document);
                 } else if (document.fileId == 0) {
                     saveDocument(libraries.documents, certificate, document);
+                } else {
+                    updateDocument(libraries.documents, certificate, document);
                 }
             });
         }
@@ -447,7 +435,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         });
     };
 
-    var deleteDocuments = function (library, certificate, document) {
+    var deleteDocument = function (library, certificate, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -502,6 +490,77 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 isDocumentsProcessComplete();
             }
         });
+    };
+
+    var updateDocument = function(library, certificate, document) {
+
+        var mode = angular.copy($state.params.mode);
+
+        $.ajax({
+            url: SPWeb.appWebUrl + "/_api/contextinfo",
+            method: "POST",
+            headers: { "Accept": "application/json; odata=verbose"},
+            success: function (data) {
+                var requestDigest = data.d.GetContextWebInformation.FormDigestValue;
+
+                var libraryItem = library.name.split(' ').join('_x0020_') + 'Item';
+
+                var body = undefined;
+                if(library.type == 'document'){
+                    body = {
+                        '__metadata': {
+                            'type': 'SP.Data.' + libraryItem },
+                        'Title': document.title,
+                        'Propietario': certificate.owner,
+                        'Inscripcion': certificate.inscription,
+                        'Descripcion': certificate.description
+                    }
+                } else {
+                    body = {
+                        '__metadata': {
+                            'type': 'SP.Data.' + libraryItem },
+                        'Title': document.title
+                    }
+                }
+
+                var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+                    "/web/lists/getbytitle('" + library.name + "')/items(" + document.fileId + ")?" +
+                    "@target='" + SPWeb.hostUrl + "'";
+
+
+                var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
+                executor.executeAsync(
+                    {
+                        url: url,
+                        method: "POST",
+                        body: JSON.stringify(body),
+                        headers: {
+                            "Accept": "application/json; odata=verbose",
+                            "X-RequestDigest": requestDigest,
+                            "IF-MATCH": "*",
+                            "X-HTTP-Method": "MERGE",
+                            "content-type": "application/json;odata=verbose"
+                        },
+                        success: function (data) {
+                            documentsProcessed++;
+                            isDocumentsProcessComplete();
+                        },
+                        error: function (response) {
+                            console.log(response);
+
+                            documentsProcessed++;
+                            isDocumentsProcessComplete();
+                        }
+                    });
+            },
+            error: function (data, errorCode, errorMessage) {
+                console.log(errorMessage);
+
+                documentsProcessed++;
+                isDocumentsProcessComplete();
+            }
+        });
+
     };
 
     var isDocumentsProcessComplete = function() {
@@ -573,7 +632,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 if (certificate.id == 0) {
 
                     certificate.id = item.get_id();
-                    updateDocuments(certificate);
+                    processDocuments(certificate);
 
                     if (lastCertificates.length > 4) {
                         lastCertificates.splice(1, 1);
@@ -657,7 +716,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.trackingNumber = certificate.trackingNumber;
                 originalElement.cashed = certificate.cashed;
 
-                updateDocuments(certificate);
+                processDocuments(certificate);
 
             },
 
@@ -686,7 +745,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                    document.removed = 1;
                });
 
-               updateDocuments(certificate);
+               processDocuments(certificate);
                deleteCertificateById(certificate.id);
 
            },

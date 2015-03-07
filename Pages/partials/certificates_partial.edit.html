@@ -74,7 +74,7 @@
             <ol ng-if="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.DOCS_RECEIVED)">
                 <li><h3>Certificados</h3></li>
                 <li>
-                    <label for="certificate-documents">Generar de certificado:</label>
+                    <label for="certificate-documents">Subir archivo del certificado:</label>
                     <span class="third-width"><input id="certificate-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Certificado 3035 Ricardo Rosas"></span>
                     <span class="third-width"><input id="certificate-documents" onchange="angular.element(this).scope().documentFilesChanged(this)"  class="form-control" type="file" ></span>
                     <span class="third-width"><a class="btn btn-default" ng-click="addDocument(documentName)">Nuevo certificado</a></span>

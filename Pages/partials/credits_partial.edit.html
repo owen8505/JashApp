@@ -72,12 +72,12 @@
                 </li>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.DOCS_RECEIVED)">
-                <li><h3>Certificados</h3></li>
+                <li><h3>Créditos</h3></li>
                 <li>
-                    <label for="credit-documents">Generar de certificado:</label>
-                    <span class="third-width"><input id="credit-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Certificado 3035 Ricardo Rosas"></span>
+                    <label for="credit-documents">Subir archivo del crédito:</label>
+                    <span class="third-width"><input id="credit-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Crédito 3035 Ricardo Rosas"></span>
                     <span class="third-width"><input id="credit-documents" onchange="angular.element(this).scope().documentFilesChanged(this)" class="form-control" type="file"></span>
-                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument(documentName)">Nuevo certificado</a></span>
+                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument(documentName)">Nuevo crédito</a></span>
                     <a ng-class="{'attachment-link':document.url, 'attachment-link-disabled':!document.url}" ng-repeat="document in selectedItem.documents" ng-hide="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
                 </li>
                 <li>

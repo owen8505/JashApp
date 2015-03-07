@@ -120,13 +120,13 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         // Si ya pasó un día y no hemos asignado un gestor
 
                         credit.anomaly = {
-                            message: 'El certificado aun no tiene ningún gestor asignado.'
+                            message: 'El crédito aun no tiene ningún gestor asignado.'
                         }
                     } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 2 && !credit.committedDate){
                         // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
                         credit.anomaly = {
-                            message: 'El certificado aun no tiene una fecha comprometida.'
+                            message: 'El crédito aun no tiene una fecha comprometida.'
                         }
                     } else if(credit.committedDate && anomalyNowDate.diff(angular.copy(credit.committedDate).startOf('day'), 'days') >= 0 && !credit.trackingNumber){
                         // Si ya es la fecha comprometida y no hay datos de envío
@@ -135,10 +135,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                             message: 'Aun no se cuenta con una guía de envío de los documentos.'
                         }
                     } else if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= -2 && !credit.delivered){
-                        // Si faltan dos días o menos para la fecha de entrega y no hemos generado el certificado
+                        // Si faltan dos días o menos para la fecha de entrega y no hemos generado el crédito
 
                         credit.anomaly = {
-                            message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
+                            message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
                         }
                     }
 
@@ -160,8 +160,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
     };
 
     var getAllCredits = function (reload) {
-
-        console.log('a')
 
         credits = [];
         var queryCAML = '';
@@ -207,13 +205,13 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         // Si ya pasó un día y no hemos asignado un gestor
 
                         credit.anomaly = {
-                            message: 'El certificado aun no tiene ningún gestor asignado.'
+                            message: 'El crédito aun no tiene ningún gestor asignado.'
                         }
                     } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 2 && !credit.committedDate){
                         // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
                         credit.anomaly = {
-                            message: 'El certificado aun no tiene una fecha comprometida.'
+                            message: 'El crédito aun no tiene una fecha comprometida.'
                         }
                     } else if(credit.committedDate && anomalyNowDate.diff(angular.copy(credit.committedDate).startOf('day'), 'days') >= 0 && !credit.trackingNumber){
                         // Si ya es la fecha comprometida y no hay datos de envío
@@ -222,10 +220,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                             message: 'Aun no se cuenta con una guía de envío de los documentos.'
                         }
                     } else if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= -5 && !credit.delivered){
-                        // Si faltan dos días o menos para la fecha de entrega y no hemos generado el certificado
+                        // Si faltan dos días o menos para la fecha de entrega y no hemos generado el crédito
 
                         credit.anomaly = {
-                            message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
+                            message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
                         }
                     }
 
@@ -288,46 +286,34 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
     };
 
-    var updateDocuments = function (credit) {
+    var processDocuments = function (credit) {
 
         // Variable que lleva el conteo de cuantos documentos vamos a procesar
-        documentsTotal = 0;
+        documentsTotal = credit.attachments.length + credit.documents.length;
 
         // Variable que lleva el conteo de cuantos documentos han sido procesados
-        documentsProcessed = 0
-
-        angular.forEach(credit.attachments, function(document){
-            if (document.removed == 1) {
-                documentsTotal++;
-            } else if (document.fileId == 0) {
-                documentsTotal++;
-            }
-        });
-
-        angular.forEach(credit.documents, function(document){
-            if (document.removed == 1) {
-                documentsTotal++;
-            } else if (document.fileId == 0) {
-                documentsTotal++;
-            }
-        });
+        documentsProcessed = 0;
 
         if (documentsTotal == 0){
             isDocumentsProcessComplete();
         } else {
             angular.forEach(credit.attachments, function(document){
                 if (document.removed == 1) {
-                    deleteDocuments(libraries.attachments, credit, document);
+                    deleteDocument(libraries.attachments, credit, document);
                 } else if (document.fileId == 0) {
                     saveDocument(libraries.attachments, credit, document);
+                } else {
+                    updateDocument(libraries.attachments, credit, document);
                 }
             });
 
             angular.forEach(credit.documents, function(document){
                 if (document.removed == 1) {
-                    deleteDocuments(libraries.documents, credit, document);
+                    deleteDocument(libraries.documents, credit, document);
                 } else if (document.fileId == 0) {
                     saveDocument(libraries.documents, credit, document);
+                } else {
+                    updateDocument(libraries.documents, credit, document);
                 }
             });
         }
@@ -461,7 +447,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         });
     };
 
-    var deleteDocuments = function (library, credit, document) {
+    var deleteDocument = function (library, credit, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -516,6 +502,77 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 isDocumentsProcessComplete();
             }
         });
+    };
+
+    var updateDocument = function(library, credit, document) {
+
+        var mode = angular.copy($state.params.mode);
+
+        $.ajax({
+            url: SPWeb.appWebUrl + "/_api/contextinfo",
+            method: "POST",
+            headers: { "Accept": "application/json; odata=verbose"},
+            success: function (data) {
+                var requestDigest = data.d.GetContextWebInformation.FormDigestValue;
+
+                var libraryItem = library.name.split(' ').join('_x0020_') + 'Item';
+
+                var body = undefined;
+                if(library.type == 'document'){
+                    body = {
+                        '__metadata': {
+                            'type': 'SP.Data.' + libraryItem },
+                        'Title': document.title,
+                        'Propietario': credit.owner,
+                        'RPP': credit.rpp,
+                        'Solidario_x0020_1': credit.solidary1,
+                        'Solidario_x0020_2': credit.solidary2
+                    }
+                } else {
+                    body = {
+                        '__metadata': {
+                            'type': 'SP.Data.' + libraryItem },
+                        'Title': document.title
+                    }
+                }
+
+                var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
+                    "/web/lists/getbytitle('" + library.name + "')/items(" + document.fileId + ")?" +
+                    "@target='" + SPWeb.hostUrl + "'";
+
+                var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
+                executor.executeAsync(
+                    {
+                        url: url,
+                        method: "POST",
+                        body: JSON.stringify(body),
+                        headers: {
+                            "Accept": "application/json; odata=verbose",
+                            "X-RequestDigest": requestDigest,
+                            "IF-MATCH": "*",
+                            "X-HTTP-Method": "MERGE",
+                            "content-type": "application/json;odata=verbose"
+                        },
+                        success: function (data) {
+                            documentsProcessed++;
+                            isDocumentsProcessComplete();
+                        },
+                        error: function (response) {
+                            console.log(response);
+
+                            documentsProcessed++;
+                            isDocumentsProcessComplete();
+                        }
+                    });
+            },
+            error: function (data, errorCode, errorMessage) {
+                console.log(errorMessage);
+
+                documentsProcessed++;
+                isDocumentsProcessComplete();
+            }
+        });
+
     };
 
     var isDocumentsProcessComplete = function() {
@@ -597,7 +654,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 if (credit.id == 0) {
 
                     credit.id = item.get_id();
-                    updateDocuments(credit);
+                    processDocuments(credit);
 
                     if (lastCredits.length > 4) {
                         lastCredits.splice(1, 1);
@@ -691,7 +748,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.trackingNumber = credit.trackingNumber;
                 originalElement.cashed = credit.cashed;
 
-                updateDocuments(credit);
+                processDocuments(credit);
 
             },
 
@@ -720,7 +777,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                     document.removed = 1;
                 });
 
-                updateDocuments(credit);
+                processDocuments(credit);
                 deleteCreditById(credit.id);
 
             },

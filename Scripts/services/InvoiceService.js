@@ -131,7 +131,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
 
             angular.forEach(invoice.documents, function(document){
                 if (document.removed == 1) {
-                    deleteDocuments(libraries.documents, invoice, document);
+                    deleteDocument(libraries.documents, invoice, document);
                 } else if (document.fileId == 0) {
                     saveDocument(libraries.documents, invoice, document);
                 }
@@ -255,7 +255,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         });
     };
 
-    var deleteDocuments = function (library, invoice, document) {
+    var deleteDocument = function (library, invoice, document) {
 
         var mode = angular.copy($state.params.mode);
 
