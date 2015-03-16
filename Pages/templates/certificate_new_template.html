@@ -13,8 +13,16 @@
     <input id="certificate-status" type="text" class="form-control" ng-model="selectedItem.status.name" readonly>
 </li>
 <li>
+    <label for="certificate-id">ID:</label>
+    <input id="certificate-id" type="text" class="form-control" ng-model="selectedItem.id" readonly>
+</li>
+<li>
     <label for="certificate-folio">Folio: <em class="mandatory-field">*</em></label>
-    <span class="third-width"><input id="certificate-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true" numbers-only="numbers-only" ng-readonly="!isNewCertificate()"></span>
+    <span class="third-width"><input id="certificate-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true" numbers-only="numbers-only"></span>
+</li>
+<li>
+    <label for="certificate-inscription">Inscripción: <em class="mandatory-field">*</em></label>
+    <input id="certificate-inscription" type="text" class="form-control" placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true">
 </li>
 <li ng-if="selectedItem.status.code == 2">
     <label for="certificate-committed-date">Fecha comprometida por el gestor:</label>
@@ -27,10 +35,6 @@
 <li>
     <label for="certificate-description">Descripción: <em class="mandatory-field">*</em></label>
     <textarea id="certificate-description" class="form-control" required="true" placeholder="Ej. Casa habitación" ng-model="selectedItem.description"></textarea>
-</li>
-<li>
-    <label for="certificate-inscription">Inscripción: <em class="mandatory-field">*</em></label>
-    <input id="certificate-inscription" type="text" class="form-control" placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true">
 </li>
 <li>
     <label for="certificate-attachments">Archivos adjuntos:</label>

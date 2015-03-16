@@ -90,7 +90,7 @@
                 <li class="action-button-holder">
                     <a class="btn btn-danger delete-button" ng-click="deleteCredit()">Eliminar</a>
                     <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
-                    <a class="btn btn-success" ng-class="" ng-click="updateCredit()" ng-disabled="!isValidForm()">Guardar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="updateCredit()" ng-disabled="!isValidForm(['owner', 'ownerAddress', 'solidary1', 'solidary1Address'], ['folio', 'contractNumber'])">Guardar</a>
                 </li>
             </ol>
         </fieldset>

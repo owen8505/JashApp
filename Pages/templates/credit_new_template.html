@@ -13,8 +13,16 @@
     <input id="credit-status" type="text" class="form-control" ng-model="selectedItem.status.name" readonly>
 </li>
 <li>
+    <label for="credit-id">ID:</label>
+    <input id="credit-id" type="text" class="form-control" ng-model="selectedItem.id" readonly>
+</li>
+<li>
     <label for="credit-folio">Folio: <em class="mandatory-field">*</em></label>
-    <span class="third-width"><input id="credit-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true" numbers-only="numbers-only" ng-readonly="!isNewCredit()"></span>
+    <span class="third-width"><input id="credit-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true" numbers-only="numbers-only"></span>
+</li>
+<li>
+    <label for="credit-contract-number">No. de contrato coorporativo: <em class="mandatory-field">*</em></label>
+    <input id="credit-contract-number" type="text" class="form-control" class="form-control" placeholder="00789876545678987654" ng-model="selectedItem.contractNumber" required="true">
 </li>
 <li ng-if="selectedItem.status.code == 2">
     <label for="credit-committed-date">Fecha comprometida por el gestor:</label>
@@ -27,10 +35,6 @@
 <li>
     <label for="credit-rpp">Búsqueda por acreditado y RPP: <em class="mandatory-field">*</em></label>
     <input id="credit-rpp" type="text" class="form-control" class="form-control" placeholder="Ej. Industrias Mexico S.A. de C.V." ng-model="selectedItem.rpp" required="true">
-</li>
-<li>
-    <label for="credit-contract-number">No. de contrato coorporativo: <em class="mandatory-field">*</em></label>
-    <input id="credit-contract-number" type="text" class="form-control" class="form-control" placeholder="00789876545678987654" ng-model="selectedItem.contractNumber" required="true">
 </li>
 <li>
     <label for="credit-owner-address">Domicilio: <em class="mandatory-field">*</em></label>

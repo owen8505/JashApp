@@ -95,10 +95,6 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
     };
 
-    $scope.isNewCredit = function () {
-        return $scope.titleState == DEFAULT_VALUES.ITEM_STATES.NEW.title;
-    }
-
     $scope.createCredit = function () {
         $scope.selectedItem = angular.copy(CreditService.createCredit());
     };
@@ -306,19 +302,25 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
     };
 
-    $scope.isValidForm = function (fields) {
+    $scope.isValidForm = function (requiredFields, optionalFields) {
         var isValidForm = true;
+        var isOptionalForm = false;
         if ($scope.selectedItem) {
-            for (var indexField in fields) {
-                var fieldName = fields[indexField];
+            for (var indexField in requiredFields) {
+                var fieldName = requiredFields[indexField];
                 if (!$scope.selectedItem[fieldName]) {
                     isValidForm = false;
                     break;
                 }
             }
+
+            for (var indexField in optionalFields) {
+                var fieldName = optionalFields[indexField];
+                isOptionalForm = isOptionalForm || $scope.selectedItem[fieldName];
+            }
         }
 
-        return isValidForm;
+        return isValidForm && isOptionalForm;
     };
 
     $scope.isValidEmailForm = function (fields) {
