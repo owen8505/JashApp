@@ -104,9 +104,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                     console.log(response);
                 }
             });
-
-        console.log(documents);
-
+        
         return documents;
 
     };
