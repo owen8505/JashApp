@@ -12,7 +12,7 @@
     <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
 </li>
 <li>
-    <label for="invoice-folios">Folios:</label>
+    <label for="invoice-folios">ID de solicitud:</label>
     <span class="third-width"><input id="invoice-folios" type="text" class="form-control" placeholder="Ej. 432" ng-model="$parent.folio"></span>
     <span class="third-width"><a class="btn btn-default" ng-click="addFolio(folio)">Añadir</a></span>
     <div>
