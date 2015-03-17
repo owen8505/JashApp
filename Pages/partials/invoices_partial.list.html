@@ -19,8 +19,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="invoice in invoices | filter:query">
-                            <td><span ng-class="{true:'indicator-green', false:'indicator-red'}[invoice.cashed]"></span> <a class="link" ui-sref="invoices.edit({id:invoice.id})">{{ invoice.invoiceId }}</a></td>
-                            <td><span ng-repeat="folio in invoice.folios">{{folio}}{{$last ? '' : ', '}}</span></td>
+                            <td><span ng-class="{true:'indicator-green', false:'indicator-red'}[invoice.cashed]"></span> <a class="link" ui-sref="invoices.edit({id:invoice.id})">{{ invoice.folio }}</a></td>
+                            <td><span ng-repeat="folio in invoice.requestIds">{{folio}}{{$last ? '' : ', '}}</span></td>
                         </tr>
                     </tbody>
                 </table>

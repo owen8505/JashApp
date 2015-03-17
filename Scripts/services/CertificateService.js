@@ -146,8 +146,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          }
                      }
 
-                     certificate.attachments = getDocuments(libraries.attachments, certificate.folio);
-                     certificate.documents = getDocuments(libraries.documents, certificate.folio);
+                     certificate.attachments = getDocuments(libraries.attachments, certificate.id);
+                     certificate.documents = getDocuments(libraries.documents, certificate.id);
                      lastCertificates.push(certificate);
                  }
 
@@ -236,8 +236,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          }
                      }
 
-                     certificate.attachments = getDocuments(libraries.attachments, certificate.folio);
-                     certificate.documents = getDocuments(libraries.documents, certificate.folio);
+                     certificate.attachments = getDocuments(libraries.attachments, certificate.id);
+                     certificate.documents = getDocuments(libraries.documents, certificate.id);
                      certificates.push(certificate);
                  }
 
@@ -252,14 +252,14 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         return certificates;
     };
 
-    var getDocuments = function (library, folio) {
+    var getDocuments = function (library, id) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
             "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
-            "&$filter=Folio eq '" + folio + "'" +
+            "&$filter=Folio eq '" + id + "'" +
             "&$expand=File";
 
         var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -377,7 +377,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': certificate.folio,
+                                        'Folio': certificate.id.toString(),
                                         'Title': document.title,
                                         'Propietario': certificate.owner,
                                         'Inscripcion': certificate.inscription,
@@ -387,7 +387,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': certificate.folio,
+                                        'Folio': certificate.id.toString(),
                                         'Title': document.title
                                     }
                                 }

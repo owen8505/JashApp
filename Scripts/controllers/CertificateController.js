@@ -191,14 +191,14 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         $scope.attachmentElement = (elem);
     };
 
-    $scope.addAttachment = function(attachmentName){
-                
-        if($scope.selectedItem && $scope.attachmentElement && attachmentName){
+    $scope.addAttachment = function(){
+
+        if($scope.selectedItem && $scope.attachmentElement && $scope.attachmentName){
             var file = $scope.attachmentElement.files[0];
             var attachment = {
                 fileId: 0,
                 name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
-                title: attachmentName,
+                title: $scope.attachmentName,
                 url: undefined,
                 file: file
             };
@@ -228,14 +228,14 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         $scope.documentElement = (elem);
     };
 
-    $scope.addDocument = function(documentName){
+    $scope.addDocument = function(){
 
-        if($scope.selectedItem && $scope.documentElement && documentName){
+        if($scope.selectedItem && $scope.documentElement && $scope.documentName){
             var file = $scope.documentElement.files[0];
             var document = {
                 fileId: 0,
                 name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
-                title: documentName,
+                title: $scope.documentName,
                 url: undefined,
                 file: file
             };

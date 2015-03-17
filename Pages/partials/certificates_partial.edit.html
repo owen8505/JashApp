@@ -77,7 +77,7 @@
                     <label for="certificate-documents">Subir archivo del certificado:</label>
                     <span class="third-width"><input id="certificate-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Certificado 3035 Ricardo Rosas"></span>
                     <span class="third-width"><input id="certificate-documents" onchange="angular.element(this).scope().documentFilesChanged(this)"  class="form-control" type="file" ></span>
-                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument(documentName)">Nuevo certificado</a></span>
+                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument()">Nuevo certificado</a></span>
                     <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
                 </li>
                 <li>

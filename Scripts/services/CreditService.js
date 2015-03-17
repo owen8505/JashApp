@@ -156,8 +156,8 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         }
                     }
 
-                    credit.attachments = getDocuments(libraries.attachments, credit.folio);
-                    credit.documents = getDocuments(libraries.documents, credit.folio);
+                    credit.attachments = getDocuments(libraries.attachments, credit.id);
+                    credit.documents = getDocuments(libraries.documents, credit.id);
                     lastCredits.push(credit);
                 }
 
@@ -255,8 +255,8 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         }
                     }
 
-                    credit.attachments = getDocuments(libraries.attachments, credit.folio);
-                    credit.documents = getDocuments(libraries.documents, credit.folio);
+                    credit.attachments = getDocuments(libraries.attachments, credit.id);
+                    credit.documents = getDocuments(libraries.documents, credit.id);
                     credits.push(credit);
                 }
 
@@ -271,14 +271,14 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         return credits;
     };
 
-    var getDocuments = function (library, folio) {
+    var getDocuments = function (library, id) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
             "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
-            "&$filter=Folio eq '" + folio + "'" +
+            "&$filter=Folio eq '" + id + "'" +
             "&$expand=File";
 
         var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -396,7 +396,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': credit.folio,
+                                        'Folio': credit.id.toString(),
                                         'Title': document.title,
                                         'Propietario': credit.owner,
                                         'RPP': credit.rpp,
@@ -407,7 +407,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': credit.folio,
+                                        'Folio': credit.id.toString(),
                                         'Title': document.title
                                     }
                                 }

@@ -77,7 +77,7 @@
                     <label for="credit-documents">Subir archivo del crédito:</label>
                     <span class="third-width"><input id="credit-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Crédito 3035 Ricardo Rosas"></span>
                     <span class="third-width"><input id="credit-documents" onchange="angular.element(this).scope().documentFilesChanged(this)" class="form-control" type="file"></span>
-                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument(documentName)">Nuevo crédito</a></span>
+                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument()">Nuevo crédito</a></span>
                     <a ng-class="{'attachment-link':document.url, 'attachment-link-disabled':!document.url}" ng-repeat="document in selectedItem.documents" ng-hide="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
                 </li>
                 <li>

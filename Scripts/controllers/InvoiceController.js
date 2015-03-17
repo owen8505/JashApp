@@ -4,8 +4,7 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
     //Crédito seleccionado
     $scope.selectedItem = undefined;
-    $scope.invoiceName = undefined;
-    $scope.invoiceName = undefined;
+    $scope.documentName = undefined;
     $scope.committedDate = undefined;
 
     $scope.query = '';
@@ -75,14 +74,14 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
         InvoiceService.deleteInvoice($scope.selectedItem);
     };
 
-    $scope.addDocument = function (documentName) {
+    $scope.addDocument = function () {
 
-        if ($scope.selectedItem && $scope.documentElement && documentName) {
+        if ($scope.selectedItem && $scope.documentElement && $scope.documentName) {
             var file = $scope.documentElement.files[0];
             var document = {
                 fileId: 0,
                 name: $scope.getFileBasename(file.name) + '_' + moment().valueOf() + '_' + Math.round(Math.random()*10000) + '.' + $scope.getFileExtension(file.name),
-                title: documentName,
+                title: $scope.documentName,
                 url: undefined,
                 file: file
             };
@@ -114,7 +113,7 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
     $scope.addFolio = function (folio) {
         if ($scope.selectedItem && folio) {
-            $scope.selectedItem.folios.push(folio);
+            $scope.selectedItem.requestIds.push(folio);
         }
 
         $scope.folio = undefined;
@@ -126,7 +125,7 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
         event.preventDefault();
 
         // Es un archivo nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de archivos
-        $scope.selectedItem.folios.splice($scope.selectedItem.folios.indexOf(folio), 1);
+        $scope.selectedItem.requestIds.splice($scope.selectedItem.requestIds.indexOf(folio), 1);
     };
 
     $scope.isValidForm = function (fields) {
