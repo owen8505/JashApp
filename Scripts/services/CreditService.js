@@ -73,7 +73,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
         var queryString = '<View><Query>' +
             '<OrderBy>' +
-            '<FieldRef Name=\'ID\' Ascending="FALSE" /><FieldRef Name=\'Folio\' Ascending="FALSE" />' +
+            '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
             '</OrderBy>' +
             '</Query><RowLimit>5</RowLimit></View></View>';
         var queryCAML = new SP.CamlQuery();
@@ -91,11 +91,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         type: 'CREDIT',
                         id: item.get_id(),
                         folio: item.get_item('Title'),
+                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
+                        lawyer: item.get_item('Abogado'),
                         creationDate: new moment(item.get_item('Creacion')),
                         deliveryDate: new moment(item.get_item('Entrega')),
                         owner: item.get_item('Propietario'),
                         rpp: item.get_item('RPP'),
-                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
                         ownerAddress: item.get_item('Direccion_x0020_de_x0020_acredit'),
                         solidary1: item.get_item('Solidario_x0020_1'),
                         solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
@@ -176,11 +177,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         type: 'CREDIT',
                         id: item.get_id(),
                         folio: item.get_item('Title'),
+                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
+                        lawyer: item.get_item('Abogado'),
                         creationDate: new moment(item.get_item('Creacion')),
                         deliveryDate: new moment(item.get_item('Entrega')),
                         owner: item.get_item('Propietario'),
                         rpp: item.get_item('RPP'),
-                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
                         ownerAddress: item.get_item('Direccion_x0020_de_x0020_acredit'),
                         solidary1: item.get_item('Solidario_x0020_1'),
                         solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
@@ -596,11 +598,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             id: 0,
             type: 'CREDIT',
             folio: undefined,
+            contractNumber: undefined,
+            lawyer: undefined,
             creationDate: now,
             deliveryDate: getDeliveryDate(now),
             owner: undefined,
             rpp: undefined,
-            contractNumber: undefined,
             ownerAddress: undefined,
             solidary1: undefined,
             solidary1Address: undefined,
@@ -634,11 +637,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         var item = list.addItem(itemInfo);
 
         item.set_item('Title', credit.folio);
+        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
+        item.set_item('Abogado', credit.lawyer);
         item.set_item('Creacion', credit.creationDate.toISOString());
         item.set_item('Entrega', credit.deliveryDate.toISOString());
         item.set_item('Propietario', credit.owner);
         item.set_item('RPP', credit.rpp);
-        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
         item.set_item('Direccion_x0020_de_x0020_acredit', credit.ownerAddress);
         item.set_item('Solidario_x0020_1', credit.solidary1);
         item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
@@ -698,11 +702,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
         var item = list.getItemById(credit.id);
         item.set_item('Title', credit.folio);
+        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
+        item.set_item('Abogado', credit.lawyer);
         item.set_item('Creacion', (credit.creationDate ? credit.creationDate.toISOString() : undefined ));
         item.set_item('Entrega', (credit.deliveryDate ? credit.deliveryDate.toISOString() : undefined ));
         item.set_item('Propietario', credit.owner);
         item.set_item('RPP', credit.rpp);
-        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
         item.set_item('Direccion_x0020_de_x0020_acredit', credit.ownerAddress);
         item.set_item('Solidario_x0020_1', credit.solidary1);
         item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
@@ -726,11 +731,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             function () {
                 var originalElement = getCreditById(credit.id, $state.params.mode);
                 originalElement.folio = credit.folio;
+                originalElement.contractNumber = credit.contractNumber;
+                originalElement.lawyer = credit.lawyer;
                 originalElement.creationDate = credit.creationDate;
                 originalElement.deliveryDate = credit.deliveryDate;
                 originalElement.owner = credit.owner;
                 originalElement.rpp = credit.rpp;
-                originalElement.contractNumber = credit.contractNumber;
                 originalElement.ownerAddress = credit.ownerAddress;
                 originalElement.solidary1 = credit.solidary1;
                 originalElement.solidary1Address = credit.solidary1Address;

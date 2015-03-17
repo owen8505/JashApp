@@ -72,7 +72,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
         var queryString = '<View><Query>' +
                             '<OrderBy>' +
-                               '<FieldRef Name=\'ID\' Ascending="FALSE" /><FieldRef Name=\'Folio\' Ascending="FALSE" />' +
+                               '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
                             '</OrderBy>' +
                           '</Query><RowLimit>5</RowLimit></View></View>';
         var queryCAML = new SP.CamlQuery();
@@ -95,6 +95,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          owner: item.get_item('Propietario'),
                          inscription: item.get_item('Inscripcion'),
                          description: item.get_item('Descripcion'),
+                         lawyer: item.get_item('Abogado'),
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                          zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                          manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
@@ -175,6 +176,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          owner: item.get_item('Propietario'),
                          inscription: item.get_item('Inscripcion'),
                          description: item.get_item('Descripcion'),
+                         lawyer: item.get_item('Abogado'),
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                          zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                          manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
@@ -587,8 +589,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             creationDate: now,
             deliveryDate: getDeliveryDate(now),
             owner: undefined,
-            description: undefined,
             inscription: undefined,
+            description: undefined,
+            lawyer: undefined,
             attachments: [],
             status: {id:1, name:'Nuevo'},
             zone: undefined,
@@ -621,6 +624,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Entrega', certificate.deliveryDate.toISOString());
         item.set_item('Propietario', certificate.owner);
         item.set_item('Descripcion', certificate.description);
+        item.set_item('Abogado', certificate.lawyer);
         item.set_item('Inscripcion', certificate.inscription);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(certificate.status.id));        
         item.update();
@@ -679,8 +683,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Creacion', (certificate.creationDate ? certificate.creationDate.toISOString() : undefined ));
         item.set_item('Entrega', (certificate.deliveryDate ? certificate.deliveryDate.toISOString() : undefined ));
         item.set_item('Propietario', certificate.owner);
-        item.set_item('Descripcion', certificate.description);
         item.set_item('Inscripcion', certificate.inscription);
+        item.set_item('Descripcion', certificate.description);
+        item.set_item('Abogado', certificate.lawyer);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
         item.set_item('Region', new SP.FieldLookupValue().set_lookupId((certificate.zone ? certificate.zone.id : undefined )));
         item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((certificate.manager ? certificate.manager.id : undefined )));
@@ -702,8 +707,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.creationDate = certificate.creationDate;
                 originalElement.deliveryDate = certificate.deliveryDate;
                 originalElement.owner = certificate.owner;
-                originalElement.description = certificate.description;
                 originalElement.inscription = certificate.inscription;
+                originalElement.description = certificate.description;
+                originalElement.lawyer = certificate.lawyer;
                 originalElement.status = certificate.status;
                 originalElement.zone = certificate.zone;
                 originalElement.manager = certificate.manager;

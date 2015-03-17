@@ -63,3 +63,7 @@
     <span class="third-width"><a class="btn btn-default" ng-click="addAttachment(attachmentName)">Añadir</a></span>
     <a ng-class="{'attachment-link':attachment.url, 'attachment-link-disabled':!attachment.url}" ng-repeat="attachment in selectedItem.attachments" ng-hide="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
 </li>
+<li>
+    <label for="certificate-lawyer">Abogado:</label>
+    <input id="certificate-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer" required="true">
+</li>
