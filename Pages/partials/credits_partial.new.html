@@ -12,7 +12,7 @@
             <ol>
                 <li class="action-button-holder">
                     <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
-                    <a class="btn btn-success" ng-class="" ng-click="saveCredit()" ng-disabled="!isValidForm(['owner', 'ownerAddress', 'solidary1', 'solidary1Address'], ['folio', 'contractNumber'])">Guardar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="saveCredit()" ng-disabled="!isValidForm(['owner', 'ownerAddress'], ['folio', 'contractNumber'])">Guardar</a>
                 </li>
             </ol>
         </fieldset>
