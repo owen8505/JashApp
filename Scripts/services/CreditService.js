@@ -102,6 +102,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
                         solidary2: item.get_item('Solidario_x0020_2'),
                         solidary2Address: item.get_item('Direccion_x0020_de_x0020_solidar0'),
+                        solidary3: item.get_item('Solidario_x0020_3'),
+                        solidary3Address: item.get_item('Direccion_x0020_de_x0020_solidar1'),
+                        solidary4: item.get_item('Solidario_x0020_4'),
+                        solidary4Address: item.get_item('Direccion_x0020_de_x0020_solidar2'),
                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
@@ -188,6 +192,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
                         solidary2: item.get_item('Solidario_x0020_2'),
                         solidary2Address: item.get_item('Direccion_x0020_de_x0020_solidar0'),
+                        solidary3: item.get_item('Solidario_x0020_3'),
+                        solidary3Address: item.get_item('Direccion_x0020_de_x0020_solidar1'),
+                        solidary4: item.get_item('Solidario_x0020_4'),
+                        solidary4Address: item.get_item('Direccion_x0020_de_x0020_solidar2'),
                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
@@ -609,6 +617,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             solidary1Address: undefined,
             solidary2: undefined,
             solidary2Address: undefined,
+            solidary3: undefined,
+            solidary3Address: undefined,
+            solidary4: undefined,
+            solidary4Address: undefined,
             attachments: [],
             status: {id:1, name:'Nuevo'},
             zone: undefined,
@@ -648,6 +660,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
         item.set_item('Solidario_x0020_2', credit.solidary2);
         item.set_item('Direccion_x0020_de_x0020_solidar0', credit.solidary2Address);
+        item.set_item('Solidario_x0020_3', credit.solidary3);
+        item.set_item('Direccion_x0020_de_x0020_solidar1', credit.solidary3Address);
+        item.set_item('Solidario_x0020_4', credit.solidary4);
+        item.set_item('Direccion_x0020_de_x0020_solidar2', credit.solidary4Address);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(credit.status.id));
         item.update();
 
@@ -713,6 +729,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
         item.set_item('Solidario_x0020_2', credit.solidary2);
         item.set_item('Direccion_x0020_de_x0020_solidar0', credit.solidary2Address);
+        item.set_item('Solidario_x0020_3', credit.solidary3);
+        item.set_item('Direccion_x0020_de_x0020_solidar1', credit.solidary3Address);
+        item.set_item('Solidario_x0020_4', credit.solidary4);
+        item.set_item('Direccion_x0020_de_x0020_solidar2', credit.solidary4Address);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
         item.set_item('Region', new SP.FieldLookupValue().set_lookupId((credit.zone ? credit.zone.id : undefined )));
         item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((credit.manager ? credit.manager.id : undefined )));
@@ -742,6 +762,10 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.solidary1Address = credit.solidary1Address;
                 originalElement.solidary2 = credit.solidary2;
                 originalElement.solidary2Address = credit.solidary2Address;
+                originalElement.solidary3 = credit.solidary3;
+                originalElement.solidary3Address = credit.solidary3Address;
+                originalElement.solidary4 = credit.solidary4;
+                originalElement.solidary4Address = credit.solidary4Address;
                 originalElement.status = credit.status;
                 originalElement.zone = credit.zone;
                 originalElement.manager = credit.manager;

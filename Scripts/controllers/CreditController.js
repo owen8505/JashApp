@@ -95,6 +95,10 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
     };
 
+    $scope.isNewCredit = function () {
+        return $scope.titleState == DEFAULT_VALUES.ITEM_STATES.NEW.title;
+    }
+
     $scope.createCredit = function () {
         $scope.selectedItem = angular.copy(CreditService.createCredit());
     };
