@@ -6,18 +6,18 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
     var SPWeb, context, appContext, list, libraries, mailList, documentsTotal, documentsProcessed;
 
     var getDeliveryDate = function (date) {
-        var copyDate = angular.copy(date);
+        var dateCopy = angular.copy(date);
         var days = DEFAULT_VALUES.DELIVERY_RANGES.CREDIT;
 
         while (days > 0) {
-            copyDate = copyDate.add(1, 'days');
+            dateCopy = dateCopy.add(1, 'days');
             // decrease "days" only if it's a weekday.
-            if (copyDate.isoWeekday() !== 6 && copyDate.isoWeekday() !== 7) {
+            if (dateCopy.isoWeekday() !== 6 && dateCopy.isoWeekday() !== 7) {
                 days -= 1;
             }
         }
 
-        return copyDate;
+        return dateCopy;
     };
 
     var getCreditById = function (creditId, mode) {
@@ -121,29 +121,38 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
                     var anomalyNowDate = moment().startOf('day');
 
-                    if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 1 && !credit.manager){
+                    if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= 1 && !credit.delivered){
+                        // Si ya se pasó la fecha de entrega y no hemos generado el crédito
+                        credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega expiró y el crédito no ha sido generado.'
+                        }
+                    } else if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= -5 && !credit.delivered){
+                        // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el crédito
+                        credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
+                        }
+                    } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 1 && !credit.manager){
                         // Si ya pasó un día y no hemos asignado un gestor
 
                         credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                             message: 'El crédito aun no tiene ningún gestor asignado.'
                         }
                     } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 2 && !credit.committedDate){
                         // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
                         credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                             message: 'El crédito aun no tiene una fecha comprometida.'
                         }
                     } else if(credit.committedDate && anomalyNowDate.diff(angular.copy(credit.committedDate).startOf('day'), 'days') >= 0 && !credit.trackingNumber){
                         // Si ya es la fecha comprometida y no hay datos de envío
 
                         credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                             message: 'Aun no se cuenta con una guía de envío de los documentos.'
-                        }
-                    } else if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= -2 && !credit.delivered){
-                        // Si faltan dos días o menos para la fecha de entrega y no hemos generado el crédito
-
-                        credit.anomaly = {
-                            message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
                         }
                     }
 
@@ -211,29 +220,38 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
                     var anomalyNowDate = moment().startOf('day');
 
-                    if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 1 && !credit.manager){
+                    if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= 1 && !credit.delivered){
+                        // Si ya se pasó la fecha de entrega y no hemos generado el crédito
+                        credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega expiró y el crédito no ha sido generado.'
+                        }
+                    } else if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= -5 && !credit.delivered){
+                        // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el crédito
+                        credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
+                        }
+                    } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 1 && !credit.manager){
                         // Si ya pasó un día y no hemos asignado un gestor
 
                         credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                             message: 'El crédito aun no tiene ningún gestor asignado.'
                         }
                     } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 2 && !credit.committedDate){
                         // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
                         credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                             message: 'El crédito aun no tiene una fecha comprometida.'
                         }
                     } else if(credit.committedDate && anomalyNowDate.diff(angular.copy(credit.committedDate).startOf('day'), 'days') >= 0 && !credit.trackingNumber){
                         // Si ya es la fecha comprometida y no hay datos de envío
 
                         credit.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                             message: 'Aun no se cuenta con una guía de envío de los documentos.'
-                        }
-                    } else if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= -5 && !credit.delivered){
-                        // Si faltan dos días o menos para la fecha de entrega y no hemos generado el crédito
-
-                        credit.anomaly = {
-                            message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
                         }
                     }
 

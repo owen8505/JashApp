@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="certificate in certificates | filter:query | orderBy:['anomaly', '-id']">
-                            <td><span ng-class="{true:'indicator-red', false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'all'})">{{ certificate.id }}</a></td>
+                            <td><span ng-class="{true:certificate.anomaly.status, false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'all'})">{{ certificate.id }}</a></td>
                             <td>{{ certificate.folio }}</td>
                             <td>{{ certificate.inscription }}</td>
                             <td>{{ certificate.owner }}</td>

@@ -55,7 +55,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="certificate in lastCertificates | orderBy:['anomaly', '-id', '-folio'] ">
-                                <td class="folio"><span ng-class="{true:'indicator-red', false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.id }}</a></td>
+                                <td class="folio"><span ng-class="{true:certificate.anomaly.status, false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.id }}</a></td>
                                 <td>{{ certificate.folio }}</td>
                                 <td>{{ certificate.inscription }}</td>
                                 <td>{{ certificate.owner }}</td>
@@ -95,7 +95,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="credit in lastCredits | limitTo: 5 ">
-                                <td class="folio"><span ng-class="{true:'indicator-red', false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credits.edit({id:credit.id, mode:'last'})">{{ credit.id }}</a></td>
+                                <td class="folio"><span ng-class="{true:credit.anomaly.status, false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credits.edit({id:credit.id, mode:'last'})">{{ credit.id }}</a></td>
                                 <td>{{ credit.folio }}</td>
                                 <td>{{ credit.contractNumber }}</td>
                                 <td>{{ credit.owner }}</td>

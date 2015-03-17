@@ -57,6 +57,10 @@
                 DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
                 DELIVERED: {CODE: 6, NAME: 'Entregado'},
                 CASHED: {CODE: 7, NAME: 'Cobrado'}
+            },
+            ANOMALY_STATUS: {
+                WARNING: 'indicator-yellow',
+                ERROR: 'indicator-red'
             }
         })
 

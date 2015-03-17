@@ -111,29 +111,38 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                      var anomalyNowDate = moment().startOf('day');
 
-                     if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
+                     if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= 1 && !certificate.delivered){
+                         // Si ya se pasó la fecha de entrega y no hemos generado el certificado
+                         certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                             message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
+                         }
+                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
+                         // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
+                         certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                             message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
+                         }
+                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
                          // Si ya pasó un día y no hemos asignado un gestor
 
                          certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene ningún gestor asignado.'
                          }
                      } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 2 && !certificate.committedDate){
                          // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
                          certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene una fecha comprometida.'
                          }
                      } else if(certificate.committedDate && anomalyNowDate.diff(angular.copy(certificate.committedDate).startOf('day'), 'days') >= 0 && !certificate.trackingNumber){
                          // Si ya es la fecha comprometida y no hay datos de envío
 
                          certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'Aun no se cuenta con una guía de envío de los documentos.'
-                         }
-                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -2 && !certificate.delivered){
-                         // Si faltan dos días o menos para la fecha de entrega y no hemos generado el certificado
-
-                         certificate.anomaly = {
-                             message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
                          }
                      }
 
@@ -192,29 +201,38 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
                      var anomalyNowDate = moment().startOf('day');
 
-                     if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
+                     if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= 1 && !certificate.delivered){
+                         // Si ya se pasó la fecha de entrega y no hemos generado el certificado
+                         certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                             message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
+                         }
+                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
+                         // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
+                         certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                             message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
+                         }
+                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
                          // Si ya pasó un día y no hemos asignado un gestor
 
                          certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene ningún gestor asignado.'
                          }
                      } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 2 && !certificate.committedDate){
                          // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
                          certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene una fecha comprometida.'
                          }
                      } else if(certificate.committedDate && anomalyNowDate.diff(angular.copy(certificate.committedDate).startOf('day'), 'days') >= 0 && !certificate.trackingNumber){
                          // Si ya es la fecha comprometida y no hay datos de envío
 
                          certificate.anomaly = {
+                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'Aun no se cuenta con una guía de envío de los documentos.'
-                         }
-                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
-                         // Si faltan dos días o menos para la fecha de entrega y no hemos generado el certificado
-
-                         certificate.anomaly = {
-                             message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
                          }
                      }
 
