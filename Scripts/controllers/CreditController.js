@@ -1,6 +1,6 @@
 'use strict';
 
-Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover', 'CreditService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CreditService, ManagerService, StatusService, DEFAULT_VALUES) {
+Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover', '$interval', 'CreditService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, $interval, CreditService, ManagerService, StatusService, DEFAULT_VALUES) {
 
     //Crédito seleccionado
     $scope.selectedItem = undefined;
@@ -49,11 +49,19 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
                 if ($rootScope.creditsLoaded){
                     if ($state.params) {
-                        $scope.selectedItem = angular.copy(CreditService.getCreditById($state.params.id, $state.params.mode));
 
-                        if ($scope.selectedItem.zone) {
-                            $scope.setZoneById($scope.selectedItem.zone.id);
-                        }
+                        var interval = $interval(function(){
+                            var selectedItem =  angular.copy(CreditService.getCreditById($state.params.id, $state.params.mode));
+
+                            if(selectedItem.documentsLoaded && selectedItem.attachmentsLoaded){
+                                $scope.selectedItem = angular.copy(CreditService.getCreditById($state.params.id, $state.params.mode));
+
+                                if ($scope.selectedItem.zone) {
+                                    $scope.setZoneById($scope.selectedItem.zone.id);
+                                }
+                                $interval.cancel(interval);
+                            }
+                        }, 100);
                     }
                 } else {
                     switch($state.params.mode) {

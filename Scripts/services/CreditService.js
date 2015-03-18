@@ -156,8 +156,8 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         }
                     }
 
-                    credit.attachments = getDocuments(libraries.attachments, credit.id);
-                    credit.documents = getDocuments(libraries.documents, credit.id);
+                    credit.attachments = getDocuments(libraries.attachments, credit);
+                    credit.documents = getDocuments(libraries.documents, credit);
                     lastCredits.push(credit);
                 }
 
@@ -255,8 +255,8 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         }
                     }
 
-                    credit.attachments = getDocuments(libraries.attachments, credit.id);
-                    credit.documents = getDocuments(libraries.documents, credit.id);
+                    credit.attachments = getDocuments(libraries.attachments, credit);
+                    credit.documents = getDocuments(libraries.documents, credit);
                     credits.push(credit);
                 }
 
@@ -271,14 +271,14 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         return credits;
     };
 
-    var getDocuments = function (library, id) {
+    var getDocuments = function (library, credit) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
             "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
-            "&$filter=Folio eq '" + id + "'" +
+            "&$filter=Folio eq '" + credit.id + "'" +
             "&$expand=File";
 
         var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -304,6 +304,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         documents.push(document);
                     });
 
+                    credit[library.loadedName] = true;
                 },
                 error: function (response) {
                     console.log(response);
@@ -868,12 +869,14 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             attachments: {
                 type: 'attachment',
                 name: 'Adjuntos de creditos',
-                arrayName: 'attachments'
+                arrayName: 'attachments',
+                loadedName: 'attachmentsLoaded'
             },
             documents: {
                 type: 'document',
                 name: 'Biblioteca de creditos',
-                arrayName: 'documents'
+                arrayName: 'documents',
+                loadedName: 'documentsLoaded'
             }
         }
     };

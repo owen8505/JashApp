@@ -1,6 +1,6 @@
 'use strict';
 
-Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', 'CertificateService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, CertificateService, ManagerService, StatusService, DEFAULT_VALUES) {
+Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$popover', '$interval', 'CertificateService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, $interval, CertificateService, ManagerService, StatusService, DEFAULT_VALUES) {
 
     //Certificado seleccionado
     $scope.selectedItem = undefined;    
@@ -49,11 +49,19 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
                 if ($rootScope.certificatesLoaded){
                     if ($state.params) {
-                        $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
 
-                        if ($scope.selectedItem.zone) {
-                            $scope.setZoneById($scope.selectedItem.zone.id);
-                        }
+                        var interval = $interval(function(){
+                            var selectedItem =  angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
+
+                            if(selectedItem.documentsLoaded && selectedItem.attachmentsLoaded){
+                                $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
+
+                                if ($scope.selectedItem.zone) {
+                                    $scope.setZoneById($scope.selectedItem.zone.id);
+                                }
+                                $interval.cancel(interval);
+                            }
+                        }, 100);
                     }
                 } else {
                     switch($state.params.mode) {

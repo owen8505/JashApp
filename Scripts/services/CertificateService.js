@@ -146,8 +146,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          }
                      }
 
-                     certificate.attachments = getDocuments(libraries.attachments, certificate.id);
-                     certificate.documents = getDocuments(libraries.documents, certificate.id);
+                     certificate.attachments = getDocuments(libraries.attachments, certificate);
+                     certificate.documents = getDocuments(libraries.documents, certificate);
                      lastCertificates.push(certificate);
                  }
 
@@ -236,8 +236,8 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          }
                      }
 
-                     certificate.attachments = getDocuments(libraries.attachments, certificate.id);
-                     certificate.documents = getDocuments(libraries.documents, certificate.id);
+                     certificate.attachments = getDocuments(libraries.attachments, certificate);
+                     certificate.documents = getDocuments(libraries.documents, certificate);
                      certificates.push(certificate);
                  }
 
@@ -252,14 +252,14 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         return certificates;
     };
 
-    var getDocuments = function (library, id) {
+    var getDocuments = function (library, certificate) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
             "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
-            "&$filter=Folio eq '" + id + "'" +
+            "&$filter=Folio eq '" + certificate.id + "'" +
             "&$expand=File";
 
         var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -285,6 +285,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                         documents.push(document);
                     });
 
+                    certificate[library.loadedName] = true;
                 },
                 error: function (response) {
                     console.log(response);
@@ -812,12 +813,14 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             attachments: {
                 type: 'attachment',
                 name: 'Adjuntos de certificados',
-                arrayName: 'attachments'
+                arrayName: 'attachments',
+                loadedName: 'attachmentsLoaded'
             },
             documents: {
                 type: 'document',
                 name: 'Biblioteca de certificados',
-                arrayName: 'documents'
+                arrayName: 'documents',
+                loadedName: 'documentsLoaded'
             }
         }
     };
