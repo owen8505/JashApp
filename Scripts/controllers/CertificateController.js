@@ -47,7 +47,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
 
-                if ($scope.certificatesLoaded){
+                if ($rootScope.certificatesLoaded){
                     if ($state.params) {
                         $scope.selectedItem = angular.copy(CertificateService.getCertificateById($state.params.id, $state.params.mode));
 

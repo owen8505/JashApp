@@ -47,7 +47,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
             case DEFAULT_VALUES.ITEM_STATES.EDIT.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.EDIT.title;
 
-                if ($scope.creditsLoaded){
+                if ($rootScope.creditsLoaded){
                     if ($state.params) {
                         $scope.selectedItem = angular.copy(CreditService.getCreditById($state.params.id, $state.params.mode));
 

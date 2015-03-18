@@ -54,6 +54,7 @@
                     managers.push(manager);
                 }
 
+               $rootScope.managersLoaded = true;
                $rootScope.$broadcast('initDataLoaded');
                 
             },

@@ -13,6 +13,11 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     $rootScope.creditsLoaded = false;
     $rootScope.invoicesLoaded = false;
 
+    $rootScope.managersLoaded = false;
+    $rootScope.parcelsLoaded = false;
+    $rootScope.zonesLoaded = false;
+    $rootScope.statusesLoaded = false;
+
     $scope.CERTIFICATE_STATUS = DEFAULT_VALUES.CERTIFICATE_STATUS;
     $scope.CREDIT_STATUS = DEFAULT_VALUES.CREDIT_STATUS;
 
@@ -74,7 +79,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
 
     // Listener que revisa si toda la información inicial requerida ya fue obtenida
     $scope.$on('initDataLoaded', function () {
-        if($scope.managers && $scope.parcels && $scope.zones && $scope.statuses) {
+        if($rootScope.managersLoaded && $rootScope.parcelsLoaded && $rootScope.zonesLoaded && $rootScope.statusesLoaded) {
             $rootScope.initDataLoaded = true;
             usSpinnerService.stop('main-spinner');
 
