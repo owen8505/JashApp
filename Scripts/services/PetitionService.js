@@ -1,13 +1,13 @@
-Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore", "$state", "$timeout", "ContextService", "StatusService", "usSpinnerService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, $state, $timeout, ContextService, StatusService, usSpinnerService, DEFAULT_VALUES) {
+Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$state", "$timeout", "ContextService", "StatusService", "usSpinnerService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, $state, $timeout, ContextService, StatusService, usSpinnerService, DEFAULT_VALUES) {
 
-    var certificates = [];
-    var lastCertificates = [];
+    var petitions = [];
+    var lastPetitions = [];
     var warningList = [];    
     var SPWeb, context, appContext, list, libraries, mailList, documentsTotal, documentsProcessed;
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
-        var days = DEFAULT_VALUES.DELIVERY_RANGES.CERTIFICATE;
+        var days = DEFAULT_VALUES.DELIVERY_RANGES.PETITION;
 
         while (days > 0) {
             copyDate = copyDate.add(1, 'days');
@@ -20,55 +20,56 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         return copyDate;
     };
 
-    var getCertificateById = function (certificateId, mode) {
-        var certificate = undefined;
-        var certificatesArray = [];
+    var getPetitionById = function (petitionId, mode) {
+        var petition = undefined;
+        var petitionsArray = [];
 
         switch(mode) {
             case 'all':
-                certificatesArray = certificates;
+                petitionsArray = petitions;
                 break;
             case 'last':
-                certificatesArray = lastCertificates;
+                petitionsArray = lastPetitions;
                 break;
             default:
                 break;
         }
 
-        for (var certificateIndex = 0; certificateIndex < certificatesArray.length; certificateIndex++) {
-            if (certificatesArray[certificateIndex].id == certificateId) {
-                certificate = certificatesArray[certificateIndex];
+        for (var petitionIndex = 0; petitionIndex < petitionsArray.length; petitionIndex++) {
+            if (petitionsArray[petitionIndex].id == petitionId) {
+                petition = petitionsArray[petitionIndex];
                 break;
             }
         }
-        return certificate;
+
+        return petition;
     };
 
-    var deleteCertificateById = function (certificateId, mode) {
-        var certificate = undefined;
-        var certificatesArray = [];
+    var deletePetitionById = function (petitionId, mode) {
+        var petition = undefined;
+        var petitionsArray = [];
 
         switch (mode) {
             case 'all':
-                certificatesArray = certificates;
+                petitionsArray = petitions;
                 break;
             case 'last':
-                certificatesArray = lastCertificates;
+                petitionsArray = lastPetitions;
                 break;
             default:
                 break;
         }
-        for (var certificateIndex = 0; certificateIndex < certificatesArray.length; certificateIndex++) {
+        for (var petitionIndex = 0; petitionIndex < petitionsArray.length; petitionIndex++) {
 
-            if (certificatesArray[certificateIndex].id == certificateId) {
-                certificatesArray.splice(certificateIndex, 1);
+            if (petitionsArray[petitionIndex].id == petitionId) {
+                petitionsArray.splice(petitionIndex, 1);
                 break;
             }
         }
     };
 
-    var getLastCertificates = function (reload) {
-        lastCertificates = [];
+    var getLastPetitions = function (reload) {
+        lastPetitions = [];
 
         var queryString = '<View><Query>' +
                             '<OrderBy>' +
@@ -86,71 +87,75 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                  while (listItemEnumerator.moveNext()) {
                      var item = listItemEnumerator.get_current();
 
-                     var certificate = {
-                         type: 'CERTIFICATE',
+                     var petition = {
+                         type: 'PETITION',
                          id: item.get_id(),
-                         folio: item.get_item('Title'),
-                         creationDate: new moment(item.get_item('Creacion')),
-                         deliveryDate: new moment(item.get_item('Entrega')),
-                         owner: item.get_item('Propietario'),
-                         inscription: item.get_item('Inscripcion'),
-                         description: item.get_item('Descripcion'),
+                         contractNumber: item.get_item('Title'),
+                         defendant: item.get_item('Demandado'),
+                         court: item.get_item('Juzgado'),
+                         record: item.get_item('Expediente'),
                          lawyer: item.get_item('Abogado'),
+                         municipality: item.get_item('Municipio'),
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
+                         presentationDate: new moment(item.get_item('Presentacion')),
+                         petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
                          zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                          manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          payment: item.get_item('Pagado'),
-                         received: item.get_item('Recibido'),
-                         delivered: item.get_item('Entregado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         received: item.get_item('Recibido'),
+                         deliveryDate: new moment(item.get_item('Entrega')),
+                         delivered: item.get_item('Entregado'),
+                         creationDate: new moment(item.get_item('Creacion'))
                      };
 
                      var anomalyNowDate = moment().startOf('day');
 
-                     if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= 1 && !certificate.delivered){
+                     if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
                          // Si ya se pasó la fecha de entrega y no hemos generado el certificado
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
                              message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
                          }
-                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
+                     } else if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= -5 && !petition.delivered){
                          // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
                              message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
                          }
-                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
+                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 1 && !petition.manager){
                          // Si ya pasó un día y no hemos asignado un gestor
 
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene ningún gestor asignado.'
                          }
-                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 2 && !certificate.committedDate){
+                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 2 && !petition.committedDate){
                          // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene una fecha comprometida.'
                          }
-                     } else if(certificate.committedDate && anomalyNowDate.diff(angular.copy(certificate.committedDate).startOf('day'), 'days') >= 0 && !certificate.trackingNumber){
+                     } else if(petition.committedDate && anomalyNowDate.diff(angular.copy(petition.committedDate).startOf('day'), 'days') >= 0 && !petition.trackingNumber){
                          // Si ya es la fecha comprometida y no hay datos de envío
 
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'Aun no se cuenta con una guía de envío de los documentos.'
                          }
                      }
 
-                     certificate.attachments = getDocuments(libraries.attachments, certificate);
-                     certificate.documents = getDocuments(libraries.documents, certificate);
-                     lastCertificates.push(certificate);
+                     petition.attachments = getDocuments(libraries.attachments, petition);
+                     petition.documents = getDocuments(libraries.documents, petition);
+                     lastPetitions.push(petition);
                  }
 
-                 $rootScope.$broadcast('certificatesLoaded', reload);
+                 $rootScope.$broadcast('petitionsLoaded', reload);
                  $rootScope.$broadcast('applyChanges');
 
              },
@@ -159,12 +164,12 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             }
         );
 
-        return lastCertificates;
+        return lastPetitions;
     };
 
-    var getAllCertificates = function (reload) {
+    var getAllPetitions = function (reload) {
 
-        certificates = [];
+        petitions = [];
         var queryCAML = '';
         var items = list.getItems(queryCAML);
 
@@ -175,71 +180,75 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                  while (listItemEnumerator.moveNext()) {
                      var item = listItemEnumerator.get_current();
 
-                     var certificate = {
-                         type: 'CERTIFICATE',
+                     var petition = {
+                         type: 'PETITION',
                          id: item.get_id(),
-                         folio: item.get_item('Title'),
-                         creationDate: new moment(item.get_item('Creacion')),
-                         deliveryDate: new moment(item.get_item('Entrega')),
-                         owner: item.get_item('Propietario'),
-                         inscription: item.get_item('Inscripcion'),
-                         description: item.get_item('Descripcion'),
+                         contractNumber: item.get_item('Title'),
+                         defendant: item.get_item('Demandado'),
+                         court: item.get_item('Juzgado'),
+                         record: item.get_item('Expediente'),
                          lawyer: item.get_item('Abogado'),
+                         municipality: item.get_item('Municipio'),
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
+                         presentationDate: new moment(item.get_item('Presentacion')),
+                         petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
                          zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
                          manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          payment: item.get_item('Pagado'),
-                         received: item.get_item('Recibido'),
-                         delivered: item.get_item('Entregado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         received: item.get_item('Recibido'),
+                         deliveryDate: new moment(item.get_item('Entrega')),
+                         delivered: item.get_item('Entregado'),
+                         creationDate: new moment(item.get_item('Creacion'))
                      };
 
                      var anomalyNowDate = moment().startOf('day');
 
-                     if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= 1 && !certificate.delivered){
+                     if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
                          // Si ya se pasó la fecha de entrega y no hemos generado el certificado
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
                              message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
                          }
-                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
+                     } else if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= -5 && !petition.delivered){
                          // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
                              message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
                          }
-                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
+                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 1 && !petition.manager){
                          // Si ya pasó un día y no hemos asignado un gestor
 
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene ningún gestor asignado.'
                          }
-                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 2 && !certificate.committedDate){
+                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 2 && !petition.committedDate){
                          // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'El certificado aun no tiene una fecha comprometida.'
                          }
-                     } else if(certificate.committedDate && anomalyNowDate.diff(angular.copy(certificate.committedDate).startOf('day'), 'days') >= 0 && !certificate.trackingNumber){
+                     } else if(petition.committedDate && anomalyNowDate.diff(angular.copy(petition.committedDate).startOf('day'), 'days') >= 0 && !petition.trackingNumber){
                          // Si ya es la fecha comprometida y no hay datos de envío
 
-                         certificate.anomaly = {
+                         petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
                              message: 'Aun no se cuenta con una guía de envío de los documentos.'
                          }
                      }
 
-                     certificate.attachments = getDocuments(libraries.attachments, certificate);
-                     certificate.documents = getDocuments(libraries.documents, certificate);
-                     certificates.push(certificate);
+                     petition.attachments = getDocuments(libraries.attachments, petition);
+                     petition.documents = getDocuments(libraries.documents, petition);
+                     petitions.push(petition);
                  }
 
-                 $rootScope.$broadcast('certificatesLoaded', reload);
+                 $rootScope.$broadcast('petitionsLoaded', reload);
                  $rootScope.$broadcast('applyChanges');
              },
             function (response, args) {
@@ -247,17 +256,17 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             }
         );
 
-        return certificates;
+        return petitions;
     };
 
-    var getDocuments = function (library, certificate) {
+    var getDocuments = function (library, petition) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
             "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
-            "&$filter=Folio eq '" + certificate.id + "'" +
+            "&$filter=Folio eq '" + petition.id + "'" +
             "&$expand=File";
 
         var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -283,7 +292,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                         documents.push(document);
                     });
 
-                    certificate[library.loadedName] = true;
+                    petition[library.loadedName] = true;
                 },
                 error: function (response) {
                     console.log(response);
@@ -294,10 +303,10 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
 
     };
 
-    var processDocuments = function (certificate) {
+    var processDocuments = function (petition) {
 
         // Variable que lleva el conteo de cuantos documentos vamos a procesar
-        documentsTotal = certificate.attachments.length + certificate.documents.length;
+        documentsTotal = petition.attachments.length + petition.documents.length;
 
         // Variable que lleva el conteo de cuantos documentos han sido procesados
         documentsProcessed = 0;
@@ -305,30 +314,30 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         if (documentsTotal == 0) {
             isDocumentsProcessComplete();
         } else {
-            angular.forEach(certificate.attachments, function(document){
+            angular.forEach(petition.attachments, function(document){
                 if (document.removed == 1) {
-                    deleteDocument(libraries.attachments, certificate, document);
+                    deleteDocument(libraries.attachments, petition, document);
                 } else if (document.fileId == 0) {
-                    saveDocument(libraries.attachments, certificate, document);
+                    saveDocument(libraries.attachments, petition, document);
                 } else {
-                    updateDocument(libraries.attachments, certificate, document);
+                    updateDocument(libraries.attachments, petition, document);
                 }
             });
 
-            angular.forEach(certificate.documents, function(document){
+            angular.forEach(petition.documents, function(document){
                 if (document.removed == 1) {
-                    deleteDocument(libraries.documents, certificate, document);
+                    deleteDocument(libraries.documents, petition, document);
                 } else if (document.fileId == 0) {
-                    saveDocument(libraries.documents, certificate, document);
+                    saveDocument(libraries.documents, petition, document);
                 } else {
-                    updateDocument(libraries.documents, certificate, document);
+                    updateDocument(libraries.documents, petition, document);
                 }
             });
         }
 
     };
 
-    var saveDocument = function(library, certificate, document) {
+    var saveDocument = function(library, petition, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -376,17 +385,14 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': certificate.id.toString(),
-                                        'Title': document.title,
-                                        'Propietario': certificate.owner,
-                                        'Inscripcion': certificate.inscription,
-                                        'Descripcion': certificate.description
+                                        'Folio': petition.id.toString(),
+                                        'Title': document.title
                                     }
                                 } else {
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': certificate.id.toString(),
+                                        'Folio': petition.id.toString(),
                                         'Title': document.title
                                     }
                                 }
@@ -408,7 +414,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                                             "content-type": "application/json;odata=verbose"
                                         },
                                         success: function (data) {
-                                            var originalElement = getCertificateById(certificate.id, mode);
+                                            var originalElement = getPetitionById(petition.id, mode);
 
                                             var newDocument = {
                                                 fileId: fileId,
@@ -454,7 +460,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         });
     };
 
-    var deleteDocument = function (library, certificate, document) {
+    var deleteDocument = function (library, petition, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -482,10 +488,10 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                             "content-type": "application/json;odata=verbose"
                         },
                         success: function (data) {
-                            var originalElement = getCertificateById(certificate.id, mode);
+                            var originalElement = getPetitionById(petition.id, mode);
 
-                            for(var i=0; i<certificate[library.arrayName].length; i++){
-                                if(certificate[library.arrayName][i].fileId == document.fileId){
+                            for(var i=0; i<petition[library.arrayName].length; i++){
+                                if(petition[library.arrayName][i].fileId == document.fileId){
                                     originalElement[library.arrayName].splice(i, 1);
                                     break;
                                 }
@@ -511,7 +517,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         });
     };
 
-    var updateDocument = function(library, certificate, document) {
+    var updateDocument = function(library, petition, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -529,10 +535,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                     body = {
                         '__metadata': {
                             'type': 'SP.Data.' + libraryItem },
-                        'Title': document.title,
-                        'Propietario': certificate.owner,
-                        'Inscripcion': certificate.inscription,
-                        'Descripcion': certificate.description
+                        'Title': document.title
                     }
                 } else {
                     body = {
@@ -591,42 +594,47 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         }
     };
 
-    var getWarningCertificates = function () {
+    var getWarningPetitions = function () {
         return warningList;
     };
 
-    var createCertificate = function () {
+    var createPetition = function () {
 
         var now = moment().locale('es');
 
-        var certificate = {
+        var petition = {
             id: 0,
-            type: 'CERTIFICATE',            
-            folio: undefined,
-            creationDate: now,
-            deliveryDate: getDeliveryDate(now),
-            owner: undefined,
-            inscription: undefined,
-            description: undefined,
+            type: 'PETITION',
+            contractNumber: undefined,
+            defendant: undefined,
+            court: undefined,
+            record: undefined,
             lawyer: undefined,
-            attachments: [],
+            municipality: undefined,
             status: {id:1, name:'Nuevo'},
+            state: undefined,
+            attachments: [],
+            presentationDate: undefined,
+            petitionNumber: undefined,
+
             zone: undefined,
             manager: undefined,
-            committedDate: undefined,
             cost: undefined,
+            committedDate: undefined,
             payment: false,
-            received: false,
-            delivered: false,
             parcel: undefined,
             trackingNumber: undefined,
-            documents: []
-        };        
+            received: false,
+            documents: [],
+            deliveryDate: getDeliveryDate(now),
+            delivered: false,
+            creationDate: now
+        };
 
-        return certificate;
+        return petition;
     };
 
-    var saveCertificate = function (certificate) {
+    var savePetition = function (petition) {
 
         $timeout(function() {
             usSpinnerService.spin('main-spinner');
@@ -635,30 +643,35 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         var itemInfo = new SP.ListItemCreationInformation();
         var item = list.addItem(itemInfo);
 
-        item.set_item('Title', certificate.folio);
-        item.set_item('Creacion', certificate.creationDate.toISOString());
-        item.set_item('Entrega', certificate.deliveryDate.toISOString());
-        item.set_item('Propietario', certificate.owner);
-        item.set_item('Descripcion', certificate.description);
-        item.set_item('Abogado', certificate.lawyer);
-        item.set_item('Inscripcion', certificate.inscription);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(certificate.status.id));        
+        item.set_item('Title', petition.contractNumber);
+        item.set_item('Demandado', petition.defendant);
+        item.set_item('Juzgado', petition.court);
+        item.set_item('Expediente', petition.record);
+        item.set_item('Abogado', petition.lawyer);
+        item.set_item('Municipio', petition.municipality);
+        item.set_item('Expediente', petition.record);
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(petition.status.id));
+        item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(petition.state.id));
+        item.set_item('Presentacion', petition.presentationDate.toISOString());
+        item.set_item('Numero_x0020_de_x0020_exhorto', petition.petitionNumber);
+        item.set_item('Entrega', petition.deliveryDate.toISOString());
+        item.set_item('Creacion', petition.creationDate.toISOString());
         item.update();
 
         context.load(item);
         context.executeQueryAsync(
             function () {
 
-                if (certificate.id == 0) {
+                if (petition.id == 0) {
 
-                    certificate.id = item.get_id();
-                    processDocuments(certificate);
+                    petition.id = item.get_id();
+                    processDocuments(petition);
 
-                    if (lastCertificates.length > 4) {
-                        lastCertificates.splice(1, 1);
+                    if (lastPetitions.length > 4) {
+                        lastPetitions.splice(1, 1);
                     }
-                    lastCertificates.push(certificate);
-                    certificates.push(certificate);
+                    lastPetitions.push(petition);
+                    petitions.push(petition);
                     
                 }
 
@@ -670,67 +683,77 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                
     };
 
-    var updateCertificate = function (certificate) {
+    var updatePetition = function (petition) {
 
         $timeout(function() {
             usSpinnerService.spin('main-spinner');
         },0);
 
-        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.NEW.CODE);
+        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.CODE);
 
-        if (certificate.delivered) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.DELIVERED.CODE);
-        } else if (certificate.received) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.DOCS_RECEIVED.CODE);
-        } else if (certificate.trackingNumber) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_DOCS.CODE);
-        } else if (certificate.committedDate) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_SHIPPING.CODE);
-        } else if (certificate.manager) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_CONFIRMATION.CODE);
+        if (petition.delivered) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.DELIVERED.CODE);
+        } else if (petition.received) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.DOCS_RECEIVED.CODE);
+        } else if (petition.trackingNumber) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_DOCS.CODE);
+        } else if (petition.committedDate) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_SHIPPING.CODE);
+        } else if (petition.manager) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_CONFIRMATION.CODE);
         } else {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.NEW.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.CODE);
         }
 
-        var item = list.getItemById(certificate.id);
-        item.set_item('Title', certificate.folio);
-        item.set_item('Propietario', certificate.owner);
-        item.set_item('Inscripcion', certificate.inscription);
-        item.set_item('Descripcion', certificate.description);
-        item.set_item('Abogado', certificate.lawyer);
+        var item = list.getItemById(petition.id);
+        item.set_item('Title', petition.contractNumber);
+        item.set_item('Demandado', petition.defendant);
+        item.set_item('Juzgado', petition.court);
+        item.set_item('Expediente', petition.record);
+        item.set_item('Abogado', petition.lawyer);
+        item.set_item('Municipio', petition.municipality);
+        item.set_item('Expediente', petition.record);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
-        item.set_item('Region', new SP.FieldLookupValue().set_lookupId((certificate.zone ? certificate.zone.id : undefined )));
-        item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((certificate.manager ? certificate.manager.id : undefined )));
-        item.set_item('Comprometida', (certificate.committedDate ? certificate.committedDate.toISOString() : undefined ));
-        item.set_item('Costo', (certificate.cost ? certificate.cost : undefined ));
-        item.set_item('Pagado', certificate.payment);
-        item.set_item('Recibido', certificate.received);
-        item.set_item('Entregado', certificate.delivered);
-        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((certificate.parcel ? certificate.parcel.id : undefined )));
-        item.set_item('Guia', certificate.trackingNumber);
+        item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(petition.state.id));
+        item.set_item('Presentacion', (petition.presentationDate ? petition.presentationDate.toISOString() : undefined ));
+        item.set_item('Numero_x0020_de_x0020_exhorto', petition.petitionNumber);
+        item.set_item('Region', new SP.FieldLookupValue().set_lookupId((petition.zone ? petition.zone.id : undefined )));
+        item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((petition.manager ? petition.manager.id : undefined )));
+        item.set_item('Costo', (petition.cost ? petition.cost : undefined ));
+        item.set_item('Comprometida', (petition.committedDate ? petition.committedDate.toISOString() : undefined ));
+        item.set_item('Pagado', petition.payment);
+        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((petition.parcel ? petition.parcel.id : undefined )));
+        item.set_item('Guia', petition.trackingNumber);
+        item.set_item('Recibido', petition.received);
+        item.set_item('Entregado', petition.delivered);
         item.update();
 
         context.load(item);
         context.executeQueryAsync(
             function () {
-                var originalElement = getCertificateById(certificate.id, $state.params.mode);
-                originalElement.folio = certificate.folio;
-                originalElement.owner = certificate.owner;
-                originalElement.inscription = certificate.inscription;
-                originalElement.description = certificate.description;
-                originalElement.lawyer = certificate.lawyer;
-                originalElement.status = certificate.status;
-                originalElement.zone = certificate.zone;
-                originalElement.manager = certificate.manager;
-                originalElement.committedDate = certificate.committedDate;
-                originalElement.cost = certificate.cost;
-                originalElement.payment = certificate.payment;
-                originalElement.received = certificate.received;
-                originalElement.delivered = certificate.delivered;
-                originalElement.parcel = certificate.parcel;
-                originalElement.trackingNumber = certificate.trackingNumber;
+                var originalElement = getPetitionById(petition.id, $state.params.mode);
 
-                processDocuments(certificate);
+                originalElement.contractNumber = petition.contractNumber;
+                originalElement.defendant = petition.defendant;
+                originalElement.court = petition.court;
+                originalElement.record = petition.record;
+                originalElement.lawyer = petition.lawyer;
+                originalElement.municipality = petition.municipality;
+                originalElement.status = petition.municipality;
+                originalElement.state = petition.state;
+                originalElement.presentationDate = petition.presentationDate;
+                originalElement.petitionNumber = petition.petitionNumber;
+                originalElement.zone = undefined;
+                originalElement.manager = undefined;
+                originalElement.cost = undefined;
+                originalElement.committedDate = undefined;
+                originalElement.payment = false;
+                originalElement.parcel = undefined;
+                originalElement.trackingNumber = undefined;
+                originalElement.received = false;
+                originalElement.delivered = false;
+
+                processDocuments(petition);
 
             },
 
@@ -740,27 +763,27 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         );
     };
 
-    var deleteCertificate = function (certificate) {
+    var deletePetition = function (petition) {
 
         $timeout(function () {
             usSpinnerService.spin('main-spinner');
         }, 0);
 
-        var item = list.getItemById(certificate.id);
+        var item = list.getItemById(petition.id);
         item.deleteObject();
 
         context.executeQueryAsync(
            function () {
-               angular.forEach(certificate.attachments, function (document) {
+               angular.forEach(petition.attachments, function (document) {
                    document.removed = 1;
                });
 
-               angular.forEach(certificate.documents, function (document) {
+               angular.forEach(petition.documents, function (document) {
                    document.removed = 1;
                });
 
-               processDocuments(certificate);
-               deleteCertificateById(certificate.id);
+               processDocuments(petition);
+               deletePetitionById(petition.id);
 
            },
 
@@ -796,18 +819,18 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         SPWeb = ContextService.getSpWeb();
         context = new SP.ClientContext(SPWeb.appWebUrl);
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
-        list = appContext.get_web().get_lists().getByTitle('Certificados');
+        list = appContext.get_web().get_lists().getByTitle('Exhortos');
         mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
         libraries = {
             attachments: {
                 type: 'attachment',
-                name: 'Adjuntos de certificados',
+                name: 'Adjuntos de exhortos',
                 arrayName: 'attachments',
                 loadedName: 'attachmentsLoaded'
             },
             documents: {
                 type: 'document',
-                name: 'Biblioteca de certificados',
+                name: 'Biblioteca de exhortos',
                 arrayName: 'documents',
                 loadedName: 'documentsLoaded'
             }
@@ -817,14 +840,14 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
     init();
 
     return {
-        createCertificate : createCertificate,
-        getAllCertificates: getAllCertificates,
-        getLastCertificates: getLastCertificates,
-        getWarningCertificates: getWarningCertificates,
-        getCertificateById: getCertificateById,
-        updateCertificate: updateCertificate,
-        saveCertificate: saveCertificate,
-        deleteCertificate: deleteCertificate,
+        createPetition : createPetition,
+        getAllPetitions: getAllPetitions,
+        getLastPetitions: getLastPetitions,
+        getWarningPetitions: getWarningPetitions,
+        getPetitionById: getPetitionById,
+        updatePetition: updatePetition,
+        savePetition: savePetition,
+        deletePetition: deletePetition,
         sendMail: sendMail
     }
 

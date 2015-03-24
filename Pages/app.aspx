@@ -104,6 +104,7 @@
     <script src="../Scripts/controllers/InvoiceController.js"></script>
     <script src="../Scripts/controllers/ManagerController.js"></script>
     <script src="../Scripts/controllers/ParcelController.js"></script>
+    <script src="../Scripts/controllers/PetitionController.js"></script>
     <script src="../Scripts/controllers/UserController.js"></script>
     <script src="../Scripts/controllers/ZoneController.js"></script>
 
@@ -114,7 +115,9 @@
     <script src="../Scripts/services/InvoiceService.js"></script>
     <script src="../Scripts/services/ManagerService.js"></script>
     <script src="../Scripts/services/ParcelService.js"></script>
+    <script src="../Scripts/services/PetitionService.js"></script>
     <script src="../Scripts/services/SearchService.js"></script>
+    <script src="../Scripts/services/StateService.js"></script>
     <script src="../Scripts/services/StatusService.js"></script>
     <script src="../Scripts/services/UserService.js"></script>
     <script src="../Scripts/services/ZoneService.js"></script>

@@ -1,6 +1,6 @@
 'use strict';
 
-Jash.controller('DashboardController',['$scope','$rootScope', 'CertificateService', 'CreditService', 'DEFAULT_VALUES' ,function($scope, $rootScope, CertificateService, CreditService, DEFAULT_VALUES){
+Jash.controller('DashboardController',['$scope','$rootScope', 'CertificateService', 'CreditService', 'PetitionService', 'DEFAULT_VALUES' ,function($scope, $rootScope, CertificateService, CreditService, PetitionService, DEFAULT_VALUES){
 
     // Catálogo de subsecciones de la aplicación
     $scope.SUBSECTIONS = DEFAULT_VALUES.SUBSECTIONS;
@@ -32,6 +32,9 @@ Jash.controller('DashboardController',['$scope','$rootScope', 'CertificateServic
 
         $scope.lastCredits = [];
         $scope.lastCredits = CreditService.getLastCredits();
+
+        $scope.lastPetitions = [];
+        $scope.lastPetitions = PetitionService.getLastPetitions();
     };
 
     $scope.initController();

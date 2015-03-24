@@ -39,12 +39,12 @@
                 <li><h3>Derechos</h3></li>
                 <li>
                     <label for="certificate-cost">Costo de derechos:</label>
-                    <span class="third-width"><input id="certificate-cost" type="text" placeholder="$1,200.00" class="form-control" ng-model="selectedItem.cost" ng-currency></span>
+                    <span class="third-width"><input id="certificate-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng-currency></span>
                 </li>
                 <li>
-                    <label for="credit-committed-date">Fecha comprometida por el gestor:</label>
+                    <label for="certificate-committed-date">Fecha comprometida por el gestor:</label>
                     <quick-datepicker ng-model='committedDate' label-format="dd/MM/yyyy" on-change="setCommittedDate(committedDate)" placeholder="Selecciona una fecha"></quick-datepicker>
-                    <div id="credit-committed-date" ng-if="selectedItem.committedDate">{{ selectedItem.committedDate | formatDate }}</div>
+                    <div id="certificate-committed-date" ng-if="selectedItem.committedDate">{{ selectedItem.committedDate | formatDate }}</div>
                 </li>
                 <li>
                     <label for="certificate-payment">Pago de derechos:</label>
@@ -63,7 +63,7 @@
                     </span>
                 </li>
                 <li>
-                    <label for="certificate-cost">Guía:</label>
+                    <label for="certificate-tracking">Guía:</label>
                     <span class="third-width"><input id="certificate-tracking" type="text" placeholder="Ej. 1087652649" class="form-control" ng-model="selectedItem.trackingNumber"></span>
                 </li>
                 <li>

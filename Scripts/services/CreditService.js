@@ -115,8 +115,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         received: item.get_item('Recibido'),
                         delivered: item.get_item('Entregado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                        cashed: item.get_item('Cobrado')
+                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
                     };
 
                     var anomalyNowDate = moment().startOf('day');
@@ -214,8 +213,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         received: item.get_item('Recibido'),
                         delivered: item.get_item('Entregado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                        cashed: item.get_item('Cobrado')
+                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
                     };
 
                     var anomalyNowDate = moment().startOf('day');
@@ -651,8 +649,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             delivered: false,
             parcel: undefined,
             trackingNumber: undefined,
-            documents: [],
-            cashed: false
+            documents: []
         };
 
         return credit;
@@ -719,9 +716,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
         var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.NEW.CODE);
 
-        if (credit.cashed) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.CASHED.CODE);
-        } else if (credit.delivered) {
+        if (credit.delivered) {
             newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.DELIVERED.CODE);
         } else if (credit.received) {
             newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.DOCS_RECEIVED.CODE);
@@ -739,8 +734,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Title', credit.folio);
         item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
         item.set_item('Abogado', credit.lawyer);
-        item.set_item('Creacion', (credit.creationDate ? credit.creationDate.toISOString() : undefined ));
-        item.set_item('Entrega', (credit.deliveryDate ? credit.deliveryDate.toISOString() : undefined ));
         item.set_item('Propietario', credit.owner);
         item.set_item('RPP', credit.rpp);
         item.set_item('Direccion_x0020_de_x0020_acredit', credit.ownerAddress);
@@ -756,13 +749,12 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Region', new SP.FieldLookupValue().set_lookupId((credit.zone ? credit.zone.id : undefined )));
         item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((credit.manager ? credit.manager.id : undefined )));
         item.set_item('Comprometida', (credit.committedDate ? credit.committedDate.toISOString() : undefined ));
-        item.set_item('Costo', credit.cost);
+        item.set_item('Costo', (credit.cost ? credit.cost : undefined ));
         item.set_item('Pagado', credit.payment);
         item.set_item('Recibido', credit.received);
         item.set_item('Entregado', credit.delivered);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((credit.parcel ? credit.parcel.id : undefined )));
         item.set_item('Guia', credit.trackingNumber);
-        item.set_item('Cobrado', credit.cashed);
         item.update();
 
         context.load(item);
@@ -772,8 +764,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.folio = credit.folio;
                 originalElement.contractNumber = credit.contractNumber;
                 originalElement.lawyer = credit.lawyer;
-                originalElement.creationDate = credit.creationDate;
-                originalElement.deliveryDate = credit.deliveryDate;
                 originalElement.owner = credit.owner;
                 originalElement.rpp = credit.rpp;
                 originalElement.ownerAddress = credit.ownerAddress;
@@ -795,7 +785,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.delivered = credit.delivered;
                 originalElement.parcel = credit.parcel;
                 originalElement.trackingNumber = credit.trackingNumber;
-                originalElement.cashed = credit.cashed;
 
                 processDocuments(credit);
 

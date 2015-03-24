@@ -38,7 +38,8 @@
             },
             DELIVERY_RANGES: {
                 CERTIFICATE: 10,
-                CREDIT: 10
+                CREDIT: 10,
+                PETITION: 30
             },
             CERTIFICATE_STATUS: {
                 NEW: {CODE: 1, NAME: 'Nuevo'},
@@ -46,8 +47,7 @@
                 WAITING_SHIPPING: {CODE: 3, NAME: 'En espera de envío'},
                 WAITING_DOCS: {CODE: 4, NAME: 'En espera de documentos'},
                 DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
-                DELIVERED: {CODE: 6, NAME: 'Entregado'},
-                CASHED: {CODE: 7, NAME: 'Cobrado'}
+                DELIVERED: {CODE: 6, NAME: 'Entregado'}
             },
             CREDIT_STATUS: {
                 NEW: {CODE: 1, NAME: 'Nuevo'},
@@ -55,8 +55,15 @@
                 WAITING_SHIPPING: {CODE: 3, NAME: 'En espera de envío'},
                 WAITING_DOCS: {CODE: 4, NAME: 'En espera de documentos'},
                 DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
-                DELIVERED: {CODE: 6, NAME: 'Entregado'},
-                CASHED: {CODE: 7, NAME: 'Cobrado'}
+                DELIVERED: {CODE: 6, NAME: 'Entregado'}
+            },
+            PETITION_STATUS: {
+                NEW: {CODE: 1, NAME: 'Nuevo'},
+                WAITING_CONFIRMATION: {CODE: 2, NAME: 'En espera de confirmación'},
+                WAITING_SHIPPING: {CODE: 3, NAME: 'En espera de envío'},
+                WAITING_DOCS: {CODE: 4, NAME: 'En espera de documentos'},
+                DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
+                DELIVERED: {CODE: 6, NAME: 'Entregado'}
             },
             ANOMALY_STATUS: {
                 WARNING: 'indicator-yellow',
@@ -130,6 +137,29 @@
                 templateUrl: 'partials/credits_partial.list.html',
                 title: 'Créditos',
                 settings: { section: 'Lista de Créditos' },
+                state: 4
+            }).state('petitions', {
+                url: '/petitions',
+                templateUrl: 'partials/petitions_partial.html',
+                title: 'Exhortos',
+                settings: { section: 'Exhortos' }
+            }).state('petitions.new', {
+                url: '/:mode/new',
+                templateUrl: 'partials/petitions_partial.new.html',
+                title: 'Exhortos',
+                settings: { section: 'Nuevo Exhorto' },
+                state: 1
+            }).state('petitions.edit', {
+                url: '/:id/:mode/edit',
+                templateUrl: 'partials/petitions_partial.edit.html',
+                title: 'Exhortos',
+                settings: { section: 'Editar Exhorto' },
+                state: 3
+            }).state('petitions.list', {
+                url: '/list',
+                templateUrl: 'partials/petitions_partial.list.html',
+                title: 'Exhortos',
+                settings: { section: 'Lista de Exhortos' },
                 state: 4
             }).state('users', {
                 url: '/users',

@@ -24,10 +24,6 @@
     <label for="certificate-inscription">Inscripción: <em class="mandatory-field">*</em></label>
     <input id="certificate-inscription" type="text" class="form-control" placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true">
 </li>
-<li ng-if="selectedItem.status.code == 2">
-    <label for="certificate-committed-date">Fecha comprometida por el gestor:</label>
-    <input id="certificate-committed-date" type="text" class="form-control" ng-model="selectedItem.committedDate" readonly>
-</li>
 <li>
     <label for="certificate-owner">Propietario: <em class="mandatory-field">*</em></label>
     <input id="certificate-owner" type="text" class="form-control" class="form-control" placeholder="Ej. Ricardo Rosas" ng-model="selectedItem.owner" required="true">

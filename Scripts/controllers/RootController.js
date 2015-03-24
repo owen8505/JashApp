@@ -2,7 +2,7 @@
 
 var Jash = angular.module('Jash');
 
-Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout', 'ContextService', 'ManagerService', 'ParcelService', 'StatusService', 'ZoneService', 'SearchService', 'UserService', 'CertificateService', 'usSpinnerService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $timeout, ContextService, ManagerService, ParcelService, StatusService, ZoneService, SearchService, UserService, CertificateService, usSpinnerService, DEFAULT_VALUES) {
+Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout', 'ContextService', 'ManagerService', 'ParcelService', 'StateService', 'StatusService', 'ZoneService', 'SearchService', 'UserService', 'CertificateService', 'usSpinnerService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $timeout, ContextService, ManagerService, ParcelService, StateService, StatusService, ZoneService, SearchService, UserService, CertificateService, usSpinnerService, DEFAULT_VALUES) {
     $scope.spWeb,
     $scope.manager, $scope.warningList, $scope.certificates, $scope.credits;
     $scope.searchParams = '';
@@ -17,9 +17,11 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     $rootScope.parcelsLoaded = false;
     $rootScope.zonesLoaded = false;
     $rootScope.statusesLoaded = false;
+    $rootScope.statesLoaded = false;
 
     $scope.CERTIFICATE_STATUS = DEFAULT_VALUES.CERTIFICATE_STATUS;
     $scope.CREDIT_STATUS = DEFAULT_VALUES.CREDIT_STATUS;
+    $scope.PETITION_STATUS = DEFAULT_VALUES.PETITION_STATUS;
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;
@@ -79,7 +81,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
 
     // Listener que revisa si toda la información inicial requerida ya fue obtenida
     $scope.$on('initDataLoaded', function () {
-        if($rootScope.managersLoaded && $rootScope.parcelsLoaded && $rootScope.zonesLoaded && $rootScope.statusesLoaded) {
+        if($rootScope.managersLoaded && $rootScope.parcelsLoaded && $rootScope.zonesLoaded && $rootScope.statusesLoaded && $rootScope.statesLoaded) {
             $rootScope.initDataLoaded = true;
             usSpinnerService.stop('main-spinner');
 
@@ -99,6 +101,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
         $scope.parcels = ParcelService.getAllParcels();
         $scope.zones = ZoneService.getAllZones();
         $scope.statuses = StatusService.getAllStatuses();
+        $scope.states = StateService.getAllStates();
         $scope.users = UserService.getAllUsers();
         $scope.warningList = CertificateService.getWarningCertificates();
 

@@ -52,5 +52,8 @@
     <ProjectItemFile Source="services\UserService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="controllers\InvoiceController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="services\InvoiceService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="controllers\PetitionController.js" Target="Scripts\controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="services\StateService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="services\PetitionService.js" Target="Scripts\services\" Type="ElementFile" />
   </Files>
 </ProjectItem>

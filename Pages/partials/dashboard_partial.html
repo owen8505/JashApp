@@ -113,4 +113,45 @@
         </div>
     </div>
 
+    <!-- Sección de exhortos -->
+    <div class="section" ng-controller="PetitionController as petitionCrtl" ng-if="isCurrentSubsection(SUBSECTIONS[SUBSECTION.ALL]) || isCurrentSubsection(SUBSECTIONS[SUBSECTION.PETITIONS])">
+        <div class="last-petitions-section">
+            <h4 class="subtitle-section">Exhortos</h4>
+            <div>
+                <div class="unavailable-message" ng-if="!lastPetitions.length">
+                    Por el momento no hay elementos que requieran atención inmediata
+                </div>
+                <div ng-if="lastPetitions.length">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>No. de contrato</th>
+                                <th>Demandado</th>
+                                <th>Juzgado</th>
+                                <th>Expediente</th>
+                                <th>Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="petition in lastPetitions | limitTo: 5 ">
+                                <td class="folio"><span ng-class="{true:petition.anomaly.status, false:'indicator-green'}[petition.anomaly != undefined]"></span> <a ui-sref="petitions.edit({id:petition.id, mode:'last'})">{{ petition.id }}</a></td>
+                                <td>{{ petition.contractNumber }}</td>
+                                <td>{{ petition.defendant }}</td>
+                                <td>{{ petition.court }}</td>
+                                <td>{{ petition.record }}</td>
+                                <td>{{ petition.status.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="action-button-holder">
+                <a ui-sref="petitions.list" class="btn btn-default" title="Ver más...">Ver más...</a>
+                <a ui-sref="petitions.new({mode:'last'})" class="btn btn-default" title="Nuevo Exhorto" ng-click="createPetition()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+            </div>
+        </div>
+    </div>
+
 </section>
