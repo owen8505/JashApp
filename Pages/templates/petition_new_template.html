@@ -26,18 +26,18 @@
 </li>
 <li>
     <label for="petition-court">Juzgado: <em class="mandatory-field">*</em></label>
-    <input id="petition-court" type="text" class="form-control" class="form-control" placeholder="Ej. ???" ng-model="selectedItem.court" required="true">
+    <input id="petition-court" type="text" class="form-control" class="form-control" placeholder="Ej. 14 de lo civil" ng-model="selectedItem.court" required="true">
 </li>
 <li>
     <label for="petition-record">Expediente: <em class="mandatory-field">*</em></label>
-    <input id="petition-record" type="text" class="form-control" class="form-control" placeholder="Ej. ???" ng-model="selectedItem.record" required="true">
+    <input id="petition-record" type="text" class="form-control" class="form-control" placeholder="Ej. 230/2015" ng-model="selectedItem.record" required="true">
 </li>
 <li>
     <label for="petition-municipality">Municipio: <em class="mandatory-field">*</em></label>
-    <input id="petition-municipality" type="text" class="form-control" class="form-control" placeholder="Ej. ???" ng-model="selectedItem.municipality" required="true">
+    <input id="petition-municipality" type="text" class="form-control" class="form-control" placeholder="Ej. Acapulco" ng-model="selectedItem.municipality" required="true">
 </li>
 <li>
-    <label for="petition-state">Estado:</label>
+    <label for="petition-state">Estado: <em class="mandatory-field">*</em></label>
     <span class="third-width">
         <button id="petition-state" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="statesDropdown">
             <span ng-if="!selectedItem.state">Selecciona un estado</span><span ng-if="selectedItem.state">{{ selectedItem.state.name }}</span>
@@ -53,15 +53,6 @@
     <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
 </li>
 <li>
-    <label for="petition-presentation">Fecha de presentación:</label>
-    <quick-datepicker ng-model='presentationDate' label-format="dd/MM/yyyy" on-change="setPresentationDate(presentationDate)" placeholder="Selecciona una fecha"></quick-datepicker>
-    <div id="petition-presentation" ng-if="selectedItem.presentationDate">{{ selectedItem.presentationDate | formatDate }}</div>
-</li>
-<li>
-    <label for="petition-number">No. de exhorto: <em class="mandatory-field">*</em></label>
-    <input id="petition-number" type="text" class="form-control" class="form-control" placeholder="00789876545678987654" ng-model="selectedItem.petitionNumber" required="true">
-</li>
-<li>
     <label for="petition-lawyer">Abogado:</label>
-    <input id="petition-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer" required="true">
+    <input id="petition-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer">
 </li>

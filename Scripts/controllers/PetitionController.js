@@ -32,7 +32,7 @@ Jash.controller('PetitionController', ['$scope', '$rootScope', '$state', '$popov
     });
 
     $scope.$on('itemUpdated', function () {
-        $scope.historyBack('patitions.list');
+        $scope.historyBack('petitions.list');
     });
 
     $scope.initController = function () {

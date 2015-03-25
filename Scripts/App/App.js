@@ -59,10 +59,7 @@
             },
             PETITION_STATUS: {
                 NEW: {CODE: 1, NAME: 'Nuevo'},
-                WAITING_CONFIRMATION: {CODE: 2, NAME: 'En espera de confirmación'},
-                WAITING_SHIPPING: {CODE: 3, NAME: 'En espera de envío'},
-                WAITING_DOCS: {CODE: 4, NAME: 'En espera de documentos'},
-                DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
+                WAITING_COMMITED_DATE: {CODE: 8, NAME: 'En espera de fecha'},
                 DELIVERED: {CODE: 6, NAME: 'Entregado'}
             },
             ANOMALY_STATUS: {

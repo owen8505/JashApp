@@ -96,57 +96,37 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          record: item.get_item('Expediente'),
                          lawyer: item.get_item('Abogado'),
                          municipality: item.get_item('Municipio'),
-                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                          state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
-                         presentationDate: new moment(item.get_item('Presentacion')),
+                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         presentationDate: (item.get_item('Presentacion')) ? new moment(item.get_item('Presentacion')) : undefined,
+                         assignedCourt: item.get_item('Juzgado_x0020_asignado'),
                          petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
-                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
-                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
-                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
-                         payment: item.get_item('Pagado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
                          delivered: item.get_item('Entregado'),
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                         comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
                      };
+
+                     console.log(petition);
 
                      var anomalyNowDate = moment().startOf('day');
 
                      if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
-                         // Si ya se pasó la fecha de entrega y no hemos generado el certificado
+                         // Si ya se pasó la fecha de entrega y no hemos entregado el exhorto
                          petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
+                             message: 'La fecha de entrega expiró y el exhorto no ha sido enviado.'
                          }
-                     } else if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= -5 && !petition.delivered){
-                         // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
-                         }
-                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 1 && !petition.manager){
-                         // Si ya pasó un día y no hemos asignado un gestor
+                     }  else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 5 && !petition.committedDate){
+                         // Si ya pasaron cinco días y no hemos asignado una fecha de diligencia
 
                          petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El certificado aun no tiene ningún gestor asignado.'
-                         }
-                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 2 && !petition.committedDate){
-                         // Si ya pasaron dos días y aun no asignamos una fecha comprometida
-
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El certificado aun no tiene una fecha comprometida.'
-                         }
-                     } else if(petition.committedDate && anomalyNowDate.diff(angular.copy(petition.committedDate).startOf('day'), 'days') >= 0 && !petition.trackingNumber){
-                         // Si ya es la fecha comprometida y no hay datos de envío
-
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'Aun no se cuenta con una guía de envío de los documentos.'
+                             message: 'El exhorto aun no tiene ninguna fecha de diligencia asignada.'
                          }
                      }
 
@@ -189,57 +169,35 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          record: item.get_item('Expediente'),
                          lawyer: item.get_item('Abogado'),
                          municipality: item.get_item('Municipio'),
-                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                          state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
-                         presentationDate: new moment(item.get_item('Presentacion')),
+                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
+                         presentationDate: (item.get_item('Presentacion')) ? new moment(item.get_item('Presentacion')) : undefined,
+                         assignedCourt: item.get_item('Juzgado_x0020_asignado'),
                          petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
-                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
-                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
-                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
-                         payment: item.get_item('Pagado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
                          delivered: item.get_item('Entregado'),
+                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                         comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
                      };
 
                      var anomalyNowDate = moment().startOf('day');
 
                      if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
-                         // Si ya se pasó la fecha de entrega y no hemos generado el certificado
+                         // Si ya se pasó la fecha de entrega y no hemos entregado el exhorto
                          petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
+                             message: 'La fecha de entrega expiró y el exhorto no ha sido enviado.'
                          }
-                     } else if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= -5 && !petition.delivered){
-                         // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
-                         }
-                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 1 && !petition.manager){
-                         // Si ya pasó un día y no hemos asignado un gestor
+                     }  else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 5 && !petition.committedDate){
+                         // Si ya pasaron cinco días y no hemos asignado una fecha de diligencia
 
                          petition.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El certificado aun no tiene ningún gestor asignado.'
-                         }
-                     } else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 2 && !petition.committedDate){
-                         // Si ya pasaron dos días y aun no asignamos una fecha comprometida
-
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El certificado aun no tiene una fecha comprometida.'
-                         }
-                     } else if(petition.committedDate && anomalyNowDate.diff(angular.copy(petition.committedDate).startOf('day'), 'days') >= 0 && !petition.trackingNumber){
-                         // Si ya es la fecha comprometida y no hay datos de envío
-
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'Aun no se cuenta con una guía de envío de los documentos.'
+                             message: 'El exhorto aun no tiene ninguna fecha de diligencia asignada.'
                          }
                      }
 
@@ -386,7 +344,8 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
                                         'Folio': petition.id.toString(),
-                                        'Title': document.title
+                                        'Title': document.title,
+                                        'Demandado': petition.defendant
                                     }
                                 } else {
                                     body = {
@@ -535,7 +494,8 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                     body = {
                         '__metadata': {
                             'type': 'SP.Data.' + libraryItem },
-                        'Title': document.title
+                        'Title': document.title,
+                        'Demandado': petition.defendant
                     }
                 } else {
                     body = {
@@ -611,23 +571,20 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
             record: undefined,
             lawyer: undefined,
             municipality: undefined,
-            status: {id:1, name:'Nuevo'},
+            status: DEFAULT_VALUES.PETITION_STATUS.NEW,
             state: undefined,
             attachments: [],
             presentationDate: undefined,
+            assignedCourt: undefined,
             petitionNumber: undefined,
-
-            zone: undefined,
-            manager: undefined,
-            cost: undefined,
-            committedDate: undefined,
-            payment: false,
             parcel: undefined,
             trackingNumber: undefined,
             received: false,
             documents: [],
             deliveryDate: getDeliveryDate(now),
             delivered: false,
+            committedDate: undefined,
+            comments: undefined,
             creationDate: now
         };
 
@@ -635,6 +592,8 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
     };
 
     var savePetition = function (petition) {
+
+        console.log(petition);
 
         $timeout(function() {
             usSpinnerService.spin('main-spinner');
@@ -647,13 +606,10 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         item.set_item('Demandado', petition.defendant);
         item.set_item('Juzgado', petition.court);
         item.set_item('Expediente', petition.record);
-        item.set_item('Abogado', petition.lawyer);
         item.set_item('Municipio', petition.municipality);
-        item.set_item('Expediente', petition.record);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(petition.status.id));
         item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(petition.state.id));
-        item.set_item('Presentacion', petition.presentationDate.toISOString());
-        item.set_item('Numero_x0020_de_x0020_exhorto', petition.petitionNumber);
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(petition.status.CODE).id));
+        item.set_item('Abogado', petition.lawyer);
         item.set_item('Entrega', petition.deliveryDate.toISOString());
         item.set_item('Creacion', petition.creationDate.toISOString());
         item.update();
@@ -693,14 +649,8 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
 
         if (petition.delivered) {
             newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.DELIVERED.CODE);
-        } else if (petition.received) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.DOCS_RECEIVED.CODE);
-        } else if (petition.trackingNumber) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_DOCS.CODE);
         } else if (petition.committedDate) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_SHIPPING.CODE);
-        } else if (petition.manager) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_CONFIRMATION.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_COMMITED_DATE.CODE);
         } else {
             newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.CODE);
         }
@@ -710,22 +660,19 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         item.set_item('Demandado', petition.defendant);
         item.set_item('Juzgado', petition.court);
         item.set_item('Expediente', petition.record);
-        item.set_item('Abogado', petition.lawyer);
         item.set_item('Municipio', petition.municipality);
-        item.set_item('Expediente', petition.record);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
         item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(petition.state.id));
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
+        item.set_item('Abogado', petition.lawyer);
         item.set_item('Presentacion', (petition.presentationDate ? petition.presentationDate.toISOString() : undefined ));
+        item.set_item('Juzgado_x0020_asignado', petition.assignedCourt);
         item.set_item('Numero_x0020_de_x0020_exhorto', petition.petitionNumber);
-        item.set_item('Region', new SP.FieldLookupValue().set_lookupId((petition.zone ? petition.zone.id : undefined )));
-        item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((petition.manager ? petition.manager.id : undefined )));
-        item.set_item('Costo', (petition.cost ? petition.cost : undefined ));
-        item.set_item('Comprometida', (petition.committedDate ? petition.committedDate.toISOString() : undefined ));
-        item.set_item('Pagado', petition.payment);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((petition.parcel ? petition.parcel.id : undefined )));
         item.set_item('Guia', petition.trackingNumber);
         item.set_item('Recibido', petition.received);
         item.set_item('Entregado', petition.delivered);
+        item.set_item('Comprometida', (petition.committedDate ? petition.committedDate.toISOString() : undefined ));
+        item.set_item('Observaciones', petition.comments);
         item.update();
 
         context.load(item);
@@ -739,19 +686,17 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                 originalElement.record = petition.record;
                 originalElement.lawyer = petition.lawyer;
                 originalElement.municipality = petition.municipality;
-                originalElement.status = petition.municipality;
                 originalElement.state = petition.state;
+                originalElement.status = newStatus;
                 originalElement.presentationDate = petition.presentationDate;
+                originalElement.assignedCourt = petition.assignedCourt;
                 originalElement.petitionNumber = petition.petitionNumber;
-                originalElement.zone = undefined;
-                originalElement.manager = undefined;
-                originalElement.cost = undefined;
-                originalElement.committedDate = undefined;
-                originalElement.payment = false;
-                originalElement.parcel = undefined;
-                originalElement.trackingNumber = undefined;
-                originalElement.received = false;
-                originalElement.delivered = false;
+                originalElement.parcel = petition.parcel;
+                originalElement.trackingNumber = petition.trackingNumber;
+                originalElement.received = petition.received;
+                originalElement.delivered = petition.delivered;
+                originalElement.committedDate = petition.committedDate;
+                originalElement.comments = petition.comments;
 
                 processDocuments(petition);
 

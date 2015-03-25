@@ -12,7 +12,7 @@
             <ol>
                 <li class="action-button-holder">
                     <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
-                    <a class="btn btn-success" ng-class="" ng-click="savePetition()" ng-disabled="!isValidForm([], [])">Guardar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="savePetition()" ng-disabled="!isValidForm(['contractNumber', 'defendant', 'court', 'record', 'municipality', 'state'], [])">Guardar</a>
                 </li>
             </ol>
         </fieldset>

@@ -610,7 +610,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             description: undefined,
             lawyer: undefined,
             attachments: [],
-            status: {id:1, name:'Nuevo'},
+            status: DEFAULT_VALUES.CERTIFICATE_STATUS.NEW,
             zone: undefined,
             manager: undefined,
             committedDate: undefined,
@@ -642,7 +642,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Descripcion', certificate.description);
         item.set_item('Abogado', certificate.lawyer);
         item.set_item('Inscripcion', certificate.inscription);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(certificate.status.id));        
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(certificate.status.CODE).id));
         item.update();
 
         context.load(item);
@@ -719,7 +719,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.inscription = certificate.inscription;
                 originalElement.description = certificate.description;
                 originalElement.lawyer = certificate.lawyer;
-                originalElement.status = certificate.status;
+                originalElement.status = newStatus;
                 originalElement.zone = certificate.zone;
                 originalElement.manager = certificate.manager;
                 originalElement.committedDate = certificate.committedDate;

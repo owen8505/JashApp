@@ -15,7 +15,6 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>No. de contrato</th>
                         <th>Demandado</th>
                         <th>Juzgado</th>
                         <th>Expediente</th>
@@ -25,7 +24,6 @@
                     <tbody>
                         <tr ng-repeat="petition in petitions | filter:query | orderBy:['anomaly', '-id']">
                             <td><span ng-class="{true:petition.anomaly.status, false:'indicator-green'}[petition.anomaly != undefined]"></span> <a ui-sref="petitions.edit({id:petition.id, mode:'all'})">{{ petition.id }}</a></td>
-                            <td>{{ petition.contractNumber }}</td>
                             <td>{{ petition.defendant }}</td>
                             <td>{{ petition.court }}</td>
                             <td>{{ petition.record }}</td>

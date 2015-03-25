@@ -639,7 +639,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             solidary4: undefined,
             solidary4Address: undefined,
             attachments: [],
-            status: {id:1, name:'Nuevo'},
+            status: DEFAULT_VALUES.CREDIT_STATUS.NEW,
             zone: undefined,
             manager: undefined,
             committedDate: undefined,
@@ -680,7 +680,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Direccion_x0020_de_x0020_solidar1', credit.solidary3Address);
         item.set_item('Solidario_x0020_4', credit.solidary4);
         item.set_item('Direccion_x0020_de_x0020_solidar2', credit.solidary4Address);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(credit.status.id));
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(credit.status.CODE).id));
         item.update();
 
         context.load(item);
@@ -775,7 +775,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.solidary3Address = credit.solidary3Address;
                 originalElement.solidary4 = credit.solidary4;
                 originalElement.solidary4Address = credit.solidary4Address;
-                originalElement.status = credit.status;
+                originalElement.status = newStatus;
                 originalElement.zone = credit.zone;
                 originalElement.manager = credit.manager;
                 originalElement.committedDate = credit.committedDate;

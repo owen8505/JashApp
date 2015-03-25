@@ -8,50 +8,29 @@
             </div>
             <ol>
                 <ng-include src="'templates/petition_new_template.html'"></ng-include>
+                <li>
+                    <label for="petition-presentation">Fecha de presentación:</label>
+                    <quick-datepicker ng-model='presentationDate' label-format="dd/MM/yyyy" on-change="setPresentationDate(presentationDate)" placeholder="Selecciona una fecha"></quick-datepicker>
+                    <div id="petition-presentation" ng-if="selectedItem.presentationDate">{{ selectedItem.presentationDate | formatDate }}</div>
+                </li>
+                <li>
+                    <label for="petition-assigned-court">Juzgado asignado:</label>
+                    <input id="petition-assigned-court" type="text" class="form-control" class="form-control" placeholder="Ej. 20" ng-model="selectedItem.assignedCourt" required="true">
+                </li>
+                <li>
+                    <label for="petition-number">No. de exhorto:</label>
+                    <input id="petition-number" type="text" class="form-control" class="form-control" placeholder="Ej. 2172" ng-model="selectedItem.petitionNumber" required="true">
+                </li>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.NEW)">
-                <li><h3>Datos del gestor</h3></li>
+                <li><h3>Diligencia</h3></li>
                 <li>
-                    <label for="petition-zone">Región:</label>
-                    <span class="third-width">
-                        <button id="petition-zone" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="zonesDropdown">
-                            <span ng-if="!selectedItem.zone">Selecciona una zona</span><span ng-if="selectedItem.zone">{{ selectedItem.zone.name }}</span>
-                            <span class="caret"></span>
-                        </button>
-
-                    </span>
-                </li>
-                <li>
-                    <label for="petition-manager">Gestor:</label>
-                    <span class="third-width">
-                    <button id="petition-manager" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="managersDropdown">
-                        <span ng-if="!selectedItem.manager">Selecciona un gestor</span><span ng-if="selectedItem.manager">{{ selectedItem.manager.name }}</span>
-                        <span class="caret"></span>
-                    </button>
-
-                    </span>
-                    <!--span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span-->
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" manager="selectedItem.manager" send-mail-function="sendMail" ng-popover>Solicitar información</a></span>
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
-                </li>
-            </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.WAITING_CONFIRMATION)">
-                <li><h3>Derechos</h3></li>
-                <li>
-                    <label for="petition-cost">Costo de derechos:</label>
-                    <span class="third-width"><input id="petition-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng-currency></span>
-                </li>
-                <li>
-                    <label for="petition-committed-date">Fecha comprometida por el gestor:</label>
+                    <label for="petition-committed-date">Fecha de diligencia:</label>
                     <quick-datepicker ng-model='committedDate' label-format="dd/MM/yyyy" on-change="setCommittedDate(committedDate)" placeholder="Selecciona una fecha"></quick-datepicker>
                     <div id="petition-committed-date" ng-if="selectedItem.committedDate">{{ selectedItem.committedDate | formatDate }}</div>
                 </li>
-                <li>
-                    <label for="petition-payment">Pago de derechos:</label>
-                    <input id="petition-payment" type="checkbox" ng-model="selectedItem.payment">
-                </li>
             </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.WAITING_SHIPPING)">
+            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.WAITING_COMMITED_DATE)">
                 <li><h3>Datos de envío</h3></li>
                 <li>
                     <label for="petition-parcel">Paquetería:</label>
@@ -71,8 +50,8 @@
                     <input id="petition-received" type="checkbox" ng-model="selectedItem.received">
                 </li>
             </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.DOCS_RECEIVED)">
-                <li><h3>Exhortos</h3></li>
+            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.WAITING_COMMITED_DATE)">
+                <li><h3>Entrega</h3></li>
                 <li>
                     <label for="petition-documents">Subir archivo del exhorto:</label>
                     <span class="third-width"><input id="petition-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Exhorto 3035 Ricardo Rosas"></span>
@@ -85,7 +64,13 @@
                     <input id="petition-deliver" type="checkbox" ng-model="selectedItem.delivered">
                 </li>
             </ol>
-
+            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.DELIVERED)">
+                <li><h3>Observaciones</h3></li>
+                <li>
+                    <label for="petition-comments">Observaciones:</label>
+                    <textarea id="petition-comments" class="form-control" required="true" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments"></textarea>
+                </li>
+            </ol>
             <ol>
                 <li class="action-button-holder">
                     <a class="btn btn-danger delete-button" ng-click="deletePetition()">Eliminar</a>
