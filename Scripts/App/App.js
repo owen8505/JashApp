@@ -22,13 +22,13 @@
                 ALL: 0,
                 CERTIFICATES: 1,
                 CREDITS: 2,
-                OTHERS: 3
+                PETITIONS: 3
             },
             SUBSECTIONS: [
                 {title: 'Todos'},
                 {title: 'Certificados'},
                 {title: 'Créditos'},
-                {title: 'Otros'}
+                {title: 'Exhortos'}
             ],
             ITEM_STATES: {
                 NEW: {code:1, title:'Nuevo'},

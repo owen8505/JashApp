@@ -366,6 +366,12 @@ table{
     @include indicator
 }
 
+.indicator-yellow{
+    background-color: yellow;
+    border: 1px solid yellow;
+    @include indicator
+}
+
 .link{
     cursor: pointer;
 }
