@@ -28,11 +28,11 @@
     <label for="credit-owner">Acreditado: <em class="mandatory-field">*</em></label>
     <input id="credit-owner" type="text" class="form-control" class="form-control" placeholder="Ej. Ricardo Rosas" ng-model="selectedItem.owner" required="true">
 </li>
-<li ng-if="!isNewCredit()">
+<li>
     <label for="credit-rpp">Búsqueda por acreditado y RPP:</label>
     <input id="credit-rpp" type="text" class="form-control" class="form-control" placeholder="Ej. Industrias Mexico S.A. de C.V." ng-model="selectedItem.rpp">
 </li>
-<li ng-if="!isNewCredit()">
+<li>
     <label for="credit-owner-address">Domicilio: <em class="mandatory-field">*</em></label>
     <input id="credit-owner-address" type="text" class="form-control" class="form-control" placeholder="Av. de las Fuentes No. 35, Col. Lomas de Tecamachalco, Naucalpan, Estado de México" ng-model="selectedItem.ownerAddress" required="true">
 </li>
