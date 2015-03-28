@@ -152,4 +152,43 @@
         </div>
     </div>
 
+    <!-- Sección de embargos -->
+    <div class="section" ng-controller="SeizureController as seizureCrtl" ng-if="isCurrentSubsection(SUBSECTIONS[SUBSECTION.ALL]) || isCurrentSubsection(SUBSECTIONS[SUBSECTION.SEIZURES])">
+        <div class="last-seizures-section">
+            <h4 class="subtitle-section">Embargos</h4>
+            <div>
+                <div class="unavailable-message" ng-if="!lastSeizures.length">
+                    Por el momento no hay elementos que requieran atención inmediata
+                </div>
+                <div ng-if="lastSeizures.length">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Demandado</th>
+                            <th>Juzgado</th>
+                            <th>Expediente</th>
+                            <th>Estatus</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="seizure in lastSeizures | limitTo: 5 ">
+                            <td class="folio"><span ng-class="{true:seizure.anomaly.status, false:'indicator-green'}[seizure.anomaly != undefined]"></span> <a ui-sref="seizures.edit({id:seizure.id, mode:'last'})">{{ seizure.id }}</a></td>
+                            <td>{{ seizure.defendant }}</td>
+                            <td>{{ seizure.court }}</td>
+                            <td>{{ seizure.record }}</td>
+                            <td>{{ seizure.status.name }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="action-button-holder">
+                <a ui-sref="seizures.list" class="btn btn-default" title="Ver más...">Ver más...</a>
+                <a ui-sref="seizures.new({mode:'last'})" class="btn btn-default" title="Nuevo Embargo" ng-click="createSeizure()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
+            </div>
+        </div>
+    </div>
+
 </section>

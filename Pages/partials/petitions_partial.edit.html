@@ -15,11 +15,11 @@
                 </li>
                 <li>
                     <label for="petition-assigned-court">Juzgado asignado:</label>
-                    <input id="petition-assigned-court" type="text" class="form-control" class="form-control" placeholder="Ej. 20" ng-model="selectedItem.assignedCourt" required="true">
+                    <input id="petition-assigned-court" type="text" class="form-control" class="form-control" placeholder="Ej. 20" ng-model="selectedItem.assignedCourt">
                 </li>
                 <li>
                     <label for="petition-number">No. de exhorto:</label>
-                    <input id="petition-number" type="text" class="form-control" class="form-control" placeholder="Ej. 2172" ng-model="selectedItem.petitionNumber" required="true">
+                    <input id="petition-number" type="text" class="form-control" class="form-control" placeholder="Ej. 2172" ng-model="selectedItem.petitionNumber">
                 </li>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.NEW)">
@@ -68,7 +68,7 @@
                 <li><h3>Observaciones</h3></li>
                 <li>
                     <label for="petition-comments">Observaciones:</label>
-                    <textarea id="petition-comments" class="form-control" required="true" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments"></textarea>
+                    <textarea id="petition-comments" class="form-control" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments"></textarea>
                 </li>
             </ol>
             <ol>

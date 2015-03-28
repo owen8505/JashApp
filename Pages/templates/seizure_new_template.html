@@ -1,0 +1,58 @@
+<li class="mandatory-field-label">Campos obligatorios <em class="mandatory-field">*</em></li>
+<li><h3>Datos generales</h3></li>
+<li>
+    <label for="seizure-creation-date">Fecha de creación:</label>
+    <div id="seizure-creation-date">{{ selectedItem.creationDate | formatDate }}</div>
+</li>
+<li>
+    <label for="seizure-delivery-date">Fecha de entrega:</label>
+    <div id="seizure-delivery-date">{{ selectedItem.deliveryDate | formatDate }}</div>
+</li>
+<li>
+    <label for="seizure-status">Estatus:</label>
+    <input id="seizure-status" type="text" class="form-control" ng-model="selectedItem.status.NAME" readonly>
+</li>
+<li>
+    <label for="seizure-id">ID:</label>
+    <input id="seizure-id" type="text" class="form-control" ng-model="selectedItem.id" readonly>
+</li>
+<li>
+    <label for="seizure-contract-number">No. de contrato coorporativo: <em class="mandatory-field">*</em></label>
+    <input id="seizure-contract-number" type="text" class="form-control" class="form-control" placeholder="Ej. 8591328" ng-model="selectedItem.contractNumber" required="true">
+</li>
+<li>
+    <label for="seizure-defendant">Demandado: <em class="mandatory-field">*</em></label>
+    <input id="seizure-defendant" type="text" class="form-control" placeholder="Ej. Julio Flores" ng-model="selectedItem.defendant" required="true">
+</li>
+<li>
+    <label for="seizure-court">Juzgado: <em class="mandatory-field">*</em></label>
+    <input id="seizure-court" type="text" class="form-control" class="form-control" placeholder="Ej. 14 de lo civil" ng-model="selectedItem.court" required="true">
+</li>
+<li>
+    <label for="seizure-record">Expediente: <em class="mandatory-field">*</em></label>
+    <input id="seizure-record" type="text" class="form-control" class="form-control" placeholder="Ej. 230/2015" ng-model="selectedItem.record" required="true">
+</li>
+<li>
+    <label for="seizure-municipality">Municipio: <em class="mandatory-field">*</em></label>
+    <input id="seizure-municipality" type="text" class="form-control" class="form-control" placeholder="Ej. Acapulco" ng-model="selectedItem.municipality" required="true">
+</li>
+<li>
+    <label for="seizure-state">Estado: <em class="mandatory-field">*</em></label>
+    <span class="third-width">
+        <button id="seizure-state" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="statesDropdown">
+            <span ng-if="!selectedItem.state">Selecciona un estado</span><span ng-if="selectedItem.state">{{ selectedItem.state.name }}</span>
+            <span class="caret"></span>
+        </button>
+    </span>
+</li>
+<li>
+    <label for="seizure-attachments">Archivos adjuntos:</label>
+    <span class="third-width"><input id="seizure-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo"></span>
+    <span class="third-width"><input id="seizure-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ></span>
+    <span class="third-width"><a class="btn btn-default" ng-click="addAttachment()">Añadir</a></span>
+    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
+</li>
+<li>
+    <label for="seizure-lawyer">Abogado:</label>
+    <input id="seizure-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer">
+</li>

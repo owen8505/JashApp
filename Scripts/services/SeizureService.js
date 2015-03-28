@@ -1,13 +1,13 @@
-Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$state", "$timeout", "ContextService", "StatusService", "usSpinnerService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, $state, $timeout, ContextService, StatusService, usSpinnerService, DEFAULT_VALUES) {
+Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$state", "$timeout", "ContextService", "StatusService", "usSpinnerService", "DEFAULT_VALUES", function ($http, $q, $rootScope, $cookieStore, $state, $timeout, ContextService, StatusService, usSpinnerService, DEFAULT_VALUES) {
 
-    var petitions = [];
-    var lastPetitions = [];
+    var seizures = [];
+    var lastSeizures = [];
     var warningList = [];    
     var SPWeb, context, appContext, list, libraries, mailList, documentsTotal, documentsProcessed;
 
     var getDeliveryDate = function (date) {
         var copyDate = angular.copy(date);
-        var days = DEFAULT_VALUES.DELIVERY_RANGES.PETITION;
+        var days = DEFAULT_VALUES.DELIVERY_RANGES.SEIZURE;
 
         while (days > 0) {
             copyDate = copyDate.add(1, 'days');
@@ -20,55 +20,55 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         return copyDate;
     };
 
-    var getPetitionById = function (petitionId, mode) {
-        var petition = undefined;
-        var petitionsArray = [];
+    var getSeizureById = function (seizureId, mode) {
+        var seizure = undefined;
+        var seizuresArray = [];
 
         switch(mode) {
             case 'all':
-                petitionsArray = petitions;
+                seizuresArray = seizures;
                 break;
             case 'last':
-                petitionsArray = lastPetitions;
+                seizuresArray = lastSeizures;
                 break;
             default:
                 break;
         }
 
-        for (var petitionIndex = 0; petitionIndex < petitionsArray.length; petitionIndex++) {
-            if (petitionsArray[petitionIndex].id == petitionId) {
-                petition = petitionsArray[petitionIndex];
+        for (var seizureIndex = 0; seizureIndex < seizuresArray.length; seizureIndex++) {
+            if (seizuresArray[seizureIndex].id == seizureId) {
+                seizure = seizuresArray[seizureIndex];
                 break;
             }
         }
 
-        return petition;
+        return seizure;
     };
 
-    var deletePetitionById = function (petitionId, mode) {
-        var petitionsArray = [];
+    var deleteSeizureById = function (seizureId, mode) {
+        var seizuresArray = [];
 
         switch (mode) {
             case 'all':
-                petitionsArray = petitions;
+                seizuresArray = seizures;
                 break;
             case 'last':
-                petitionsArray = lastPetitions;
+                seizuresArray = lastSeizures;
                 break;
             default:
                 break;
         }
-        for (var petitionIndex = 0; petitionIndex < petitionsArray.length; petitionIndex++) {
+        for (var seizureIndex = 0; seizureIndex < seizuresArray.length; seizureIndex++) {
 
-            if (petitionsArray[petitionIndex].id == petitionId) {
-                petitionsArray.splice(petitionIndex, 1);
+            if (seizuresArray[seizureIndex].id == seizureId) {
+                seizuresArray.splice(seizureIndex, 1);
                 break;
             }
         }
     };
 
-    var getLastPetitions = function (reload) {
-        lastPetitions = [];
+    var getLastSeizures = function (reload) {
+        lastSeizures = [];
 
         var queryString = '<View><Query>' +
                             '<OrderBy>' +
@@ -86,8 +86,8 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                  while (listItemEnumerator.moveNext()) {
                      var item = listItemEnumerator.get_current();
 
-                     var petition = {
-                         type: 'PETITION',
+                     var seizure = {
+                         type: 'SEIZURE',
                          id: item.get_id(),
                          contractNumber: item.get_item('Title'),
                          defendant: item.get_item('Demandado'),
@@ -97,42 +97,33 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          municipality: item.get_item('Municipio'),
                          state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
-                         presentationDate: (item.get_item('Presentacion')) ? new moment(item.get_item('Presentacion')) : undefined,
-                         assignedCourt: item.get_item('Juzgado_x0020_asignado'),
-                         petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
+                         realEstate: item.get_item('Inmueble'),
+                         precedent: item.get_item('Antecedente'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
                          delivered: item.get_item('Entregado'),
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
                      };
-
+                     
                      var anomalyNowDate = moment().startOf('day');
 
-                     if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
-                         // Si ya se pasó la fecha de entrega y no hemos entregado el exhorto
-                         petition.anomaly = {
+                     if(seizure.deliveryDate && anomalyNowDate.diff(angular.copy(seizure.deliveryDate).startOf('day'), 'days') >= 1 && !seizure.delivered){
+                         // Si ya se pasó la fecha de entrega y no hemos entregado el embargo
+                         seizure.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega expiró y el exhorto no ha sido enviado.'
-                         }
-                     }  else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 5 && !petition.committedDate){
-                         // Si ya pasaron cinco días y no hemos asignado una fecha de diligencia
-
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El exhorto aun no tiene ninguna fecha de diligencia asignada.'
+                             message: 'La fecha de entrega expiró y el embargo no ha sido enviado.'
                          }
                      }
 
-                     petition.attachments = getDocuments(libraries.attachments, petition);
-                     petition.documents = getDocuments(libraries.documents, petition);
-                     lastPetitions.push(petition);
+                     seizure.attachments = getDocuments(libraries.attachments, seizure);
+                     seizure.documents = getDocuments(libraries.documents, seizure);
+                     lastSeizures.push(seizure);
                  }
 
-                 $rootScope.$broadcast('petitionsLoaded', reload);
+                 $rootScope.$broadcast('seizuresLoaded', reload);
                  $rootScope.$broadcast('applyChanges');
 
              },
@@ -141,12 +132,12 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
             }
         );
 
-        return lastPetitions;
+        return lastSeizures;
     };
 
-    var getAllPetitions = function (reload) {
+    var getAllSeizures = function (reload) {
 
-        petitions = [];
+        seizures = [];
         var queryCAML = '';
         var items = list.getItems(queryCAML);
 
@@ -157,8 +148,8 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                  while (listItemEnumerator.moveNext()) {
                      var item = listItemEnumerator.get_current();
 
-                     var petition = {
-                         type: 'PETITION',
+                     var seizure = {
+                         type: 'SEIZURE',
                          id: item.get_id(),
                          contractNumber: item.get_item('Title'),
                          defendant: item.get_item('Demandado'),
@@ -168,42 +159,33 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          municipality: item.get_item('Municipio'),
                          state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
-                         presentationDate: (item.get_item('Presentacion')) ? new moment(item.get_item('Presentacion')) : undefined,
-                         assignedCourt: item.get_item('Juzgado_x0020_asignado'),
-                         petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
+                         realEstate: item.get_item('Inmueble'),
+                         precedent: item.get_item('Antecedente'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
                          delivered: item.get_item('Entregado'),
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
                      };
 
                      var anomalyNowDate = moment().startOf('day');
 
-                     if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
-                         // Si ya se pasó la fecha de entrega y no hemos entregado el exhorto
-                         petition.anomaly = {
+                     if(seizure.deliveryDate && anomalyNowDate.diff(angular.copy(seizure.deliveryDate).startOf('day'), 'days') >= 1 && !seizure.delivered){
+                         // Si ya se pasó la fecha de entrega y no hemos entregado el embargo
+                         seizure.anomaly = {
                              status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega expiró y el exhorto no ha sido enviado.'
-                         }
-                     }  else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 5 && !petition.committedDate){
-                         // Si ya pasaron cinco días y no hemos asignado una fecha de diligencia
-
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El exhorto aun no tiene ninguna fecha de diligencia asignada.'
+                             message: 'La fecha de entrega expiró y el embargo no ha sido enviado.'
                          }
                      }
 
-                     petition.attachments = getDocuments(libraries.attachments, petition);
-                     petition.documents = getDocuments(libraries.documents, petition);
-                     petitions.push(petition);
+                     seizure.attachments = getDocuments(libraries.attachments, seizure);
+                     seizure.documents = getDocuments(libraries.documents, seizure);
+                     seizures.push(seizure);
                  }
 
-                 $rootScope.$broadcast('petitionsLoaded', reload);
+                 $rootScope.$broadcast('seizuresLoaded', reload);
                  $rootScope.$broadcast('applyChanges');
              },
             function (response, args) {
@@ -211,17 +193,17 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
             }
         );
 
-        return petitions;
+        return seizures;
     };
 
-    var getDocuments = function (library, petition) {
+    var getDocuments = function (library, seizure) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
             "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
-            "&$filter=Folio eq '" + petition.id + "'" +
+            "&$filter=Folio eq '" + seizure.id + "'" +
             "&$expand=File";
 
         var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -247,7 +229,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                         documents.push(document);
                     });
 
-                    petition[library.loadedName] = true;
+                    seizure[library.loadedName] = true;
                 },
                 error: function (response) {
                     console.log(response);
@@ -258,10 +240,10 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
 
     };
 
-    var processDocuments = function (petition) {
+    var processDocuments = function (seizure) {
 
         // Variable que lleva el conteo de cuantos documentos vamos a procesar
-        documentsTotal = petition.attachments.length + petition.documents.length;
+        documentsTotal = seizure.attachments.length + seizure.documents.length;
 
         // Variable que lleva el conteo de cuantos documentos han sido procesados
         documentsProcessed = 0;
@@ -269,30 +251,30 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         if (documentsTotal == 0) {
             isDocumentsProcessComplete();
         } else {
-            angular.forEach(petition.attachments, function(document){
+            angular.forEach(seizure.attachments, function(document){
                 if (document.removed == 1) {
-                    deleteDocument(libraries.attachments, petition, document);
+                    deleteDocument(libraries.attachments, seizure, document);
                 } else if (document.fileId == 0) {
-                    saveDocument(libraries.attachments, petition, document);
+                    saveDocument(libraries.attachments, seizure, document);
                 } else {
-                    updateDocument(libraries.attachments, petition, document);
+                    updateDocument(libraries.attachments, seizure, document);
                 }
             });
 
-            angular.forEach(petition.documents, function(document){
+            angular.forEach(seizure.documents, function(document){
                 if (document.removed == 1) {
-                    deleteDocument(libraries.documents, petition, document);
+                    deleteDocument(libraries.documents, seizure, document);
                 } else if (document.fileId == 0) {
-                    saveDocument(libraries.documents, petition, document);
+                    saveDocument(libraries.documents, seizure, document);
                 } else {
-                    updateDocument(libraries.documents, petition, document);
+                    updateDocument(libraries.documents, seizure, document);
                 }
             });
         }
 
     };
 
-    var saveDocument = function(library, petition, document) {
+    var saveDocument = function(library, seizure, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -340,15 +322,15 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': petition.id.toString(),
+                                        'Folio': seizure.id.toString(),
                                         'Title': document.title,
-                                        'Demandado': petition.defendant
+                                        'Demandado': seizure.defendant
                                     }
                                 } else {
                                     body = {
                                         '__metadata': {
                                             'type': 'SP.Data.' + libraryItem },
-                                        'Folio': petition.id.toString(),
+                                        'Folio': seizure.id.toString(),
                                         'Title': document.title
                                     }
                                 }
@@ -370,7 +352,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                                             "content-type": "application/json;odata=verbose"
                                         },
                                         success: function (data) {
-                                            var originalElement = getPetitionById(petition.id, mode);
+                                            var originalElement = getSeizureById(seizure.id, mode);
 
                                             var newDocument = {
                                                 fileId: fileId,
@@ -416,7 +398,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         });
     };
 
-    var deleteDocument = function (library, petition, document) {
+    var deleteDocument = function (library, seizure, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -444,10 +426,10 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                             "content-type": "application/json;odata=verbose"
                         },
                         success: function (data) {
-                            var originalElement = getPetitionById(petition.id, mode);
+                            var originalElement = getSeizureById(seizure.id, mode);
 
-                            for(var i=0; i<petition[library.arrayName].length; i++){
-                                if(petition[library.arrayName][i].fileId == document.fileId){
+                            for(var i=0; i<seizure[library.arrayName].length; i++){
+                                if(seizure[library.arrayName][i].fileId == document.fileId){
                                     originalElement[library.arrayName].splice(i, 1);
                                     break;
                                 }
@@ -473,7 +455,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         });
     };
 
-    var updateDocument = function(library, petition, document) {
+    var updateDocument = function(library, seizure, document) {
 
         var mode = angular.copy($state.params.mode);
 
@@ -492,7 +474,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                         '__metadata': {
                             'type': 'SP.Data.' + libraryItem },
                         'Title': document.title,
-                        'Demandado': petition.defendant
+                        'Demandado': seizure.defendant
                     }
                 } else {
                     body = {
@@ -551,45 +533,43 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         }
     };
 
-    var getWarningPetitions = function () {
+    var getWarningSeizures = function () {
         return warningList;
     };
 
-    var createPetition = function () {
+    var createSeizure = function () {
 
         var now = moment().locale('es');
 
-        var petition = {
+        var seizure = {
             id: 0,
-            type: 'PETITION',
+            type: 'SEIZURE',
             contractNumber: undefined,
             defendant: undefined,
             court: undefined,
             record: undefined,
             lawyer: undefined,
             municipality: undefined,
-            status: DEFAULT_VALUES.PETITION_STATUS.NEW,
+            status: DEFAULT_VALUES.SEIZURE_STATUS.NEW,
             state: undefined,
             attachments: [],
-            presentationDate: undefined,
-            assignedCourt: undefined,
-            petitionNumber: undefined,
+            realEstate: item.get_item('Inmueble'),
+            precedent: item.get_item('Antecedente'),
             parcel: undefined,
             trackingNumber: undefined,
             received: false,
             documents: [],
             deliveryDate: getDeliveryDate(now),
             delivered: false,
-            committedDate: undefined,
             comments: undefined,
             creationDate: now
         };
 
-        return petition;
+        return seizure;
     };
 
-    var savePetition = function (petition) {
-
+    var saveSeizure = function (seizure) {
+        
         $timeout(function() {
             usSpinnerService.spin('main-spinner');
         },0);
@@ -597,32 +577,32 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         var itemInfo = new SP.ListItemCreationInformation();
         var item = list.addItem(itemInfo);
 
-        item.set_item('Title', petition.contractNumber);
-        item.set_item('Demandado', petition.defendant);
-        item.set_item('Juzgado', petition.court);
-        item.set_item('Expediente', petition.record);
-        item.set_item('Municipio', petition.municipality);
-        item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(petition.state.id));
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(petition.status.CODE).id));
-        item.set_item('Abogado', petition.lawyer);
-        item.set_item('Entrega', petition.deliveryDate.toISOString());
-        item.set_item('Creacion', petition.creationDate.toISOString());
+        item.set_item('Title', seizure.contractNumber);
+        item.set_item('Demandado', seizure.defendant);
+        item.set_item('Juzgado', seizure.court);
+        item.set_item('Expediente', seizure.record);
+        item.set_item('Municipio', seizure.municipality);
+        item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(seizure.state.id));
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(seizure.status.CODE).id));
+        item.set_item('Abogado', seizure.lawyer);
+        item.set_item('Entrega', seizure.deliveryDate.toISOString());
+        item.set_item('Creacion', seizure.creationDate.toISOString());
         item.update();
 
         context.load(item);
         context.executeQueryAsync(
             function () {
 
-                if (petition.id == 0) {
+                if (seizure.id == 0) {
 
-                    petition.id = item.get_id();
-                    processDocuments(petition);
+                    seizure.id = item.get_id();
+                    processDocuments(seizure);
 
-                    if (lastPetitions.length > 4) {
-                        lastPetitions.splice(1, 1);
+                    if (lastSeizures.length > 4) {
+                        lastSeizures.splice(1, 1);
                     }
-                    lastPetitions.push(petition);
-                    petitions.push(petition);
+                    lastSeizures.push(seizure);
+                    seizures.push(seizure);
                     
                 }
 
@@ -634,66 +614,60 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                
     };
 
-    var updatePetition = function (petition) {
+    var updateSeizure = function (seizure) {
 
         $timeout(function() {
             usSpinnerService.spin('main-spinner');
         },0);
 
-        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.CODE);
+        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.NEW.CODE);
 
-        if (petition.delivered) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.DELIVERED.CODE);
-        } else if (petition.committedDate) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_COMMITED_DATE.CODE);
+        if (seizure.delivered) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.DELIVERED.CODE);
         } else {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.NEW.CODE);
         }
 
-        var item = list.getItemById(petition.id);
-        item.set_item('Title', petition.contractNumber);
-        item.set_item('Demandado', petition.defendant);
-        item.set_item('Juzgado', petition.court);
-        item.set_item('Expediente', petition.record);
-        item.set_item('Municipio', petition.municipality);
-        item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(petition.state.id));
+        var item = list.getItemById(seizure.id);
+        item.set_item('Title', seizure.contractNumber);
+        item.set_item('Demandado', seizure.defendant);
+        item.set_item('Juzgado', seizure.court);
+        item.set_item('Expediente', seizure.record);
+        item.set_item('Municipio', seizure.municipality);
+        item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(seizure.state.id));
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
-        item.set_item('Abogado', petition.lawyer);
-        item.set_item('Presentacion', (petition.presentationDate ? petition.presentationDate.toISOString() : undefined ));
-        item.set_item('Juzgado_x0020_asignado', petition.assignedCourt);
-        item.set_item('Numero_x0020_de_x0020_exhorto', petition.petitionNumber);
-        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((petition.parcel ? petition.parcel.id : undefined )));
-        item.set_item('Guia', petition.trackingNumber);
-        item.set_item('Recibido', petition.received);
-        item.set_item('Entregado', petition.delivered);
-        item.set_item('Comprometida', (petition.committedDate ? petition.committedDate.toISOString() : undefined ));
-        item.set_item('Observaciones', petition.comments);
+        item.set_item('Abogado', seizure.lawyer);
+        item.set_item('Inmueble', seizure.realEstate);
+        item.set_item('Antecedente', seizure.precedent);
+        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((seizure.parcel ? seizure.parcel.id : undefined )));
+        item.set_item('Guia', seizure.trackingNumber);
+        item.set_item('Recibido', seizure.received);
+        item.set_item('Entregado', seizure.delivered);
+        item.set_item('Observaciones', seizure.comments);
         item.update();
 
         context.load(item);
         context.executeQueryAsync(
             function () {
-                var originalElement = getPetitionById(petition.id, $state.params.mode);
+                var originalElement = getSeizureById(seizure.id, $state.params.mode);
 
-                originalElement.contractNumber = petition.contractNumber;
-                originalElement.defendant = petition.defendant;
-                originalElement.court = petition.court;
-                originalElement.record = petition.record;
-                originalElement.lawyer = petition.lawyer;
-                originalElement.municipality = petition.municipality;
-                originalElement.state = petition.state;
+                originalElement.contractNumber = seizure.contractNumber;
+                originalElement.defendant = seizure.defendant;
+                originalElement.court = seizure.court;
+                originalElement.record = seizure.record;
+                originalElement.lawyer = seizure.lawyer;
+                originalElement.municipality = seizure.municipality;
+                originalElement.state = seizure.state;
                 originalElement.status = newStatus;
-                originalElement.presentationDate = petition.presentationDate;
-                originalElement.assignedCourt = petition.assignedCourt;
-                originalElement.petitionNumber = petition.petitionNumber;
-                originalElement.parcel = petition.parcel;
-                originalElement.trackingNumber = petition.trackingNumber;
-                originalElement.received = petition.received;
-                originalElement.delivered = petition.delivered;
-                originalElement.committedDate = petition.committedDate;
-                originalElement.comments = petition.comments;
+                originalElement.realEstate = seizure.realEstate;
+                originalElement.precedent = seizure.precedent;
+                originalElement.parcel = seizure.parcel;
+                originalElement.trackingNumber = seizure.trackingNumber;
+                originalElement.received = seizure.received;
+                originalElement.delivered = seizure.delivered;
+                originalElement.comments = seizure.comments;
 
-                processDocuments(petition);
+                processDocuments(seizure);
 
             },
 
@@ -703,27 +677,27 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         );
     };
 
-    var deletePetition = function (petition) {
+    var deleteSeizure = function (seizure) {
 
         $timeout(function () {
             usSpinnerService.spin('main-spinner');
         }, 0);
 
-        var item = list.getItemById(petition.id);
+        var item = list.getItemById(seizure.id);
         item.deleteObject();
 
         context.executeQueryAsync(
            function () {
-               angular.forEach(petition.attachments, function (document) {
+               angular.forEach(seizure.attachments, function (document) {
                    document.removed = 1;
                });
 
-               angular.forEach(petition.documents, function (document) {
+               angular.forEach(seizure.documents, function (document) {
                    document.removed = 1;
                });
 
-               processDocuments(petition);
-               deletePetitionById(petition.id);
+               processDocuments(seizure);
+               deleteSeizureById(seizure.id);
 
            },
 
@@ -759,18 +733,18 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         SPWeb = ContextService.getSpWeb();
         context = new SP.ClientContext(SPWeb.appWebUrl);
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
-        list = appContext.get_web().get_lists().getByTitle('Exhortos');
+        list = appContext.get_web().get_lists().getByTitle('Embargos');
         mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
         libraries = {
             attachments: {
                 type: 'attachment',
-                name: 'Adjuntos de exhortos',
+                name: 'Adjuntos de embargos',
                 arrayName: 'attachments',
                 loadedName: 'attachmentsLoaded'
             },
             documents: {
                 type: 'document',
-                name: 'Biblioteca de exhortos',
+                name: 'Biblioteca de embargos',
                 arrayName: 'documents',
                 loadedName: 'documentsLoaded'
             }
@@ -780,14 +754,14 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
     init();
 
     return {
-        createPetition : createPetition,
-        getAllPetitions: getAllPetitions,
-        getLastPetitions: getLastPetitions,
-        getWarningPetitions: getWarningPetitions,
-        getPetitionById: getPetitionById,
-        updatePetition: updatePetition,
-        savePetition: savePetition,
-        deletePetition: deletePetition,
+        createSeizure : createSeizure,
+        getAllSeizures: getAllSeizures,
+        getLastSeizures: getLastSeizures,
+        getWarningSeizures: getWarningSeizures,
+        getSeizureById: getSeizureById,
+        updateSeizure: updateSeizure,
+        saveSeizure: saveSeizure,
+        deleteSeizure: deleteSeizure,
         sendMail: sendMail
     }
 

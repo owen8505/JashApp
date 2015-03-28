@@ -22,13 +22,15 @@
                 ALL: 0,
                 CERTIFICATES: 1,
                 CREDITS: 2,
-                PETITIONS: 3
+                PETITIONS: 3,
+                SEIZURES: 4
             },
             SUBSECTIONS: [
                 {title: 'Todos'},
                 {title: 'Certificados'},
                 {title: 'Créditos'},
-                {title: 'Exhortos'}
+                {title: 'Exhortos'},
+                {title: 'Embargos'}
             ],
             ITEM_STATES: {
                 NEW: {code:1, title:'Nuevo'},
@@ -39,7 +41,8 @@
             DELIVERY_RANGES: {
                 CERTIFICATE: 10,
                 CREDIT: 10,
-                PETITION: 30
+                PETITION: 30,
+                SEIZURE: 30
             },
             CERTIFICATE_STATUS: {
                 NEW: {CODE: 1, NAME: 'Nuevo'},
@@ -60,6 +63,10 @@
             PETITION_STATUS: {
                 NEW: {CODE: 1, NAME: 'Nuevo'},
                 WAITING_COMMITED_DATE: {CODE: 8, NAME: 'En espera de fecha'},
+                DELIVERED: {CODE: 6, NAME: 'Entregado'}
+            },
+            SEIZURE_STATUS: {
+                NEW: {CODE: 1, NAME: 'Nuevo'},
                 DELIVERED: {CODE: 6, NAME: 'Entregado'}
             },
             ANOMALY_STATUS: {
@@ -157,6 +164,29 @@
                 templateUrl: 'partials/petitions_partial.list.html',
                 title: 'Exhortos',
                 settings: { section: 'Lista de Exhortos' },
+                state: 4
+            }).state('seizures', {
+                url: '/seizures',
+                templateUrl: 'partials/seizures_partial.html',
+                title: 'Embargos',
+                settings: { section: 'Embargos' }
+            }).state('seizures.new', {
+                url: '/:mode/new',
+                templateUrl: 'partials/seizures_partial.new.html',
+                title: 'Embargos',
+                settings: { section: 'Nuevo Embargo' },
+                state: 1
+            }).state('seizures.edit', {
+                url: '/:id/:mode/edit',
+                templateUrl: 'partials/seizures_partial.edit.html',
+                title: 'Embargos',
+                settings: { section: 'Editar Embargo' },
+                state: 3
+            }).state('seizures.list', {
+                url: '/list',
+                templateUrl: 'partials/seizures_partial.list.html',
+                title: 'Embargos',
+                settings: { section: 'Lista de Embargos' },
                 state: 4
             }).state('users', {
                 url: '/users',

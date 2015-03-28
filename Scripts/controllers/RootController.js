@@ -22,6 +22,7 @@ Jash.controller('RootController', ['$scope', '$rootScope', '$state', '$timeout',
     $scope.CERTIFICATE_STATUS = DEFAULT_VALUES.CERTIFICATE_STATUS;
     $scope.CREDIT_STATUS = DEFAULT_VALUES.CREDIT_STATUS;
     $scope.PETITION_STATUS = DEFAULT_VALUES.PETITION_STATUS;
+    $scope.SEIZURE_STATUS = DEFAULT_VALUES.SEIZURE_STATUS;
 
     // Catálogo de secciones de la aplicación
     $scope.SECTIONS = DEFAULT_VALUES.SECTIONS;

@@ -55,5 +55,7 @@
     <ProjectItemFile Source="controllers\PetitionController.js" Target="Scripts\controllers\" Type="ElementFile" />
     <ProjectItemFile Source="services\StateService.js" Target="Scripts\services\" Type="ElementFile" />
     <ProjectItemFile Source="services\PetitionService.js" Target="Scripts\services\" Type="ElementFile" />
+    <ProjectItemFile Source="controllers\SeizureController.js" Target="Scripts\controllers\" Type="ElementFile" />
+    <ProjectItemFile Source="services\SeizureService.js" Target="Scripts\services\" Type="ElementFile" />
   </Files>
 </ProjectItem>

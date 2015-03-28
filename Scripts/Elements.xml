@@ -54,5 +54,7 @@
     <File Path="Scripts\controllers\PetitionController.js" Url="Scripts/controllers/PetitionController.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\StateService.js" Url="Scripts/services/StateService.js" ReplaceContent="TRUE" />
     <File Path="Scripts\services\PetitionService.js" Url="Scripts/services/PetitionService.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\controllers\SeizureController.js" Url="Scripts/controllers/SeizureController.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\services\SeizureService.js" Url="Scripts/services/SeizureService.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>
