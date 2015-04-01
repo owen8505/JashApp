@@ -43,7 +43,7 @@
                 </li>
                 <li>
                     <label for="credit-cost">Costo de derechos:</label>
-                    <span class="third-width"><input id="credit-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng-currency ng-readonly="!selectedItem.paymentApply"></span>
+                    <span class="third-width"><input id="credit-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng-currency ng-readonly="!selectedItem.paymentApply || isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)"></span>
                 </li>
                 <li>
                     <label for="credit-committed-date">Fecha comprometida por el gestor:</label>
