@@ -101,6 +101,10 @@ input:-moz-placeholder {
   font-weight: 400;
   color: #CECEC6; }
 
+.dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto; }
+
 table {
   border: 1px solid #F1F1F2;
   margin: 0rem auto;
@@ -476,5 +480,3 @@ table {
   .content .section-content {
     margin: 1rem 0;
     padding: 1rem; }
-
-/*# sourceMappingURL=global.css.map */

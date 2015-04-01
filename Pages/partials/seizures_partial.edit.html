@@ -18,6 +18,17 @@
                 </li>
             </ol>
             <ol>
+                <li><h3>Derechos</h3></li>
+                <li>
+                    <label for="seizure-payment-not-apply">Aplica:</label>
+                    <input id="seizure-payment-not-apply" type="checkbox" ng-model="selectedItem.paymentApply">
+                </li>
+                <li>
+                    <label for="seizure-cost">Costo de derechos:</label>
+                    <span class="third-width"><input id="seizure-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng- ng-currency ng-readonly="!selectedItem.paymentApply"></span>
+                </li>
+            </ol>
+            <ol>
                 <li><h3>Datos de envío</h3></li>
                 <li>
                     <label for="seizure-parcel">Paquetería:</label>

@@ -107,7 +107,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          comments: item.get_item('Observaciones'),
-                         creationDate: new moment(item.get_item('Creacion'))
+                         creationDate: new moment(item.get_item('Creacion')),
+                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         paymentApply: item.get_item('Aplica')
                      };
                      
                      var anomalyNowDate = moment().startOf('day');
@@ -171,7 +173,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          comments: item.get_item('Observaciones'),
-                         creationDate: new moment(item.get_item('Creacion'))
+                         creationDate: new moment(item.get_item('Creacion')),
+                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         paymentApply: item.get_item('Aplica')
                      };
 
                      var anomalyNowDate = moment().startOf('day');
@@ -568,7 +572,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             delivered: false,
             cashed: false,
             comments: undefined,
-            creationDate: now
+            creationDate: now,
+            cost: undefined,
+            paymentApply: false
         };
 
         return seizure;
@@ -654,6 +660,8 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Entregado', seizure.delivered);
         item.set_item('Cobrado', seizure.cashed);
         item.set_item('Observaciones', seizure.comments);
+        item.set_item('Costo', seizure.cost);
+        item.set_item('Aplica', seizure.paymentApply);
         item.update();
 
         context.load(item);
@@ -678,6 +686,8 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                 originalElement.delivered = seizure.delivered;
                 originalElement.cashed = seizure.cashed;
                 originalElement.comments = seizure.comments;
+                originalElement.cost = seizure.cost;
+                originalElement.paymentApply = seizure.paymentApply;
 
                 processDocuments(seizure);
 
