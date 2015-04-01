@@ -115,7 +115,8 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         received: item.get_item('Recibido'),
                         delivered: item.get_item('Entregado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
+                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                        paymentApply: item.get_item('Aplica')
                     };
 
                     var anomalyNowDate = moment().startOf('day');
@@ -213,7 +214,8 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         received: item.get_item('Recibido'),
                         delivered: item.get_item('Entregado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
+                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                        paymentApply: item.get_item('Aplica')
                     };
 
                     var anomalyNowDate = moment().startOf('day');
@@ -649,7 +651,8 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             delivered: false,
             parcel: undefined,
             trackingNumber: undefined,
-            documents: []
+            documents: [],
+            paymentApply: false
         };
 
         return credit;
@@ -681,6 +684,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Solidario_x0020_4', credit.solidary4);
         item.set_item('Direccion_x0020_de_x0020_solidar2', credit.solidary4Address);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(credit.status.CODE).id));
+        item.set_item('Aplica', credit.paymentApply);
         item.update();
 
         context.load(item);
@@ -755,6 +759,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Entregado', credit.delivered);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((credit.parcel ? credit.parcel.id : undefined )));
         item.set_item('Guia', credit.trackingNumber);
+        item.set_item('Aplica', credit.paymentApply);
         item.update();
 
         context.load(item);
@@ -785,6 +790,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.delivered = credit.delivered;
                 originalElement.parcel = credit.parcel;
                 originalElement.trackingNumber = credit.trackingNumber;
+                originalElement.paymentApply = credit.paymentApply;
 
                 processDocuments(credit);
 
