@@ -104,7 +104,9 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
+                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
                          delivered: item.get_item('Entregado'),
+                         cashed: item.get_item('Cobrado'),
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
@@ -175,7 +177,9 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
+                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
                          delivered: item.get_item('Entregado'),
+                         cashed: item.get_item('Cobrado'),
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
@@ -579,7 +583,9 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
             received: false,
             documents: [],
             deliveryDate: getDeliveryDate(now),
+            realDeliveryDate: undefined,
             delivered: false,
+            cashed: false,
             committedDate: undefined,
             comments: undefined,
             creationDate: now
@@ -603,7 +609,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         item.set_item('Expediente', petition.record);
         item.set_item('Municipio', petition.municipality);
         item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(petition.state.id));
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(petition.status.CODE).id));
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(petition.status.code).id));
         item.set_item('Abogado', petition.lawyer);
         item.set_item('Entrega', petition.deliveryDate.toISOString());
         item.set_item('Creacion', petition.creationDate.toISOString());
@@ -640,14 +646,16 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
             usSpinnerService.spin('main-spinner');
         },0);
 
-        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.CODE);
+        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.code);
 
-        if (petition.delivered) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.DELIVERED.CODE);
+        if (petition.cashed) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.CASHED.code);
+        } else if (petition.delivered) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.DELIVERED.code);
         } else if (petition.committedDate) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_COMMITED_DATE.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.WAITING_COMMITED_DATE.code);
         } else {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.PETITION_STATUS.NEW.code);
         }
 
         var item = list.getItemById(petition.id);
@@ -665,7 +673,9 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((petition.parcel ? petition.parcel.id : undefined )));
         item.set_item('Guia', petition.trackingNumber);
         item.set_item('Recibido', petition.received);
+        item.set_item('Entrega_x0020_real', petition.realDeliveryDate);
         item.set_item('Entregado', petition.delivered);
+        item.set_item('Cobrado', petition.cashed);
         item.set_item('Comprometida', (petition.committedDate ? petition.committedDate.toISOString() : undefined ));
         item.set_item('Observaciones', petition.comments);
         item.update();
@@ -689,7 +699,9 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                 originalElement.parcel = petition.parcel;
                 originalElement.trackingNumber = petition.trackingNumber;
                 originalElement.received = petition.received;
+                originalElement.realDeliveryDate = petition.realDeliveryDate;
                 originalElement.delivered = petition.delivered;
+                originalElement.cashed = petition.cashed;
                 originalElement.committedDate = petition.committedDate;
                 originalElement.comments = petition.comments;
 

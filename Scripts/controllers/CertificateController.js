@@ -178,7 +178,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     };
 
     $scope.isCurrentStatus = function (status, minStatus) {
-        if(status && StatusService.getStatusById(status.id).code >= minStatus.CODE){
+        if(status && StatusService.getStatusById(status.id).code >= minStatus.code){
             return true;
         }
         return false;

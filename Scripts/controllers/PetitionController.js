@@ -210,7 +210,7 @@ Jash.controller('PetitionController', ['$scope', '$rootScope', '$state', '$popov
     };
 
     $scope.isCurrentStatus = function (status, minStatus) {
-        if (status && StatusService.getStatusById(status.id).code >= minStatus.CODE) {
+        if (status && StatusService.getStatusById(status.id).code >= minStatus.code) {
             return true;
         }
         return false;
@@ -230,6 +230,12 @@ Jash.controller('PetitionController', ['$scope', '$rootScope', '$state', '$popov
     $scope.setCommittedDate = function (committedDate) {
         if ($scope.selectedItem) {
             $scope.selectedItem.committedDate = new moment(committedDate).locale('es');
+        }
+    };
+
+    $scope.setRealDeliveryDate = function (realDeliveryDate) {
+        if ($scope.selectedItem) {
+            $scope.selectedItem.realDeliveryDate = new moment(realDeliveryDate).locale('es');
         }
     };
 

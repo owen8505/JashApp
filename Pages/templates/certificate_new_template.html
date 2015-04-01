@@ -5,12 +5,12 @@
     <div id="certificate-creation-date">{{ selectedItem.creationDate | formatDate }}</div>
 </li>
 <li>
-    <label for="certificate-delivery-date">Fecha de entrega:</label>
+    <label for="certificate-delivery-date">Fecha límite de entrega:</label>
     <div id="certificate-delivery-date">{{ selectedItem.deliveryDate | formatDate }}</div>
 </li>
 <li>
     <label for="certificate-status">Estatus:</label>
-    <input id="certificate-status" type="text" class="form-control" ng-model="selectedItem.status.NAME" readonly>
+    <input id="certificate-status" type="text" class="form-control" ng-model="selectedItem.status.name" readonly>
 </li>
 <li>
     <label for="certificate-id">ID:</label>
@@ -18,28 +18,28 @@
 </li>
 <li>
     <label for="certificate-folio">Folio: <em class="mandatory-field">*</em></label>
-    <span class="third-width"><input id="certificate-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true" numbers-only="numbers-only"></span>
+    <span class="third-width"><input id="certificate-folio" type="text" class="form-control" placeholder="Ej. 3035" ng-model="selectedItem.folio" required="true" numbers-only="numbers-only" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></span>
 </li>
 <li>
     <label for="certificate-inscription">Inscripción: <em class="mandatory-field">*</em></label>
-    <input id="certificate-inscription" type="text" class="form-control" placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true">
+    <input id="certificate-inscription" type="text" class="form-control" placeholder="Ej. Vol 7530" ng-model="selectedItem.inscription" required="true" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
 </li>
 <li>
     <label for="certificate-owner">Propietario: <em class="mandatory-field">*</em></label>
-    <input id="certificate-owner" type="text" class="form-control" class="form-control" placeholder="Ej. Ricardo Rosas" ng-model="selectedItem.owner" required="true">
+    <input id="certificate-owner" type="text" class="form-control" class="form-control" placeholder="Ej. Ricardo Rosas" ng-model="selectedItem.owner" required="true" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
 </li>
 <li>
     <label for="certificate-description">Descripción: <em class="mandatory-field">*</em></label>
-    <textarea id="certificate-description" class="form-control" required="true" placeholder="Ej. Casa habitación" ng-model="selectedItem.description"></textarea>
+    <textarea id="certificate-description" class="form-control" required="true" placeholder="Ej. Casa habitación" ng-model="selectedItem.description" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></textarea>
 </li>
 <li>
     <label for="certificate-attachments">Archivos adjuntos:</label>
-    <span class="third-width"><input id="certificate-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo"></span>
-    <span class="third-width"><input id="certificate-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ></span>
+    <span class="third-width"><input id="certificate-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></span>
+    <span class="third-width"><input id="certificate-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)" class="form-control" type="file" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></span>
     <span class="third-width"><a class="btn btn-default" ng-click="addAttachment()">Añadir</a></span>
-    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
+    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)}">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
 </li>
 <li>
     <label for="certificate-lawyer">Abogado:</label>
-    <input id="certificate-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer">
+    <input id="certificate-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
 </li>

@@ -114,6 +114,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         payment: item.get_item('Pagado'),
                         received: item.get_item('Recibido'),
                         delivered: item.get_item('Entregado'),
+                        cashed: item.get_item('Cobrado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
                     };
@@ -212,6 +213,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         payment: item.get_item('Pagado'),
                         received: item.get_item('Recibido'),
                         delivered: item.get_item('Entregado'),
+                        cashed: item.get_item('Cobrado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
                     };
@@ -647,6 +649,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             payment: false,
             received: false,
             delivered: false,
+            cashed: false,
             parcel: undefined,
             trackingNumber: undefined,
             documents: []
@@ -680,7 +683,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Direccion_x0020_de_x0020_solidar1', credit.solidary3Address);
         item.set_item('Solidario_x0020_4', credit.solidary4);
         item.set_item('Direccion_x0020_de_x0020_solidar2', credit.solidary4Address);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(credit.status.CODE).id));
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(credit.status.code).id));
         item.update();
 
         context.load(item);
@@ -714,20 +717,22 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             usSpinnerService.spin('main-spinner');
         },0);
 
-        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.NEW.CODE);
+        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.NEW.code);
 
-        if (credit.delivered) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.DELIVERED.CODE);
+        if (credit.cashed) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.CASHED.code);
+        } else if (credit.delivered) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.DELIVERED.code);
         } else if (credit.received) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.DOCS_RECEIVED.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.DOCS_RECEIVED.code);
         } else if (credit.trackingNumber) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_DOCS.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_DOCS.code);
         } else if (credit.committedDate) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_SHIPPING.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_SHIPPING.code);
         } else if (credit.manager) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_CONFIRMATION.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_CONFIRMATION.code);
         } else {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.NEW.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.NEW.code);
         }
 
         var item = list.getItemById(credit.id);
@@ -753,6 +758,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Pagado', credit.payment);
         item.set_item('Recibido', credit.received);
         item.set_item('Entregado', credit.delivered);
+        item.set_item('Cobrado', credit.cashed);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((credit.parcel ? credit.parcel.id : undefined )));
         item.set_item('Guia', credit.trackingNumber);
         item.update();
@@ -783,6 +789,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.payment = credit.payment;
                 originalElement.received = credit.received;
                 originalElement.delivered = credit.delivered;
+                originalElement.cashed = credit.cashed;
                 originalElement.parcel = credit.parcel;
                 originalElement.trackingNumber = credit.trackingNumber;
 

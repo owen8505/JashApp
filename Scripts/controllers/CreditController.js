@@ -181,7 +181,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
     };
 
     $scope.isCurrentStatus = function (status, minStatus) {
-        if (status && StatusService.getStatusById(status.id).code >= minStatus.CODE) {
+        if (status && StatusService.getStatusById(status.id).code >= minStatus.code) {
             return true;
         }
         return false;

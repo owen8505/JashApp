@@ -104,6 +104,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          payment: item.get_item('Pagado'),
                          received: item.get_item('Recibido'),
                          delivered: item.get_item('Entregado'),
+                         cashed: item.get_item('Cobrado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
                      };
@@ -193,6 +194,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          payment: item.get_item('Pagado'),
                          received: item.get_item('Recibido'),
                          delivered: item.get_item('Entregado'),
+                         cashed: item.get_item('Cobrado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
                      };
@@ -618,6 +620,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             payment: false,
             received: false,
             delivered: false,
+            cashed: false,
             parcel: undefined,
             trackingNumber: undefined,
             documents: []
@@ -642,7 +645,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Descripcion', certificate.description);
         item.set_item('Abogado', certificate.lawyer);
         item.set_item('Inscripcion', certificate.inscription);
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(certificate.status.CODE).id));
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(certificate.status.code).id));
         item.update();
 
         context.load(item);
@@ -676,20 +679,22 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             usSpinnerService.spin('main-spinner');
         },0);
 
-        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.NEW.CODE);
+        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.NEW.code);
 
-        if (certificate.delivered) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.DELIVERED.CODE);
+        if (certificate.cashed) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.CASHED.code);
+        } else if (certificate.delivered) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.DELIVERED.code);
         } else if (certificate.received) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.DOCS_RECEIVED.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.DOCS_RECEIVED.code);
         } else if (certificate.trackingNumber) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_DOCS.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_DOCS.code);
         } else if (certificate.committedDate) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_SHIPPING.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_SHIPPING.code);
         } else if (certificate.manager) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_CONFIRMATION.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.WAITING_CONFIRMATION.code);
         } else {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.NEW.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CERTIFICATE_STATUS.NEW.code);
         }
 
         var item = list.getItemById(certificate.id);
@@ -706,6 +711,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Pagado', certificate.payment);
         item.set_item('Recibido', certificate.received);
         item.set_item('Entregado', certificate.delivered);
+        item.set_item('Cobrado', certificate.cashed);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((certificate.parcel ? certificate.parcel.id : undefined )));
         item.set_item('Guia', certificate.trackingNumber);
         item.update();
@@ -727,6 +733,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.payment = certificate.payment;
                 originalElement.received = certificate.received;
                 originalElement.delivered = certificate.delivered;
+                originalElement.cashed = certificate.cashed;
                 originalElement.parcel = certificate.parcel;
                 originalElement.trackingNumber = certificate.trackingNumber;
 

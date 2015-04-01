@@ -103,7 +103,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
+                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
                          delivered: item.get_item('Entregado'),
+                         cashed: item.get_item('Cobrado'),
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
                      };
@@ -165,7 +167,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
+                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
                          delivered: item.get_item('Entregado'),
+                         cashed: item.get_item('Cobrado'),
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion'))
                      };
@@ -560,7 +564,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             received: false,
             documents: [],
             deliveryDate: getDeliveryDate(now),
+            realDeliveryDate: undefined,
             delivered: false,
+            cashed: false,
             comments: undefined,
             creationDate: now
         };
@@ -583,7 +589,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Expediente', seizure.record);
         item.set_item('Municipio', seizure.municipality);
         item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(seizure.state.id));
-        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(seizure.status.CODE).id));
+        item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(seizure.status.code).id));
         item.set_item('Abogado', seizure.lawyer);
         item.set_item('Entrega', seizure.deliveryDate.toISOString());
         item.set_item('Creacion', seizure.creationDate.toISOString());
@@ -620,12 +626,14 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             usSpinnerService.spin('main-spinner');
         },0);
 
-        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.NEW.CODE);
+        var newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.NEW.code);
 
-        if (seizure.delivered) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.DELIVERED.CODE);
+        if (seizure.cashed) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.CASHED.code);
+        } else if (seizure.delivered) {
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.DELIVERED.code);
         } else {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.NEW.CODE);
+            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.SEIZURE_STATUS.NEW.code);
         }
 
         var item = list.getItemById(seizure.id);
@@ -642,7 +650,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((seizure.parcel ? seizure.parcel.id : undefined )));
         item.set_item('Guia', seizure.trackingNumber);
         item.set_item('Recibido', seizure.received);
+        item.set_item('Entrega_x0020_real', seizure.realDeliveryDate);
         item.set_item('Entregado', seizure.delivered);
+        item.set_item('Cobrado', seizure.cashed);
         item.set_item('Observaciones', seizure.comments);
         item.update();
 
@@ -664,7 +674,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                 originalElement.parcel = seizure.parcel;
                 originalElement.trackingNumber = seizure.trackingNumber;
                 originalElement.received = seizure.received;
+                originalElement.realDeliveryDate = seizure.realDeliveryDate;
                 originalElement.delivered = seizure.delivered;
+                originalElement.cashed = seizure.cashed;
                 originalElement.comments = seizure.comments;
 
                 processDocuments(seizure);

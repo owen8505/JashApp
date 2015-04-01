@@ -45,29 +45,33 @@
                 SEIZURE: 30
             },
             CERTIFICATE_STATUS: {
-                NEW: {CODE: 1, NAME: 'Nuevo'},
-                WAITING_CONFIRMATION: {CODE: 2, NAME: 'En espera de confirmación'},
-                WAITING_SHIPPING: {CODE: 3, NAME: 'En espera de envío'},
-                WAITING_DOCS: {CODE: 4, NAME: 'En espera de documentos'},
-                DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
-                DELIVERED: {CODE: 6, NAME: 'Entregado'}
+                NEW: {code: 1, name: 'Nuevo'},
+                WAITING_CONFIRMATION: {code: 2, name: 'En espera de confirmación'},
+                WAITING_SHIPPING: {code: 3, name: 'En espera de envío'},
+                WAITING_DOCS: {code: 4, name: 'En espera de documentos'},
+                DOCS_RECEIVED: {code: 5, name: 'Documentación recibida'},
+                DELIVERED: {code: 6, name: 'Entregado'},
+                CASHED: {code: 10, name: 'Facturado'}
             },
             CREDIT_STATUS: {
-                NEW: {CODE: 1, NAME: 'Nuevo'},
-                WAITING_CONFIRMATION: {CODE: 2, NAME: 'En espera de confirmación'},
-                WAITING_SHIPPING: {CODE: 3, NAME: 'En espera de envío'},
-                WAITING_DOCS: {CODE: 4, NAME: 'En espera de documentos'},
-                DOCS_RECEIVED: {CODE: 5, NAME: 'Documentación recibida'},
-                DELIVERED: {CODE: 6, NAME: 'Entregado'}
+                NEW: {code: 1, name: 'Nuevo'},
+                WAITING_CONFIRMATION: {code: 2, name: 'En espera de confirmación'},
+                WAITING_SHIPPING: {code: 3, name: 'En espera de envío'},
+                WAITING_DOCS: {code: 4, name: 'En espera de documentos'},
+                DOCS_RECEIVED: {code: 5, name: 'Documentación recibida'},
+                DELIVERED: {code: 6, name: 'Entregado'},
+                CASHED: {code: 10, name: 'Facturado'}
             },
             PETITION_STATUS: {
-                NEW: {CODE: 1, NAME: 'Nuevo'},
-                WAITING_COMMITED_DATE: {CODE: 8, NAME: 'En espera de fecha'},
-                DELIVERED: {CODE: 6, NAME: 'Entregado'}
+                NEW: {code: 1, name: 'Nuevo'},
+                WAITING_COMMITED_DATE: {code: 8, name: 'En espera de entrega'},
+                DELIVERED: {code: 6, name: 'Entregado'},
+                CASHED: {code: 10, name: 'Facturado'}
             },
             SEIZURE_STATUS: {
-                NEW: {CODE: 1, NAME: 'Nuevo'},
-                DELIVERED: {CODE: 6, NAME: 'Entregado'}
+                NEW: {code: 1, name: 'Nuevo'},
+                DELIVERED: {code: 6, name: 'Entregado'},
+                CASHED: {code: 10, name: 'Facturado'}
             },
             ANOMALY_STATUS: {
                 WARNING: 'indicator-yellow',
