@@ -45,7 +45,7 @@
                 SEIZURE: 30
             },
             CERTIFICATE_STATUS: {
-                NEW: {code: 1, name: 'Nuevo'},
+                NEW: {id:1, code: 1, name: 'Nuevo'},
                 WAITING_CONFIRMATION: {code: 2, name: 'En espera de confirmación'},
                 WAITING_SHIPPING: {code: 3, name: 'En espera de envío'},
                 WAITING_DOCS: {code: 4, name: 'En espera de documentos'},
@@ -54,7 +54,7 @@
                 CASHED: {code: 10, name: 'Facturado'}
             },
             CREDIT_STATUS: {
-                NEW: {code: 1, name: 'Nuevo'},
+                NEW: {id:1, code: 1, name: 'Nuevo'},
                 WAITING_CONFIRMATION: {code: 2, name: 'En espera de confirmación'},
                 WAITING_SHIPPING: {code: 3, name: 'En espera de envío'},
                 WAITING_DOCS: {code: 4, name: 'En espera de documentos'},
@@ -63,13 +63,13 @@
                 CASHED: {code: 10, name: 'Facturado'}
             },
             PETITION_STATUS: {
-                NEW: {code: 1, name: 'Nuevo'},
+                NEW: {id:1, code: 1, name: 'Nuevo'},
                 WAITING_COMMITED_DATE: {code: 8, name: 'En espera de entrega'},
                 DELIVERED: {code: 6, name: 'Entregado'},
                 CASHED: {code: 10, name: 'Facturado'}
             },
             SEIZURE_STATUS: {
-                NEW: {code: 1, name: 'Nuevo'},
+                NEW: {id:1, code: 1, name: 'Nuevo'},
                 DELIVERED: {code: 6, name: 'Entregado'},
                 CASHED: {code: 10, name: 'Facturado'}
             },
