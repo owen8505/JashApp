@@ -10,7 +10,8 @@ Jash.controller('SeizureController', ['$scope', '$rootScope', '$state', '$popove
     $scope.committedDate = undefined;
 
     $scope.statesDropdown = [];
-    $scope.parcelsDropdown = [];
+    $scope.shippingParcelsDropdown = [];
+    $scope.receivingParcelsDropdown = [];
     $scope.managersDropdown = [];
     $scope.zonesDropdown = [];
 
@@ -106,9 +107,15 @@ Jash.controller('SeizureController', ['$scope', '$rootScope', '$state', '$popove
         });
 
         angular.forEach($scope.parcels, function (parcel, index) {
-            $scope.parcelsDropdown.push({
+            $scope.shippingParcelsDropdown.push({
                 text: parcel.name,
-                click: 'setParcel(' + index + ')'
+                click: 'setShippingParcel(' + index + ')'
+            });
+
+
+            $scope.receivingParcelsDropdown.push({
+                text: parcel.name,
+                click: 'setReceivingParcel(' + index + ')'
             });
         });
 
@@ -116,7 +123,7 @@ Jash.controller('SeizureController', ['$scope', '$rootScope', '$state', '$popove
 
     $scope.isNewSeizure = function () {
         return $scope.titleState == DEFAULT_VALUES.ITEM_STATES.NEW.title;
-    }
+    };
 
     $scope.createSeizure = function () {
         $scope.selectedItem = angular.copy(SeizureService.createSeizure());
@@ -193,9 +200,15 @@ Jash.controller('SeizureController', ['$scope', '$rootScope', '$state', '$popove
         }
     };
 
-    $scope.setParcel = function (parcelIndex) {
+    $scope.setShippingParcel = function (parcelIndex) {
         if ($scope.selectedItem) {
-            $scope.selectedItem.parcel = $scope.parcels[parcelIndex];
+            $scope.selectedItem.shippingParcel = $scope.parcels[parcelIndex];
+        }
+    };
+
+    $scope.setReceivingParcel = function (parcelIndex) {
+        if ($scope.selectedItem) {
+            $scope.selectedItem.receivingParcel = $scope.parcels[parcelIndex];
         }
     };
 

@@ -31,21 +31,37 @@
             <ol>
                 <li><h3>Datos de envío</h3></li>
                 <li>
-                    <label for="seizure-parcel">Paquetería:</label>
+                    <label for="seizure-shipping-parcel">Paquetería:</label>
                     <span class="third-width">
-                        <button id="seizure-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="parcelsDropdown" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
-                            <span ng-if="!selectedItem.parcel">Selecciona una paquetería</span><span ng-if="selectedItem.parcel">{{ selectedItem.parcel.name }}</span>
+                        <button id="seizure-shipping-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="shippingParcelsDropdown" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+                            <span ng-if="!selectedItem.shippingParcel">Selecciona una paquetería</span><span ng-if="selectedItem.shippingParcel">{{ selectedItem.shippingParcel.name }}</span>
                             <span class="caret"></span>
                         </button>
                     </span>
                 </li>
                 <li>
-                    <label for="seizure-tracking">Guía:</label>
-                    <span class="third-width"><input id="seizure-tracking" type="text" placeholder="Ej. 1087652649" class="form-control" ng-model="selectedItem.trackingNumber" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
+                    <label for="seizure-shipping-tracking">Guía:</label>
+                    <span class="third-width"><input id="seizure-shipping-tracking" type="text" placeholder="Ej. 1087652649" class="form-control" ng-model="selectedItem.shippingTrackingNumber" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
+                </li>
+            </ol>
+            <ol>
+                <li><h3>Datos de recibo</h3></li>
+                <li>
+                    <label for="seizure-receiving-parcel">Paquetería:</label>
+                    <span class="third-width">
+                        <button id="seizure-receiving-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="receivingParcelsDropdown" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+                            <span ng-if="!selectedItem.receivingParcel">Selecciona una paquetería</span><span ng-if="selectedItem.receivingParcel">{{ selectedItem.receivingParcel.name }}</span>
+                            <span class="caret"></span>
+                        </button>
+                    </span>
                 </li>
                 <li>
-                    <label for="seizure-received">Recibido:</label>
-                    <input id="seizure-received" type="checkbox" ng-model="selectedItem.received" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+                    <label for="seizure-receiving-tracking">Guía:</label>
+                    <span class="third-width"><input id="seizure-receiving-tracking" type="text" placeholder="Ej. 1087652649" class="form-control" ng-model="selectedItem.receivingTrackingNumber" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
+                </li>
+                <li>
+                    <label for="seizure-receiving-received">Recibido:</label>
+                    <input id="seizure-receiving-received" type="checkbox" ng-model="selectedItem.receivingReceived" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
                 </li>
             </ol>
             <ol>

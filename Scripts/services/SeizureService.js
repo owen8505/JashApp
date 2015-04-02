@@ -99,9 +99,11 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                          realEstate: item.get_item('Inmueble'),
                          precedent: item.get_item('Antecedente'),
-                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                         received: item.get_item('Recibido'),
+                         shippingParcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
+                         shippingTrackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         receivingParcel: (item.get_item('Paqueteria_x0020_recibo')) ? { id: item.get_item('Paqueteria_x0020_recibo').get_lookupId(), name: item.get_item('Paqueteria_x0020_recibo').get_lookupValue() } : undefined,
+                         receivingTrackingNumber: (item.get_item('Guia_x0020_recibo')) ? item.get_item('Guia_x0020_recibo') : undefined,
+                         receivingReceived: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
                          realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
@@ -165,9 +167,11 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
                          realEstate: item.get_item('Inmueble'),
                          precedent: item.get_item('Antecedente'),
-                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                         received: item.get_item('Recibido'),
+                         shippingParcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
+                         shippingTrackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         receivingParcel: (item.get_item('Paqueteria_x0020_recibo')) ? { id: item.get_item('Paqueteria_x0020_recibo').get_lookupId(), name: item.get_item('Paqueteria_x0020_recibo').get_lookupValue() } : undefined,
+                         receivingTrackingNumber: (item.get_item('Guia_x0020_recibo')) ? item.get_item('Guia_x0020_recibo') : undefined,
+                         receivingReceived: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
                          realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
@@ -563,9 +567,11 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             attachments: [],
             realEstate: undefined,
             precedent: undefined,
-            parcel: undefined,
-            trackingNumber: undefined,
-            received: false,
+            shippingParcel: undefined,
+            shippingTrackingNumber: undefined,
+            receivingParcel: undefined,
+            receivingTrackingNumber: undefined,
+            receivingReceived: false,
             documents: [],
             deliveryDate: getDeliveryDate(now),
             realDeliveryDate: undefined,
@@ -653,9 +659,11 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Abogado', seizure.lawyer);
         item.set_item('Inmueble', seizure.realEstate);
         item.set_item('Antecedente', seizure.precedent);
-        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((seizure.parcel ? seizure.parcel.id : undefined )));
-        item.set_item('Guia', seizure.trackingNumber);
-        item.set_item('Recibido', seizure.received);
+        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((seizure.shippingParcel ? seizure.shippingParcel.id : undefined )));
+        item.set_item('Guia', seizure.shippingTrackingNumber);
+        item.set_item('Paqueteria_x0020_recibo', new SP.FieldLookupValue().set_lookupId((seizure.receivingParcel ? seizure.receivingParcel.id : undefined )));
+        item.set_item('Guia_x0020_recibo', seizure.receivingTrackingNumber);
+        item.set_item('Recibido', seizure.receivingReceived);
         item.set_item('Entrega_x0020_real', (seizure.realDeliveryDate ? seizure.realDeliveryDate.toISOString() : undefined ));
         item.set_item('Entregado', seizure.delivered);
         item.set_item('Cobrado', seizure.cashed);
@@ -679,9 +687,11 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                 originalElement.status = newStatus;
                 originalElement.realEstate = seizure.realEstate;
                 originalElement.precedent = seizure.precedent;
-                originalElement.parcel = seizure.parcel;
-                originalElement.trackingNumber = seizure.trackingNumber;
-                originalElement.received = seizure.received;
+                originalElement.shippingParcel = seizure.shippingParcel;
+                originalElement.shippingTrackingNumber = seizure.shippingTrackingNumber;
+                originalElement.receivingParcel = seizure.receivingParcel;
+                originalElement.receivingTrackingNumber = seizure.receivingTrackingNumber;
+                originalElement.receivingReceived = seizure.receivingReceived;
                 originalElement.realDeliveryDate = seizure.realDeliveryDate;
                 originalElement.delivered = seizure.delivered;
                 originalElement.cashed = seizure.cashed;
