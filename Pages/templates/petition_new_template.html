@@ -53,6 +53,6 @@
     <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)}">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
 </li>
 <li>
-    <label for="petition-lawyer">Abogado:</label>
+    <label for="petition-lawyer">Abogado solicitante:</label>
     <input id="petition-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer" ng-readonly="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)">
 </li>
