@@ -103,7 +103,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
-                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
+                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          comments: item.get_item('Observaciones'),
@@ -169,7 +169,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
-                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
+                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          comments: item.get_item('Observaciones'),
@@ -656,7 +656,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((seizure.parcel ? seizure.parcel.id : undefined )));
         item.set_item('Guia', seizure.trackingNumber);
         item.set_item('Recibido', seizure.received);
-        item.set_item('Entrega_x0020_real', seizure.realDeliveryDate);
+        item.set_item('Entrega_x0020_real', (seizure.realDeliveryDate ? seizure.realDeliveryDate.toISOString() : undefined ));
         item.set_item('Entregado', seizure.delivered);
         item.set_item('Cobrado', seizure.cashed);
         item.set_item('Observaciones', seizure.comments);

@@ -104,7 +104,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
-                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
+                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
@@ -177,7 +177,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
                          received: item.get_item('Recibido'),
                          deliveryDate: new moment(item.get_item('Entrega')),
-                         realDeliveryDate: item.get_item('Entrega_x0020_real'),
+                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
@@ -673,7 +673,7 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((petition.parcel ? petition.parcel.id : undefined )));
         item.set_item('Guia', petition.trackingNumber);
         item.set_item('Recibido', petition.received);
-        item.set_item('Entrega_x0020_real', petition.realDeliveryDate);
+        item.set_item('Entrega_x0020_real', (petition.realDeliveryDate ? petition.realDeliveryDate.toISOString() : undefined ));
         item.set_item('Entregado', petition.delivered);
         item.set_item('Cobrado', petition.cashed);
         item.set_item('Comprometida', (petition.committedDate ? petition.committedDate.toISOString() : undefined ));
