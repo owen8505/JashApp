@@ -76,6 +76,10 @@
         <label for="seizure-cost">Costo de derechos:</label>
         <span class="third-width"><input id="seizure-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng- ng-currency ng-readonly="!selectedItem.paymentApply"></span>
     </li>
+    <li>
+        <label for="seizure-cost-comments">Observaciones:</label>
+        <textarea id="seizure-cost-comments" class="form-control" placeholder="Ej. Se pagó a tiempo" ng-model="selectedItem.paymentComments" ng-readonly="!selectedItem.paymentApply || isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></textarea>
+    </li>
 </ol>
 <ol>
     <li><h3>Datos de envío</h3></li>

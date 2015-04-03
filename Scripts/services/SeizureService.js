@@ -111,6 +111,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion')),
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         paymentComments: item.get_item('Observaciones_x0020_pagado'),
                          paymentApply: item.get_item('Aplica')
                      };
                      
@@ -179,6 +180,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          comments: item.get_item('Observaciones'),
                          creationDate: new moment(item.get_item('Creacion')),
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                         paymentComments: item.get_item('Observaciones_x0020_pagado'),
                          paymentApply: item.get_item('Aplica')
                      };
 
@@ -580,6 +582,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             comments: undefined,
             creationDate: now,
             cost: undefined,
+            paymentComments: false,
             paymentApply: false
         };
 
@@ -606,6 +609,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Inmueble', seizure.realEstate);
         item.set_item('Antecedente', seizure.precedent);
         item.set_item('Costo', seizure.cost);
+        item.set_item('Observaciones_x0020_pagado', seizure.paymentComments);
         item.set_item('Aplica', seizure.paymentApply);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((seizure.shippingParcel ? seizure.shippingParcel.id : undefined )));
         item.set_item('Guia', seizure.shippingTrackingNumber);
@@ -675,6 +679,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Cobrado', seizure.cashed);
         item.set_item('Observaciones', seizure.comments);
         item.set_item('Costo', seizure.cost);
+        item.set_item('Observaciones_x0020_pagado', seizure.paymentComments);
         item.set_item('Aplica', seizure.paymentApply);
         item.update();
 
@@ -703,6 +708,7 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                 originalElement.cashed = seizure.cashed;
                 originalElement.comments = seizure.comments;
                 originalElement.cost = seizure.cost;
+                originalElement.paymentComments = seizure.paymentComments;
                 originalElement.paymentApply = seizure.paymentApply;
 
                 processDocuments(seizure);

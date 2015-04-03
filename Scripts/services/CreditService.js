@@ -112,6 +112,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                         payment: item.get_item('Pagado'),
+                        paymentComments: item.get_item('Observaciones_x0020_pagado'),
                         received: item.get_item('Recibido'),
                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                         delivered: item.get_item('Entregado'),
@@ -213,6 +214,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                         payment: item.get_item('Pagado'),
+                        paymentComments: item.get_item('Observaciones_x0020_pagado'),
                         received: item.get_item('Recibido'),
                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                         delivered: item.get_item('Entregado'),
@@ -651,6 +653,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             committedDate: undefined,
             cost: undefined,
             payment: false,
+            paymentComments: false,
             received: false,
             realDeliveryDate: undefined,
             delivered: false,
@@ -763,6 +766,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         item.set_item('Comprometida', (credit.committedDate ? credit.committedDate.toISOString() : undefined ));
         item.set_item('Costo', (credit.cost ? credit.cost : undefined ));
         item.set_item('Pagado', credit.payment);
+        item.set_item('Observaciones_x0020_pagado', credit.paymentComments);
         item.set_item('Recibido', credit.received);
         item.set_item('Entrega_x0020_real', (credit.realDeliveryDate ? credit.realDeliveryDate.toISOString() : undefined ));
         item.set_item('Entregado', credit.delivered);
@@ -796,6 +800,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                 originalElement.committedDate = credit.committedDate;
                 originalElement.cost = credit.cost;
                 originalElement.payment = credit.payment;
+                originalElement.paymentComments = credit.paymentComments;
                 originalElement.received = credit.received;
                 originalElement.realDeliveryDate = credit.realDeliveryDate;
                 originalElement.delivered = credit.delivered;

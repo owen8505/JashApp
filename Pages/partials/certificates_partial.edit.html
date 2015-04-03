@@ -50,6 +50,10 @@
                     <label for="certificate-payment">Pago de derechos:</label>
                     <input id="certificate-payment" type="checkbox" ng-model="selectedItem.payment" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
                 </li>
+                <li>
+                    <label for="certificate-comments">Observaciones:</label>
+                    <textarea id="certificate-comments" class="form-control" placeholder="Ej. Se pagó a tiempo" ng-model="selectedItem.paymentComments" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></textarea>
+                </li>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.WAITING_SHIPPING)">
                 <li><h3>Datos de envío</h3></li>

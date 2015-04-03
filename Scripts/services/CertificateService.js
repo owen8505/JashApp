@@ -102,6 +102,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          payment: item.get_item('Pagado'),
+                         paymentComments: item.get_item('Observaciones_x0020_pagado'),
                          received: item.get_item('Recibido'),
                          realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
@@ -193,6 +194,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          payment: item.get_item('Pagado'),
+                         paymentComments: item.get_item('Observaciones_x0020_pagado'),
                          received: item.get_item('Recibido'),
                          realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
@@ -620,6 +622,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             committedDate: undefined,
             cost: undefined,
             payment: false,
+            paymentComments: false,
             received: false,
             realDeliveryDate: undefined,
             delivered: false,
@@ -712,6 +715,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Comprometida', (certificate.committedDate ? certificate.committedDate.toISOString() : undefined ));
         item.set_item('Costo', (certificate.cost ? certificate.cost : undefined ));
         item.set_item('Pagado', certificate.payment);
+        item.set_item('Observaciones_x0020_pagado', certificate.paymentComments);
         item.set_item('Recibido', certificate.received);
         item.set_item('Entrega_x0020_real', (certificate.realDeliveryDate ? certificate.realDeliveryDate.toISOString() : undefined ));
         item.set_item('Entregado', certificate.delivered);
@@ -735,6 +739,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.committedDate = certificate.committedDate;
                 originalElement.cost = certificate.cost;
                 originalElement.payment = certificate.payment;
+                originalElement.paymentComments = certificate.paymentComments;
                 originalElement.received = certificate.received;
                 originalElement.realDeliveryDate = certificate.realDeliveryDate;
                 originalElement.delivered = certificate.delivered;
