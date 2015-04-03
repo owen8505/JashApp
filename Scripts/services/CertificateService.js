@@ -70,11 +70,20 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
     var getLastCertificates = function (reload) {
         lastCertificates = [];
 
-        var queryString = '<View><Query>' +
-                            '<OrderBy>' +
-                               '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
-                            '</OrderBy>' +
-                          '</Query><RowLimit>5</RowLimit></View></View>';
+        var queryString = '<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                    '<Eq>' +
+                                        '<FieldRef Name=\'Cobrado\'/>' +
+                                        '<Value Type=\'Boolean\'>FALSE</Value>'+
+                                    '</Eq>' +
+                                '</Where>' +
+                                '<OrderBy>' +
+                                    '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
+                                '</OrderBy>' +
+                            '</Query>' +
+                            '<RowLimit>5</RowLimit>' +
+                        '</View>';
         var queryCAML = new SP.CamlQuery();
         queryCAML.set_viewXml(queryString);
 
