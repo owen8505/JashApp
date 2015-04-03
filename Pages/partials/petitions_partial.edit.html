@@ -10,7 +10,7 @@
                 <ng-include src="'templates/petition_new_template.html'"></ng-include>
                 <li>
                     <label for="petition-presentation">Fecha de presentación:</label>
-                    <quick-datepicker ng-model='presentationDate' label-format="dd/MM/yyyy" on-change="setPresentationDate(presentationDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
+                    <quick-datepicker ng-model='presentationDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setPresentationDate(presentationDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
                     <div id="petition-presentation" ng-if="selectedItem.presentationDate">{{ selectedItem.presentationDate | formatDate }}</div>
                 </li>
                 <li>
@@ -26,7 +26,7 @@
                 <li><h3>Diligencia</h3></li>
                 <li>
                     <label for="petition-committed-date">Fecha de diligencia:</label>
-                    <quick-datepicker ng-model='committedDate' label-format="dd/MM/yyyy" on-change="setCommittedDate(committedDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
+                    <quick-datepicker ng-model='committedDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setCommittedDate(committedDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
                     <div id="petition-committed-date" ng-if="selectedItem.committedDate">{{ selectedItem.committedDate | formatDate }}</div>
                 </li>
             </ol>
@@ -61,7 +61,7 @@
                 </li>
                 <li>
                     <label for="petition-real-delivery-date">Fecha de entrega:</label>
-                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
+                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
                     <div id="petition-real-delivery-date" ng-if="selectedItem.realDeliveryDate">{{ selectedItem.realDeliveryDate | formatDate }}</div>
                 </li>
                 <li>

@@ -40,7 +40,7 @@
                 </li>
                 <li>
                     <label for="petition-real-delivery-date">Fecha de entrega:</label>
-                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></quick-datepicker>
+                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></quick-datepicker>
                     <div id="petition-real-delivery-date" ng-if="selectedItem.realDeliveryDate">{{ selectedItem.realDeliveryDate | formatDate }}</div>
                 </li>
                 <li>

@@ -252,6 +252,13 @@ Jash.controller('SeizureController', ['$scope', '$rootScope', '$state', '$popove
         }
     };
 
+    $scope.onlyFutureDate = function (date) {
+        var today = new Date();
+        today.setDate(today.getDate() - 1);
+
+        return date > today;
+    };
+
     $scope.attachmentFilesChanged = function (elem) {
         $scope.attachmentElement = (elem);
     };

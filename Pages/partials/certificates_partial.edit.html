@@ -43,7 +43,7 @@
                 </li>
                 <li>
                     <label for="certificate-committed-date">Fecha comprometida por el gestor:</label>
-                    <quick-datepicker ng-model='committedDate' label-format="dd/MM/yyyy" on-change="setCommittedDate(committedDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></quick-datepicker>
+                    <quick-datepicker ng-model='committedDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setCommittedDate(committedDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></quick-datepicker>
                     <div id="certificate-committed-date" ng-if="selectedItem.committedDate">{{ selectedItem.committedDate | formatDate }}</div>
                 </li>
                 <li>
@@ -86,7 +86,7 @@
                 </li>
                 <li>
                     <label for="certificate-real-delivery-date">Fecha de entrega:</label>
-                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></quick-datepicker>
+                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></quick-datepicker>
                     <div id="certificate-real-delivery-date" ng-if="selectedItem.realDeliveryDate">{{ selectedItem.realDeliveryDate | formatDate }}</div>
                 </li>
                 <li>
