@@ -1,11 +1,14 @@
 'use strict';
 
-Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popover', 'InvoiceService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, InvoiceService, DEFAULT_VALUES) {
+Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popover', 'InvoiceService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, InvoiceService, DEFAULT_VALUES) {   
 
-    //Crédito seleccionado
+    $scope.REQUEST_TYPE = DEFAULT_VALUES.REQUEST_TYPE;
+
     $scope.selectedItem = undefined;
     $scope.documentName = undefined;
     $scope.committedDate = undefined;
+    $scope.requestTypeDropdown = [];
+    $scope.invoiceDate = undefined;
 
     $scope.query = '';
 
@@ -22,9 +25,8 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
     });
 
     $scope.initController = function () {
-
-        $rootScope.currentSection = DEFAULT_VALUES.SECTIONS[DEFAULT_VALUES.SECTION.INVOICES];
-
+        
+        $rootScope.currentSection = DEFAULT_VALUES.SECTIONS[DEFAULT_VALUES.SECTION.INVOICES];                        
         switch ($state.current.state) {
             case DEFAULT_VALUES.ITEM_STATES.NEW.code:
                 $scope.titleState = DEFAULT_VALUES.ITEM_STATES.NEW.title;
@@ -35,8 +37,8 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
                 if ($rootScope.invoicesLoaded){
                     if ($state.params) {
-                        $scope.selectedItem = angular.copy(InvoiceService.getInvoiceById($state.params.id));
-                    }
+                        $scope.selectedItem = angular.copy(InvoiceService.getInvoiceById($state.params.id));                        
+                    }                    
                 } else {
                     $scope.invoices = InvoiceService.getAllInvoices(true);
                 }
@@ -51,6 +53,20 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
             default:
                 break;
         }
+
+        if ($scope.selectedItem) {
+            if ($scope.selectedItem.invoiceDate) {
+                $scope.invoiceDate = $scope.selectedItem.invoiceDate._d.toTimeString();                
+            }
+            
+        }
+
+        angular.forEach($scope.REQUEST_TYPE, function (requestType, index) {
+            $scope.requestTypeDropdown.push({
+                text: requestType.name,
+                click: 'setRequestType(' + index + ')'
+            });
+        });
 
     };
 
@@ -72,6 +88,18 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
     $scope.deleteInvoice = function () {
         InvoiceService.deleteInvoice($scope.selectedItem);
+    };
+
+    $scope.setRequestType = function (requestTypeIndex) {
+        if ($scope.selectedItem) {
+            $scope.selectedItem.requestType = $scope.REQUEST_TYPE[requestTypeIndex];
+        }
+    };
+
+    $scope.setInvoiceDate = function (invoiceDate) {        
+        if ($scope.selectedItem) {
+            $scope.selectedItem.invoiceDate = new moment(invoiceDate).locale('es');
+        }
     };
 
     $scope.addDocument = function () {

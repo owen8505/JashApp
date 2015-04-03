@@ -8,7 +8,7 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     $scope.attachmentName = undefined;
     $scope.documentName = undefined;
     $scope.invoiceName = undefined;
-    $scope.committedDate = undefined;  
+    $scope.committedDate = undefined;
 
     $scope.parcelsDropdown = [];
     $scope.managersDropdown = [];
@@ -185,7 +185,11 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
     };
 
     $scope.sendMail = function (subject, observations) {
-        var manager = ManagerService.getManagerById($scope.selectedItem.manager.id);        
+        var manager = ManagerService.getManagerById($scope.selectedItem.manager.id);
+        observations = 'Folio: ' + $scope.selectedItem.folio + "\n" +
+                        'Incripción: ' + $scope.selectedItem.inscription + "\n" +
+                        'Propietario: ' + $scope.selectedItem.owner + "\n\n" +
+                        observations;
         CertificateService.sendMail(manager, subject, observations);
     };
 

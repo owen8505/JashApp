@@ -8,6 +8,10 @@
                 <input id="certificate-mail-subjects" type="text" placeholder="Ej. Solicitud de documentos" class="form-control" ng-model="subject">
             </li>
             <li>
+                <p>
+                    CERTIFICADO SELECCIONADO: <br />
+                    {{ item }}
+                </p>
                 <label for="certificate-mail-observation">Observaciones:</label>
                 <textarea id="certificate-mail-observation" ng-model="observations" placeholder="Ej. Favor de enviarme los documentos" class="form-control"></textarea>
             </li>
