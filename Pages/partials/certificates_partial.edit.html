@@ -81,6 +81,11 @@
                     <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)}">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
                 </li>
                 <li>
+                    <label for="certificate-real-delivery-date">Fecha de entrega:</label>
+                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></quick-datepicker>
+                    <div id="certificate-real-delivery-date" ng-if="selectedItem.realDeliveryDate">{{ selectedItem.realDeliveryDate | formatDate }}</div>
+                </li>
+                <li>
                     <label for="certificate-deliver">Entregado:</label>
                     <input id="certificate-deliver" type="checkbox" ng-model="selectedItem.delivered" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
                 </li>

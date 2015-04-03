@@ -53,16 +53,16 @@
             <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.WAITING_COMMITED_DATE)">
                 <li><h3>Entrega</h3></li>
                 <li>
-                    <label for="petition-real-delivery-date">Fecha de entrega:</label>
-                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
-                    <div id="petition-real-delivery-date" ng-if="selectedItem.realDeliveryDate">{{ selectedItem.realDeliveryDate | formatDate }}</div>
-                </li>
-                <li>
                     <label for="petition-documents">Subir archivo del exhorto:</label>
                     <span class="third-width"><input id="petition-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Exhorto 3035 Ricardo Rosas" ng-readonly="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></span>
                     <span class="third-width"><input id="petition-documents" onchange="angular.element(this).scope().documentFilesChanged(this)" class="form-control" type="file" ng-disabled="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></span>
                     <span class="third-width"><a class="btn btn-default" ng-click="addDocument()" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)}">Nuevo exhorto</a></span>
                     <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)}">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
+                </li>
+                <li>
+                    <label for="petition-real-delivery-date">Fecha de entrega:</label>
+                    <quick-datepicker ng-model='realDeliveryDate' label-format="dd/MM/yyyy" on-change="setRealDeliveryDate(realDeliveryDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></quick-datepicker>
+                    <div id="petition-real-delivery-date" ng-if="selectedItem.realDeliveryDate">{{ selectedItem.realDeliveryDate | formatDate }}</div>
                 </li>
                 <li>
                     <label for="petition-deliver">Entregado:</label>

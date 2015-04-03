@@ -103,6 +103,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          payment: item.get_item('Pagado'),
                          received: item.get_item('Recibido'),
+                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
@@ -193,6 +194,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          payment: item.get_item('Pagado'),
                          received: item.get_item('Recibido'),
+                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
@@ -619,6 +621,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             cost: undefined,
             payment: false,
             received: false,
+            realDeliveryDate: undefined,
             delivered: false,
             cashed: false,
             parcel: undefined,
@@ -710,6 +713,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Costo', (certificate.cost ? certificate.cost : undefined ));
         item.set_item('Pagado', certificate.payment);
         item.set_item('Recibido', certificate.received);
+        item.set_item('Entrega_x0020_real', (certificate.realDeliveryDate ? certificate.realDeliveryDate.toISOString() : undefined ));
         item.set_item('Entregado', certificate.delivered);
         item.set_item('Cobrado', certificate.cashed);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((certificate.parcel ? certificate.parcel.id : undefined )));
@@ -732,6 +736,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                 originalElement.cost = certificate.cost;
                 originalElement.payment = certificate.payment;
                 originalElement.received = certificate.received;
+                originalElement.realDeliveryDate = certificate.realDeliveryDate;
                 originalElement.delivered = certificate.delivered;
                 originalElement.cashed = certificate.cashed;
                 originalElement.parcel = certificate.parcel;

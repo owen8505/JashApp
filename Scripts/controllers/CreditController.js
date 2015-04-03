@@ -198,6 +198,12 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
         }
     };
 
+    $scope.setRealDeliveryDate = function (realDeliveryDate) {
+        if ($scope.selectedItem) {
+            $scope.selectedItem.realDeliveryDate = new moment(realDeliveryDate).locale('es');
+        }
+    };
+
     $scope.attachmentFilesChanged = function (elem) {
         $scope.attachmentElement = (elem);
     };

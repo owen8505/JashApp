@@ -195,6 +195,12 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
         }
     };
 
+    $scope.setRealDeliveryDate = function (realDeliveryDate) {
+        if ($scope.selectedItem) {
+            $scope.selectedItem.realDeliveryDate = new moment(realDeliveryDate).locale('es');
+        }
+    };
+
     $scope.attachmentFilesChanged = function (elem) {
         $scope.attachmentElement = (elem);
     };
