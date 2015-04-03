@@ -603,6 +603,12 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Estado', new SP.FieldLookupValue().set_lookupId(seizure.state.id));
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(seizure.status.code).id));
         item.set_item('Abogado', seizure.lawyer);
+        item.set_item('Inmueble', seizure.realEstate);
+        item.set_item('Antecedente', seizure.precedent);
+        item.set_item('Costo', seizure.cost);
+        item.set_item('Aplica', seizure.paymentApply);
+        item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((seizure.shippingParcel ? seizure.shippingParcel.id : undefined )));
+        item.set_item('Guia', seizure.shippingTrackingNumber);
         item.set_item('Entrega', seizure.deliveryDate.toISOString());
         item.set_item('Creacion', seizure.creationDate.toISOString());
         item.update();

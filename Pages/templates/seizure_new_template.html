@@ -1,58 +1,95 @@
-<li class="mandatory-field-label">Campos obligatorios <em class="mandatory-field">*</em></li>
-<li><h3>Datos generales</h3></li>
-<li>
-    <label for="seizure-creation-date">Fecha de creación:</label>
-    <div id="seizure-creation-date">{{ selectedItem.creationDate | formatDate }}</div>
-</li>
-<li>
-    <label for="seizure-delivery-date">Fecha límite de entrega:</label>
-    <div id="seizure-delivery-date">{{ selectedItem.deliveryDate | formatDate }}</div>
-</li>
-<li>
-    <label for="seizure-status">Estatus:</label>
-    <input id="seizure-status" type="text" class="form-control" ng-model="selectedItem.status.name" readonly>
-</li>
-<li>
-    <label for="seizure-id">ID:</label>
-    <input id="seizure-id" type="text" class="form-control" ng-model="selectedItem.id" readonly>
-</li>
-<li>
-    <label for="seizure-contract-number">No. de contrato coorporativo: <em class="mandatory-field">*</em></label>
-    <input id="seizure-contract-number" type="text" class="form-control" class="form-control" placeholder="Ej. 8591328" ng-model="selectedItem.contractNumber" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
-</li>
-<li>
-    <label for="seizure-defendant">Demandado: <em class="mandatory-field">*</em></label>
-    <input id="seizure-defendant" type="text" class="form-control" placeholder="Ej. Julio Flores" ng-model="selectedItem.defendant" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
-</li>
-<li>
-    <label for="seizure-court">Juzgado: <em class="mandatory-field">*</em></label>
-    <input id="seizure-court" type="text" class="form-control" class="form-control" placeholder="Ej. 14 de lo civil" ng-model="selectedItem.court" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
-</li>
-<li>
-    <label for="seizure-record">Expediente: <em class="mandatory-field">*</em></label>
-    <input id="seizure-record" type="text" class="form-control" class="form-control" placeholder="Ej. 230/2015" ng-model="selectedItem.record" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
-</li>
-<li>
-    <label for="seizure-municipality">Municipio: <em class="mandatory-field">*</em></label>
-    <input id="seizure-municipality" type="text" class="form-control" class="form-control" placeholder="Ej. Acapulco" ng-model="selectedItem.municipality" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
-</li>
-<li>
-    <label for="seizure-state">Estado: <em class="mandatory-field">*</em></label>
+<ol>
+    <li class="mandatory-field-label">Campos obligatorios <em class="mandatory-field">*</em></li>
+    <li><h3>Datos generales</h3></li>
+    <li>
+        <label for="seizure-creation-date">Fecha de creación:</label>
+        <div id="seizure-creation-date">{{ selectedItem.creationDate | formatDate }}</div>
+    </li>
+    <li>
+        <label for="seizure-delivery-date">Fecha límite de entrega:</label>
+        <div id="seizure-delivery-date">{{ selectedItem.deliveryDate | formatDate }}</div>
+    </li>
+    <li>
+        <label for="seizure-status">Estatus:</label>
+        <input id="seizure-status" type="text" class="form-control" ng-model="selectedItem.status.name" readonly>
+    </li>
+    <li>
+        <label for="seizure-id">ID:</label>
+        <input id="seizure-id" type="text" class="form-control" ng-model="selectedItem.id" readonly>
+    </li>
+    <li>
+        <label for="seizure-contract-number">No. de contrato coorporativo: <em class="mandatory-field">*</em></label>
+        <input id="seizure-contract-number" type="text" class="form-control" class="form-control" placeholder="Ej. 8591328" ng-model="selectedItem.contractNumber" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+    <li>
+        <label for="seizure-defendant">Demandado: <em class="mandatory-field">*</em></label>
+        <input id="seizure-defendant" type="text" class="form-control" placeholder="Ej. Julio Flores" ng-model="selectedItem.defendant" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+    <li>
+        <label for="seizure-court">Juzgado: <em class="mandatory-field">*</em></label>
+        <input id="seizure-court" type="text" class="form-control" class="form-control" placeholder="Ej. 14 de lo civil" ng-model="selectedItem.court" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+    <li>
+        <label for="seizure-record">Expediente: <em class="mandatory-field">*</em></label>
+        <input id="seizure-record" type="text" class="form-control" class="form-control" placeholder="Ej. 230/2015" ng-model="selectedItem.record" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+    <li>
+        <label for="seizure-municipality">Municipio: <em class="mandatory-field">*</em></label>
+        <input id="seizure-municipality" type="text" class="form-control" class="form-control" placeholder="Ej. Acapulco" ng-model="selectedItem.municipality" required="true" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+    <li>
+        <label for="seizure-state">Estado: <em class="mandatory-field">*</em></label>
     <span class="third-width">
         <button id="seizure-state" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="statesDropdown" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
             <span ng-if="!selectedItem.state">Selecciona un estado</span><span ng-if="selectedItem.state">{{ selectedItem.state.name }}</span>
             <span class="caret"></span>
         </button>
     </span>
-</li>
-<li>
-    <label for="seizure-attachments">Archivos adjuntos:</label>
-    <span class="third-width"><input id="seizure-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
-    <span class="third-width"><input id="seizure-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
-    <span class="third-width"><a class="btn btn-default" ng-click="addAttachment()" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)}">Añadir</a></span>
-    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)}">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
-</li>
-<li>
-    <label for="seizure-lawyer">Abogado solicitante:</label>
-    <input id="seizure-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
-</li>
+    </li>
+    <li>
+        <label for="seizure-attachments">Archivos adjuntos:</label>
+        <span class="third-width"><input id="seizure-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
+        <span class="third-width"><input id="seizure-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
+        <span class="third-width"><a class="btn btn-default" ng-click="addAttachment()" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)}">Añadir</a></span>
+        <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)}">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
+    </li>
+    <li>
+        <label for="seizure-lawyer">Abogado solicitante:</label>
+        <input id="seizure-lawyer" type="text" class="form-control" class="form-control" placeholder="Ej. Luis Sánchez" ng-model="selectedItem.lawyer" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+    <li>
+        <label for="seizure-real-state">Descripción del inmueble:</label>
+        <input id="seizure-real-state" type="text" class="form-control" class="form-control" placeholder="Ej. Tiene fachada de piedra con portón negro" ng-model="selectedItem.realEstate" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+    <li>
+        <label for="seizure-precedent">Antecedente:</label>
+        <input id="seizure-precedent" type="text" class="form-control" class="form-control" placeholder="Ej. 2172" ng-model="selectedItem.precedent" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+    </li>
+</ol>
+<ol>
+    <li><h3>Derechos</h3></li>
+    <li>
+        <label for="seizure-payment-not-apply">Aplica:</label>
+        <input id="seizure-payment-not-apply" type="checkbox" ng-model="selectedItem.paymentApply">
+    </li>
+    <li>
+        <label for="seizure-cost">Costo de derechos:</label>
+        <span class="third-width"><input id="seizure-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng- ng-currency ng-readonly="!selectedItem.paymentApply"></span>
+    </li>
+</ol>
+<ol>
+    <li><h3>Datos de envío</h3></li>
+    <li>
+        <label for="seizure-shipping-parcel">Paquetería:</label>
+                    <span class="third-width">
+                        <button id="seizure-shipping-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="shippingParcelsDropdown" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+                            <span ng-if="!selectedItem.shippingParcel">Selecciona una paquetería</span><span ng-if="selectedItem.shippingParcel">{{ selectedItem.shippingParcel.name }}</span>
+                            <span class="caret"></span>
+                        </button>
+                    </span>
+    </li>
+    <li>
+        <label for="seizure-shipping-tracking">Guía:</label>
+        <span class="third-width"><input id="seizure-shipping-tracking" type="text" placeholder="Ej. 1087652649" class="form-control" ng-model="selectedItem.shippingTrackingNumber" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></span>
+    </li>
+</ol>
