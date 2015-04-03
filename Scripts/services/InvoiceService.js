@@ -26,6 +26,20 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         }
     };
 
+    var getRequestType = function (requestTypeCode) {        
+        var requestType = undefined;
+        if (requestTypeCode) {
+            for (var requestTypeIndex = 0; requestTypeIndex < DEFAULT_VALUES.REQUEST_TYPE.length; requestTypeIndex++) {
+                if (DEFAULT_VALUES.REQUEST_TYPE[requestTypeIndex].code == requestTypeCode) {
+                    requestType = DEFAULT_VALUES.REQUEST_TYPE[requestTypeIndex];
+                    break;
+                }
+            }
+        }
+        
+        return requestType;
+    };
+
     var getAllInvoices = function (reload) {
 
         invoices = [];
@@ -44,9 +58,11 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                         id: item.get_id(),
                         folio: item.get_item('Title'),
                         requestIds: [],
-                        cashed: item.get_item('Cobrado')
+                        cashed: item.get_item('Cobrado'),
+                        invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                        requestType: getRequestType(item.get_item('Tipo_x0020_de_x0020_solicitud'))
                     };
-
+                    
                     if (item.get_item('Folios')) {
                         invoice.requestIds = item.get_item('Folios').split(';')
                     }
@@ -327,6 +343,8 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             id: 0,
             type: 'INVOICE',
             folio: undefined,
+            invoiceDate: undefined,
+            requestType: undefined,
             requestIds: [],
             cashed: false,
             documents: []
@@ -347,6 +365,8 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         item.set_item('Title', invoice.folio);
         item.set_item('Folios', invoice.requestIds.join(';'));
         item.set_item('Cobrado', invoice.cashed);
+        item.set_item('Tipo_x0020_de_x0020_solicitud', invoice.requestType.code);
+        item.set_item('Fecha_x0020_de_x0020_facturacion', invoice.invoiceDate.toISOString());
 
         item.update();
 
@@ -376,11 +396,13 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         $timeout(function() {
             usSpinnerService.spin('main-spinner');
         },0);
-
+        
         var item = list.getItemById(invoice.id);
         item.set_item('Title', invoice.folio);
         item.set_item('Folios', invoice.requestIds.join(';'));
         item.set_item('Cobrado', invoice.cashed);
+        item.set_item('Tipo_x0020_de_x0020_solicitud', invoice.requestType.code);
+        item.set_item('Fecha_x0020_de_x0020_facturacion', invoice.invoiceDate.toISOString());
         item.update();
 
         context.load(item);
@@ -390,6 +412,8 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                 originalElement.folio = invoice.folio;
                 originalElement.requestIds = invoice.requestIds;
                 originalElement.cashed = invoice.cashed;
+                originalElement.requestType = invoice.requestType;
+                originalElement.invoiceDate = invoice.invoiceDate;
 
                 updateDocuments(invoice);
 

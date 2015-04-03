@@ -76,7 +76,13 @@
             ANOMALY_STATUS: {
                 WARNING: 'indicator-yellow',
                 ERROR: 'indicator-red'
-            }
+            },
+            REQUEST_TYPE: [
+                {code:0, name: 'Certificado'},
+                { code: 1, name: 'Crédito' },
+                { code: 2, name: 'Exhorto' },
+                { code: 3, name: 'Embargo' }
+            ]
         })
 
 

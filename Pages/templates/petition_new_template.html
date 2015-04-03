@@ -50,7 +50,7 @@
     <span class="third-width"><input id="petition-attachment-name" type="text" ng-model="$parent.attachmentName" class="form-control" placeholder="Ej. Copia de correo" ng-readonly="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></span>
     <span class="third-width"><input id="petition-attachments" onchange="angular.element(this).scope().attachmentFilesChanged(this)"  class="form-control" type="file" ng-disabled="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></span>
     <span class="third-width"><a class="btn btn-default" ng-click="addAttachment()" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)}">Añadir</a></span>
-    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)}">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)"></span></a>
+    <a class="attachment-link" ng-repeat="attachment in selectedItem.attachments" ng-hide ="attachment.removed" ng-href="{{ attachment.url }}" target="_blank">{{ attachment.title }} <span class="icon icon-cancel-circle" ng-click="deleteAttachment($event, attachment)" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)}"></span></a>
 </li>
 <li>
     <label for="petition-lawyer">Abogado solicitante:</label>

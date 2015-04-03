@@ -101,9 +101,23 @@ input:-moz-placeholder {
   font-weight: 400;
   color: #CECEC6; }
 
+.dropdown {
+  font-size: 0;
+  width: 100%; }
+  .dropdown span:not(.caret) {
+    display: inline-block;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 85%; }
+
 .dropdown-menu {
   max-height: 200px;
   overflow-y: auto; }
+
+.popover {
+  max-width: 400px;
+  width: 400px; }
 
 table {
   border: 1px solid #F1F1F2;
@@ -204,18 +218,8 @@ table {
     color: #FF1D25; }
 
 .attachment-link-disabled {
-  background: white;
-  border: 1px solid #CCCCCC;
-  border-radius: 5px;
-  color: #333333;
   cursor: default;
-  display: inline-block;
-  margin: 0.6rem 0.4rem 0 0;
-  padding: 0.5rem;
-  pointer-events: none;
-  vertical-align: middle; }
-  .attachment-link-disabled .icon:hover {
-    color: #FF1D25; }
+  pointer-events: none; }
 
 .attachment-link:hover {
   background-color: #e6e6e6;

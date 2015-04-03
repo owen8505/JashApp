@@ -31,7 +31,7 @@
 
                     </span>
                     <!--span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span-->
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" manager="selectedItem.manager" send-mail-function="sendMail" ng-popover>Solicitar información</a></span>
+                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" manager="selectedItem.manager" send-mail-function="sendMail" item="selectedItem" ng-popover>Solicitar información</a></span>
                     <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
                 </li>
             </ol>
@@ -60,7 +60,7 @@
                 <li>
                     <label for="certificate-parcel">Paquetería:</label>
                     <span class="third-width">
-                        <button id="certificate-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="parcelsDropdown" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
+                        <button id="certificate-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="REQUEST_TYPE" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
                             <span ng-if="!selectedItem.parcel">Selecciona una paquetería</span><span ng-if="selectedItem.parcel">{{ selectedItem.parcel.name }}</span>
                             <span class="caret"></span>
                         </button>
@@ -82,7 +82,7 @@
                     <span class="third-width"><input id="certificate-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Certificado 3035 Ricardo Rosas" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></span>
                     <span class="third-width"><input id="certificate-documents" onchange="angular.element(this).scope().documentFilesChanged(this)" class="form-control" type="file" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></span>
                     <span class="third-width"><a class="btn btn-default" ng-click="addDocument()">Nuevo certificado</a></span>
-                    <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)}">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
+                    <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)}"></span></a>
                 </li>
                 <li>
                     <label for="certificate-real-delivery-date">Fecha de entrega:</label>

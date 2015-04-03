@@ -201,9 +201,29 @@ input:-moz-placeholder {
     color: $color-gray-2;
 }
 
-.dropdown-menu{
+.dropdown{
+    font-size: 0;
+    width: 100%;
+
+    span:not(.caret){
+        display: inline-block;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 85%;
+    }
+}
+
+.dropdown-menu{    
     max-height: 200px;
     overflow-y: auto;
+    
+
+}
+
+.popover{
+    max-width: 400px;
+    width: 400px;
 }
 
 table{
@@ -290,21 +310,9 @@ table{
     }
 }
 
-.attachment-link-disabled{
-    background: white;
-    border: 1px solid $color-border-gray-1;
-    border-radius: 5px;
-    color: $color-gray-5;
+.attachment-link-disabled{    
     cursor: default;
-    display: inline-block;
-    margin: 0.6rem 0.4rem 0 0;
-    padding: 0.5rem;
-    pointer-events: none;
-    vertical-align: middle;   
-
-    .icon:hover{
-        color: $color-light-red;
-    }
+    pointer-events: none;    
 }
 
 .attachment-link:hover{
