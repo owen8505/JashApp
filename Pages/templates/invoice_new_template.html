@@ -12,7 +12,7 @@
     <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
 </li>
 <li>
-    <label for="invoice-type">Tipo de solicitud: </label>
+    <label for="invoice-type">Tipo de solicitud: <em class="mandatory-field">*</em></label>
     <span class="third-width">
         <button id="invoice-type" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="requestTypeDropdown">
             <span ng-if="!selectedItem.requestType">Selecciona un tipo de solicitud</span><span ng-if="selectedItem.requestType">{{ selectedItem.requestType.name }}</span>
@@ -21,7 +21,7 @@
     </span>
 </li>
 <li>
-    <label for="invoice-requests">ID de solicitud:</label>
+    <label for="invoice-requests">ID de solicitud: <em class="mandatory-field">*</em></label>
     <span class="third-width"><input id="invoice-requests" type="text" class="form-control" placeholder="Ej. 432" ng-model="$parent.requestId"></span>
     <span class="third-width"><a class="btn btn-default" ng-click="addRequest()">Añadir</a></span>
     <div>
@@ -29,7 +29,7 @@
     </div>
 </li>
 <li>
-    <label for="invoice-date">Fecha de facturación:</label>
+    <label for="invoice-date">Fecha de facturación: <em class="mandatory-field">*</em></label>
     <quick-datepicker ng-model='invoiceDate' label-format="dd/MM/yyyy" on-change="setInvoiceDate(invoiceDate)" placeholder="Selecciona una fecha" ></quick-datepicker>
     <div id="invoice-date" ng-if="selectedItem.invoiceDate">{{ selectedItem.invoiceDate | formatDate }}</div>
 </li>
