@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ngResource', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate', 'angularSpinner'])
+    var Jash = angular.module('Jash', ['ngResource', 'ngRoute', 'ngCookies', 'ngResource', 'ngSanitize', 'ui.router', 'ng-currency', 'mgcrea.ngStrap', 'ngQuickDate', 'angularSpinner'])
 
         .value('DEFAULT_VALUES', {
             SECTION: {
@@ -338,12 +338,26 @@
                 replace: true,
                 scope: {                    
                     manager: '=',
-                    sendMailFunction: '='
+                    sendMailFunction: '=',
+                    item: '='
                 },
                 template: '<a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger">Solicitar información</a>',
                 link: function (scope, elements, attrs) {
                                        
-                    scope.subject, scope.observations;
+                    scope.subject, scope.observations, scope.details;
+
+                    var initDirective = function () {
+                        
+                        if (scope.item) {
+                            switch (scope.item.type) {
+                                case "CERTIFICATE":                                    
+                                    scope.details = (scope.item.folio) ? 'Folio: ' + scope.item.folio + '<br>' : '';
+                                    scope.details += (scope.item.inscription) ? 'Inscripción: ' + scope.item.inscription + '<br>' : '';
+                                    scope.details += 'Owner: ' + scope.item.owner + '';                                                                                                          
+                                    break;
+                            }
+                        }                        
+                    };
 
                     scope.mailPopover = $popover(elements, {
                         scope: scope,
@@ -378,6 +392,8 @@
                         
                         return isValidForm;
                     };
+
+                    initDirective();
                 }
             }
         })
