@@ -55,11 +55,19 @@
                     <textarea id="seizure-comments" class="form-control" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments" ng-readonly="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)"></textarea>
                 </li>
             </ol>
-            <ol>
+            <ol ng-if="selectedItem.invoiceFolio">
                 <li><h3>Factura</h3></li>
                 <li>
-                    <label for="certificate-cashed">Facturado:</label>
-                    <input id="certificate-cashed" type="checkbox" ng-model="selectedItem.cashed" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
+                    <label for="seizure-invoice-date">Fecha de facturación:</label>
+                    <div id="seizure-delivery-date">{{ selectedItem.invoiceDate | formatDate }}</div>
+                </li>
+                <li>
+                    <label for="seizure-invoice-folio">Folio de factura:</label>
+                    <input id="seizure-invoice-folio" type="text" class="form-control" placeholder="No tiene asignada una factura" ng-model="selectedItem.invoiceFolio" ng-readonly="true">
+                </li>
+                <li>
+                    <label for="seizure-cashed">Facturado:</label>
+                    <input id="seizure-cashed" type="checkbox" ng-model="selectedItem.cashed" ng-disabled="isCurrentStatus(selectedItem.status, SEIZURE_STATUS.CASHED)">
                 </li>
             </ol>
             <ol>

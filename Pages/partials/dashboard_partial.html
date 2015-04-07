@@ -54,7 +54,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="certificate in lastCertificates | orderBy:['anomaly', '-id'] ">
+                            <tr ng-repeat="certificate in lastCertificates | orderBy:['anomaly','creationDate','-id'] ">
                                 <td class="folio"><span ng-class="{true:certificate.anomaly.status, false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.id }}</a></td>
                                 <td>{{ certificate.folio }}</td>
                                 <td>{{ certificate.inscription }}</td>
@@ -94,7 +94,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="credit in lastCredits | limitTo: 5 | orderBy:['anomaly', '-id']  ">
+                            <tr ng-repeat="credit in lastCredits | limitTo: 5 | orderBy:['anomaly','creationDate','-id']  ">
                                 <td class="folio"><span ng-class="{true:credit.anomaly.status, false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credits.edit({id:credit.id, mode:'last'})">{{ credit.id }}</a></td>
                                 <td>{{ credit.folio }}</td>
                                 <td>{{ credit.contractNumber }}</td>
@@ -133,7 +133,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="petition in lastPetitions | limitTo: 5 | orderBy:['anomaly', '-id'] ">
+                            <tr ng-repeat="petition in lastPetitions | limitTo: 5 | orderBy:['anomaly','creationDate','-id'] ">
                                 <td class="folio"><span ng-class="{true:petition.anomaly.status, false:'indicator-green'}[petition.anomaly != undefined]"></span> <a ui-sref="petitions.edit({id:petition.id, mode:'last'})">{{ petition.id }}</a></td>
                                 <td>{{ petition.defendant }}</td>
                                 <td>{{ petition.court }}</td>
@@ -172,7 +172,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="seizure in lastSeizures | limitTo: 5 | orderBy:['anomaly', '-id'] ">
+                            <tr ng-repeat="seizure in lastSeizures | limitTo: 5 | orderBy:['anomaly','creationDate','-id'] ">
                                 <td class="folio"><span ng-class="{true:seizure.anomaly.status, false:'indicator-green'}[seizure.anomaly != undefined]"></span> <a ui-sref="seizures.edit({id:seizure.id, mode:'last'})">{{ seizure.id }}</a></td>
                                 <td>{{ seizure.defendant }}</td>
                                 <td>{{ seizure.court }}</td>

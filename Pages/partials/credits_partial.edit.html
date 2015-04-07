@@ -98,7 +98,21 @@
                     <input id="credit-deliver" type="checkbox" ng-model="selectedItem.delivered">
                 </li>
             </ol>
-
+            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.DOCS_RECEIVED) && selectedItem.invoiceFolio">
+                <li><h3>Factura</h3></li>
+                <li>
+                    <label for="credit-invoice-date">Fecha de facturación:</label>
+                    <div id="credit-delivery-date">{{ selectedItem.invoiceDate | formatDate }}</div>
+                </li>
+                <li>
+                    <label for="credit-invoice-folio">Folio de factura:</label>
+                    <input id="credit-invoice-folio" type="text" class="form-control" placeholder="No tiene asignada una factura" ng-model="selectedItem.invoiceFolio" ng-readonly="true">
+                </li>
+                <li>
+                    <label for="credit-cashed">Facturado:</label>
+                    <input id="credit-cashed" type="checkbox" ng-model="selectedItem.cashed" ng-disabled="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)">
+                </li>
+            </ol>
             <ol>
                 <li class="action-button-holder">
                     <a class="btn btn-danger delete-button" ng-click="deleteCredit()">Eliminar</a>

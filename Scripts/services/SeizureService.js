@@ -121,7 +121,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          creationDate: new moment(item.get_item('Creacion')),
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          paymentComments: item.get_item('Observaciones_x0020_pagado'),
-                         paymentApply: item.get_item('Aplica')
+                         paymentApply: item.get_item('Aplica'),
+                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                      };
                      
                      var anomalyNowDate = moment().startOf('day');
@@ -190,7 +192,9 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                          creationDate: new moment(item.get_item('Creacion')),
                          cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
                          paymentComments: item.get_item('Observaciones_x0020_pagado'),
-                         paymentApply: item.get_item('Aplica')
+                         paymentApply: item.get_item('Aplica'),
+                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                      };
 
                      var anomalyNowDate = moment().startOf('day');

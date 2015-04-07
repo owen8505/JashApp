@@ -60,7 +60,7 @@
                 <li>
                     <label for="certificate-parcel">Paquetería:</label>
                     <span class="third-width">
-                        <button id="certificate-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="REQUEST_TYPE" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
+                        <button id="certificate-parcel" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="parcelsDropdown" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
                             <span ng-if="!selectedItem.parcel">Selecciona una paquetería</span><span ng-if="selectedItem.parcel">{{ selectedItem.parcel.name }}</span>
                             <span class="caret"></span>
                         </button>
@@ -94,8 +94,16 @@
                     <input id="certificate-deliver" type="checkbox" ng-model="selectedItem.delivered" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
                 </li>
             </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.DOCS_RECEIVED)">
+            <ol ng-if="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.DOCS_RECEIVED) && selectedItem.invoiceFolio">
                 <li><h3>Factura</h3></li>
+                <li>
+                    <label for="certificate-invoice-date">Fecha de facturación:</label>
+                    <div id="certificate-delivery-date">{{ selectedItem.invoiceDate | formatDate }}</div>
+                </li>
+                <li>
+                    <label for="certificate-invoice-folio">Folio de factura:</label>
+                    <input id="certificate-invoice-folio" type="text" class="form-control" placeholder="No tiene asignada una factura" ng-model="selectedItem.invoiceFolio" ng-readonly="true">
+                </li>
                 <li>
                     <label for="certificate-cashed">Facturado:</label>
                     <input id="certificate-cashed" type="checkbox" ng-model="selectedItem.cashed" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">

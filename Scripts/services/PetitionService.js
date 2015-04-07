@@ -118,7 +118,9 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          cashed: item.get_item('Cobrado'),
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          comments: item.get_item('Observaciones'),
-                         creationDate: new moment(item.get_item('Creacion'))
+                         creationDate: new moment(item.get_item('Creacion')),
+                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                      };
 
                      var anomalyNowDate = moment().startOf('day');
@@ -191,7 +193,9 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
                          cashed: item.get_item('Cobrado'),
                          committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
                          comments: item.get_item('Observaciones'),
-                         creationDate: new moment(item.get_item('Creacion'))
+                         creationDate: new moment(item.get_item('Creacion')),
+                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                      };
 
                      var anomalyNowDate = moment().startOf('day');

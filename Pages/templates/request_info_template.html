@@ -10,7 +10,7 @@
             <li>
                 <p>
                     CERTIFICADO SELECCIONADO: <br />
-                    {{ item }}
+                    <span ng-bind-html="details"></span>
                 </p>
                 <label for="certificate-mail-observation">Observaciones:</label>
                 <textarea id="certificate-mail-observation" ng-model="observations" placeholder="Ej. Favor de enviarme los documentos" class="form-control"></textarea>
