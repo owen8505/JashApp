@@ -128,7 +128,9 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         cashed: item.get_item('Cobrado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                        paymentApply: item.get_item('Aplica')
+                        paymentApply: item.get_item('Aplica'),
+                        invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                        invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                     };
 
                     var anomalyNowDate = moment().startOf('day');
@@ -230,7 +232,9 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         cashed: item.get_item('Cobrado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                        paymentApply: item.get_item('Aplica')
+                        paymentApply: item.get_item('Aplica'),
+                        invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                        invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                     };
 
                     var anomalyNowDate = moment().startOf('day');

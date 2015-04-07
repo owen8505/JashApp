@@ -117,7 +117,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                      };
 
                      var anomalyNowDate = moment().startOf('day');
@@ -209,7 +211,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
                          delivered: item.get_item('Entregado'),
                          cashed: item.get_item('Cobrado'),
                          parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined
+                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                      };
 
                      var anomalyNowDate = moment().startOf('day');
@@ -638,7 +642,9 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
             cashed: false,
             parcel: undefined,
             trackingNumber: undefined,
-            documents: []
+            documents: [],
+            invoiceDate: undefined,
+            invoiceFolio: undefined
         };        
 
         return certificate;
@@ -730,7 +736,7 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
         item.set_item('Entregado', certificate.delivered);
         item.set_item('Cobrado', certificate.cashed);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((certificate.parcel ? certificate.parcel.id : undefined )));
-        item.set_item('Guia', certificate.trackingNumber);
+        item.set_item('Guia', certificate.trackingNumber);        
         item.update();
 
         context.load(item);
