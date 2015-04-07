@@ -103,7 +103,6 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
     };
 
     $scope.addDocument = function () {
-
         if ($scope.selectedItem && $scope.documentElement && $scope.documentName) {
             var file = $scope.documentElement.files[0];
             var document = {
@@ -139,21 +138,27 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
         $scope.documentElement = (elem);
     };
 
-    $scope.addFolio = function (folio) {
-        if ($scope.selectedItem && folio) {
-            $scope.selectedItem.requestIds.push(folio);
-        }
+    $scope.addRequest = function () {
+        if ($scope.selectedItem && $scope.requestId) {
+            var request = {
+                id: $scope.requestId,
+                removed: 0,
+                new: 1
+            };
 
-        $scope.folio = undefined;
+            $scope.selectedItem.requests.push(request);
+            $scope.requestId = undefined;
+        }
     };
 
-    $scope.deleteFolio = function (event, folio) {
-
-        // Evitamos que el documento se abra
-        event.preventDefault();
-
-        // Es un archivo nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de archivos
-        $scope.selectedItem.requestIds.splice($scope.selectedItem.requestIds.indexOf(folio), 1);
+    $scope.deleteRequest = function (event, request) {
+        if (request.new) {
+            // Se le asigna removed 1 para marcar que es necesario borrar el request y para evitar que se despliegue en el front
+            request.removed = 1;
+        } else {
+            // Es un request nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de requests
+            $scope.selectedItem.requests.splice($scope.selectedItem.requests.indexOf(request), 1);
+        }
     };
 
     $scope.isValidForm = function (fields) {

@@ -12,7 +12,7 @@
     <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)"></span></a>
 </li>
 <li>
-    <label for="invoice-type">Tipo de solicitud: </label>    
+    <label for="invoice-type">Tipo de solicitud: </label>
     <span class="third-width">
         <button id="invoice-type" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="requestTypeDropdown">
             <span ng-if="!selectedItem.requestType">Selecciona un tipo de solicitud</span><span ng-if="selectedItem.requestType">{{ selectedItem.requestType.name }}</span>
@@ -21,11 +21,11 @@
     </span>
 </li>
 <li>
-    <label for="invoice-folios">ID de solicitud:</label>
-    <span class="third-width"><input id="invoice-folios" type="text" class="form-control" placeholder="Ej. 432" ng-model="$parent.folio"></span>
-    <span class="third-width"><a class="btn btn-default" ng-click="addFolio(folio)">Añadir</a></span>
+    <label for="invoice-requests">ID de solicitud:</label>
+    <span class="third-width"><input id="invoice-requests" type="text" class="form-control" placeholder="Ej. 432" ng-model="$parent.requestId"></span>
+    <span class="third-width"><a class="btn btn-default" ng-click="addRequest()">Añadir</a></span>
     <div>
-        <a class="attachment-link" ng-repeat="folio in selectedItem.requestIds">{{ folio }} <span class="icon icon-cancel-circle" ng-click="deleteFolio($event, folio)"></span></a>
+        <a class="attachment-link" ng-repeat="request in selectedItem.requests" ng-hide="request.removed">{{ request.id }} <span class="icon icon-cancel-circle" ng-click="deleteRequest($event, request)"></span></a>
     </div>
 </li>
 <li>

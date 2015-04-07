@@ -78,10 +78,10 @@
                 ERROR: 'indicator-red'
             },
             REQUEST_TYPE: [
-                {code:0, name: 'Certificado'},
-                { code: 1, name: 'Crédito' },
-                { code: 2, name: 'Exhorto' },
-                { code: 3, name: 'Embargo' }
+                {code: 1, name: 'Certificado', library: 'Certificados'},
+                {code: 2, name: 'Crédito', library: 'Creditos'},
+                {code: 3, name: 'Exhorto', library: 'Exhortos'},
+                {code: 4, name: 'Embargo', library: 'Embargos'}
             ]
         })
 
