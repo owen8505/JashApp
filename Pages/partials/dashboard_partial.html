@@ -96,7 +96,7 @@
                         <tbody>
                             <tr ng-repeat="credit in lastCredits | limitTo: 5 | orderBy:['anomaly','creationDate','-id']  ">
                                 <td class="folio"><span ng-class="{true:credit.anomaly.status, false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credits.edit({id:credit.id, mode:'last'})">{{ credit.id }}</a></td>
-                                <td>{{ credit.creationDate }} {{ credit.folio }}</td>
+                                <td>{{ credit.folio }}</td>
                                 <td>{{ credit.contractNumber }}</td>
                                 <td>{{ credit.owner }}</td>
                                 <td>{{ credit.status.name }}</td>
