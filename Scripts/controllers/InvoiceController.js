@@ -69,7 +69,8 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
             
         }
 
-        angular.forEach($scope.REQUEST_TYPE, function (requestType, index) {
+        $scope.requestTypeDropdown = [];
+        angular.forEach($scope.REQUEST_TYPE, function (requestType, index) {            
             $scope.requestTypeDropdown.push({
                 text: requestType.name,
                 click: 'setRequestType(' + index + ')'
@@ -169,18 +170,39 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
         }
     };
 
-    $scope.isValidForm = function (fields) {
-        var isValidForm = true;
-        if ($scope.selectedItem) {
-            for (var indexField in fields) {
-                var fieldName = fields[indexField];
-                if (!$scope.selectedItem[fieldName]) {
-                    isValidForm = false;
-                    break;
-                }
+    $scope.existsActiveDocument = function (documentArray) {
+        var existsActiveDocument = false;        
+        for (var documentIndex in documentArray) {            
+            if (documentArray[documentIndex].removed != 1) {                
+                existsActiveDocument = true;
+                break;
             }
         }
 
+        return existsActiveDocument;
+    };
+
+    $scope.isValidForm = function (fields) {        
+        var isValidForm = true;
+        if ($scope.selectedItem) {            
+            for (var indexField in fields) {                
+                var fieldName = fields[indexField];                
+                var field = $scope.selectedItem[fieldName];                
+                if (field) {                    
+                    if (field instanceof Array) {                        
+                        // Checamos si el arreglo tiene elementos y al menos tiene un elemento NO borrado                                
+                        if (!field.length || !$scope.existsActiveDocument(field)) {                            
+                            isValidForm = false;
+                            break;
+                        }
+                    } 
+                } else {
+                    isValidForm = false;
+                    break;
+                }
+            }                        
+        }
+       
         return isValidForm;
     };
 
