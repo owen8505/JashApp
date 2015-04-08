@@ -77,7 +77,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                         });
                     }
 
-                    invoice.documents = getDocuments(libraries.documents, invoice.id);
+                    invoice.documents = getDocuments(libraries.documents, invoice);
                     invoices.push(invoice);
                 }
 
@@ -92,14 +92,14 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         return invoices;
     };
 
-    var getDocuments = function (library, id) {
+    var getDocuments = function (library, invoice) {
 
         var documents = [];
 
         var url = SPWeb.appWebUrl + "/_api/SP.AppContextSite(@target)" +
             "/web/lists/getbytitle('" + library.name + "')/items?" +
             "@target='" + SPWeb.hostUrl + "'" +
-            "&$filter=Id_x0020_de_x0020_factura eq '" + id + "'" +
+            "&$filter=Id_x0020_de_x0020_factura eq '" + invoice.id + "'" +
             "&$expand=File";
 
         var executor = new SP.RequestExecutor(SPWeb.appWebUrl);
@@ -125,6 +125,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                         documents.push(document);
                     });
 
+                    invoice[library.loadedName] = true;
                 },
                 error: function (response) {
                     console.log(response);
@@ -138,7 +139,11 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
     var processDocuments = function (invoice) {
 
         // Variable que lleva el conteo de cuantos documentos vamos a procesar
-        documentsTotal = invoice.documents.length + invoice.requests.length;
+        documentsTotal = invoice.documents.length;
+
+        if(invoice.cashed){
+            documentsTotal += invoice.requests.length;
+        }
 
         // Variable que lleva el conteo de cuantos documentos han sido procesados
         documentsProcessed = 0;
@@ -156,16 +161,17 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
                 }
             });
 
-            angular.forEach(invoice.requests, function(request){
-                if (request.removed == 1) {
-                    console.log('delete');
-                    deleteRequest(invoice, request);
-                } else if (document.new == 1) {
-                    saveRequest(invoice, request);
-                } else {
-                    updateRequest(invoice, request);
-                }
-            });
+            if(invoice.cashed){
+                angular.forEach(invoice.requests, function(request){
+                    if (request.removed == 1) {
+                        deleteRequest(invoice, request);
+                    } else if (document.new == 1) {
+                        saveRequest(invoice, request);
+                    } else {
+                        updateRequest(invoice, request);
+                    }
+                });
+            }
         }
 
     };
@@ -406,7 +412,6 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
     };
 
     var saveRequest = function (invoice, request) {
-
         var item = appContext.get_web().get_lists().getByTitle(invoice.requestType.library).getItemById(request.id);
 
         item.set_item('Folio_x0020_de_x0020_factura', invoice.folio);
@@ -433,7 +438,7 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
         var item = appContext.get_web().get_lists().getByTitle(invoice.requestType.library).getItemById(request.id);
 
         item.set_item('Folio_x0020_de_x0020_factura', '');
-        item.set_item('Fecha_x0020_de_x0020_facturacion', invoice.invoiceDate.toISOString());
+        item.set_item('Fecha_x0020_de_x0020_facturacion', '');
         item.update();
 
         context.load(item);
@@ -452,7 +457,6 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
     };
 
     var updateRequest = function (invoice, request) {
-
         var item = appContext.get_web().get_lists().getByTitle(invoice.requestType.library).getItemById(request.id);
 
         item.set_item('Folio_x0020_de_x0020_factura', invoice.folio);
@@ -510,7 +514,9 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
 
         var requestIds = [];
         angular.forEach(invoice.requests, function(request){
-            requestIds.push(request.id);
+            if(!request.removed){
+                requestIds.push(request.id);
+            }
         });
 
         item.set_item('Title', invoice.folio);
@@ -552,7 +558,9 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
 
         var requestIds = [];
         angular.forEach(invoice.requests, function(request){
-            requestIds.push(request.id);
+            if(!request.removed){
+                requestIds.push(request.id);
+            }
         });
 
         item.set_item('Title', invoice.folio);
@@ -622,10 +630,8 @@ Jash.factory('InvoiceService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
             documents: {
                 type: 'document',
                 name: 'Biblioteca de facturas',
-                arrayName: 'documents'
-            },
-            requests: {
-
+                arrayName: 'documents',
+                loadedName: 'documentsLoaded'
             }
         }
     };

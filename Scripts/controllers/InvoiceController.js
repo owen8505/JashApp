@@ -1,6 +1,6 @@
 'use strict';
 
-Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popover', 'InvoiceService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, InvoiceService, DEFAULT_VALUES) {   
+Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popover', '$interval', 'InvoiceService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, $interval, InvoiceService, DEFAULT_VALUES) {
 
     $scope.REQUEST_TYPE = DEFAULT_VALUES.REQUEST_TYPE;
 
@@ -37,7 +37,15 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
                 if ($rootScope.invoicesLoaded){
                     if ($state.params) {
-                        $scope.selectedItem = angular.copy(InvoiceService.getInvoiceById($state.params.id));                        
+                        var interval = $interval(function(){
+                            var selectedItem =  angular.copy(InvoiceService.getInvoiceById($state.params.id));
+
+                            if(selectedItem.documentsLoaded){
+                                $scope.selectedItem = angular.copy(InvoiceService.getInvoiceById($state.params.id));
+                                $interval.cancel(interval);
+                            }
+                        }, 100);
+
                     }                    
                 } else {
                     $scope.invoices = InvoiceService.getAllInvoices(true);
@@ -153,11 +161,11 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
 
     $scope.deleteRequest = function (event, request) {
         if (request.new) {
-            // Se le asigna removed 1 para marcar que es necesario borrar el request y para evitar que se despliegue en el front
-            request.removed = 1;
-        } else {
             // Es un request nuevo y aun no existe en el servidor, entonces se debe eliminar del arreglo de requests
             $scope.selectedItem.requests.splice($scope.selectedItem.requests.indexOf(request), 1);
+        } else {
+            // Se le asigna removed 1 para marcar que es necesario borrar el request y para evitar que se despliegue en el front
+            request.removed = 1;
         }
     };
 
