@@ -91,11 +91,11 @@
             $stateProvider.state('home', {
                 url: '',
                 templateUrl: '../Pages/partials/dashboard_partial.html',
-                title: 'Resumen'
+                title: 'Anomalías'
             }).state('dashboard', {
                 url: '/dashboard',
                 templateUrl: '../Pages/partials/dashboard_partial.html',
-                title: 'Resumen',
+                title: 'Anomalías',
             }).state('calendar', {
                 url: '/calendar',
                 templateUrl: 'partials/calendar_partial.html',

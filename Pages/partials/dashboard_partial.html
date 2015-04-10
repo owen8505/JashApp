@@ -1,6 +1,6 @@
 <div class="local-search">
     <input type="search" class="form-control" ng-model="searchParams" placeholder="Buscar" />
-    <a class="btn btn-default local-search-button" ng-click="search(searchParams)" title="Búscar"><span class="icon-search"></span></a>
+    <a class="btn btn-default local-search-button" ng-click="search(searchParams)" title="Buscar"><span class="icon-search"></span></a>
 </div>
 
 <section id="Search" class="section-container" ng-if="searchResults">
@@ -68,7 +68,7 @@
             </div>
 
             <div class="action-button-holder">
-                <a ui-sref="certificates.list" class="btn btn-default" title="Ver más...">Ver más...</a>
+                <a ui-sref="certificates.list" class="btn btn-default" title="Ver todos...">Ver todos...</a>
                 <a ui-sref="certificates.new({mode:'last'})" class="btn btn-default" title="Nuevo Certificado" ng-click="createCertificate()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
@@ -107,7 +107,7 @@
             </div>
 
             <div class="action-button-holder">
-                <a ui-sref="credits.list" class="btn btn-default" title="Ver más...">Ver más...</a>
+                <a ui-sref="credits.list" class="btn btn-default" title="Ver todos...">Ver todos...</a>
                 <a ui-sref="credits.new({mode:'last'})" class="btn btn-default" title="Nuevo Crédito" ng-click="createCredit()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
@@ -146,7 +146,7 @@
             </div>
 
             <div class="action-button-holder">
-                <a ui-sref="petitions.list" class="btn btn-default" title="Ver más...">Ver más...</a>
+                <a ui-sref="petitions.list" class="btn btn-default" title="Ver todos...">Ver todos...</a>
                 <a ui-sref="petitions.new({mode:'last'})" class="btn btn-default" title="Nuevo Exhorto" ng-click="createPetition()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
@@ -185,7 +185,7 @@
             </div>
 
             <div class="action-button-holder">
-                <a ui-sref="seizures.list" class="btn btn-default" title="Ver más...">Ver más...</a>
+                <a ui-sref="seizures.list" class="btn btn-default" title="Ver todos...">Ver todos...</a>
                 <a ui-sref="seizures.new({mode:'last'})" class="btn btn-default" title="Nuevo Embargo" ng-click="createSeizure()"><span class="icon icon-circle-with-plus"></span> Nuevo</a>
             </div>
         </div>
