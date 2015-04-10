@@ -38,10 +38,10 @@
         <div class="last-certificates-section">
             <h4 class="subtitle-section">Certificados de Libertad de Gravamen</h4>
             <div>
-                <div class="unavailable-message" ng-if="!lastCertificates.length">
+                <div class="unavailable-message" ng-hide="filteredLastCertificates.length">
                     Por el momento no hay elementos que requieran atención inmediata
                 </div>
-                <div ng-if="lastCertificates.length">
+                <div ng-show="filteredLastCertificates.length">
                     <table>
                         <thead>
                             <tr>
@@ -54,7 +54,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="certificate in lastCertificates | orderBy:['anomaly','creationDate','-id'] ">
+                            <tr ng-repeat="certificate in filteredLastCertificates = (lastCertificates | filter:filterAnomaly | limitTo: 5 | orderBy:['creationDate'])">
                                 <td class="folio"><span ng-class="{true:certificate.anomaly.status, false:'indicator-green'}[certificate.anomaly != undefined]"></span> <a ui-sref="certificates.edit({id:certificate.id, mode:'last'})">{{ certificate.id }}</a></td>
                                 <td>{{ certificate.folio }}</td>
                                 <td>{{ certificate.inscription }}</td>
@@ -79,10 +79,10 @@
         <div class="last-credits-section">
             <h4 class="subtitle-section">Créditos PyME en mora</h4>
             <div>
-                <div class="unavailable-message" ng-if="!lastCredits.length">
+                <div class="unavailable-message" ng-hide="filteredLastCredits.length">
                     Por el momento no hay elementos que requieran atención inmediata
                 </div>
-                <div ng-if="lastCredits.length">
+                <div ng-show="filteredLastCredits.length">
                     <table>
                         <thead>
                             <tr>
@@ -94,7 +94,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="credit in lastCredits | limitTo: 5 | orderBy:['anomaly','creationDate','-id']  ">
+                            <tr ng-repeat="credit in filteredLastCredits = (lastCredits | filter:filterAnomaly | limitTo: 5 | orderBy:['creationDate'])">
                                 <td class="folio"><span ng-class="{true:credit.anomaly.status, false:'indicator-green'}[credit.anomaly != undefined]"></span> <a ui-sref="credits.edit({id:credit.id, mode:'last'})">{{ credit.id }}</a></td>
                                 <td>{{ credit.folio }}</td>
                                 <td>{{ credit.contractNumber }}</td>
@@ -118,10 +118,10 @@
         <div class="last-petitions-section">
             <h4 class="subtitle-section">Exhortos</h4>
             <div>
-                <div class="unavailable-message" ng-if="!lastPetitions.length">
+                <div class="unavailable-message" ng-hide="filteredLastPetitions.length">
                     Por el momento no hay elementos que requieran atención inmediata
                 </div>
-                <div ng-if="lastPetitions.length">
+                <div ng-show="filteredLastPetitions.length">
                     <table>
                         <thead>
                             <tr>
@@ -133,7 +133,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="petition in lastPetitions | limitTo: 5 | orderBy:['anomaly','creationDate','-id'] ">
+                            <tr ng-repeat="petition in filteredLastPetitions = (lastPetitions | filter:filterAnomaly | limitTo: 5 | orderBy:['creationDate'])">
                                 <td class="folio"><span ng-class="{true:petition.anomaly.status, false:'indicator-green'}[petition.anomaly != undefined]"></span> <a ui-sref="petitions.edit({id:petition.id, mode:'last'})">{{ petition.id }}</a></td>
                                 <td>{{ petition.defendant }}</td>
                                 <td>{{ petition.court }}</td>
@@ -157,10 +157,10 @@
         <div class="last-seizures-section">
             <h4 class="subtitle-section">Embargos</h4>
             <div>
-                <div class="unavailable-message" ng-if="!lastSeizures.length">
+                <div class="unavailable-message" ng-hide="filteredlastSeizures.length">
                     Por el momento no hay elementos que requieran atención inmediata
                 </div>
-                <div ng-if="lastSeizures.length">
+                <div ng-show="filteredlastSeizures.length">
                     <table>
                         <thead>
                         <tr>
@@ -172,8 +172,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="seizure in lastSeizures | limitTo: 5 | orderBy:['anomaly','creationDate','-id'] ">
-                                <td class="folio"><span ng-class="{true:seizure.anomaly.status, false:'indicator-green'}[seizure.anomaly != undefined]"></span> <a ui-sref="seizures.edit({id:seizure.id, mode:'last'})">{{ seizure.id }}</a></td>
+                            <tr ng-repeat="seizure in filteredlastSeizures = (lastSeizures | filter:filterAnomaly | limitTo: 5 | orderBy:['creationDate'])">
+                            <td class="folio"><span ng-class="{true:seizure.anomaly.status, false:'indicator-green'}[seizure.anomaly != undefined]"></span> <a ui-sref="seizures.edit({id:seizure.id, mode:'last'})">{{ seizure.id }}</a></td>
                                 <td>{{ seizure.defendant }}</td>
                                 <td>{{ seizure.court }}</td>
                                 <td>{{ seizure.record }}</td>

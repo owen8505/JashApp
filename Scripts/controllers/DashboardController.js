@@ -20,6 +20,10 @@ Jash.controller('DashboardController',['$scope','$rootScope', 'CertificateServic
         $scope.currentSubsection = subsection;
     };
 
+    $scope.filterAnomaly = function(process){
+        return process.anomaly;
+    };
+
     $scope.initController = function() {
 
         // Sección actual

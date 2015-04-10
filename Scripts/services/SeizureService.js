@@ -68,83 +68,67 @@ Jash.factory('SeizureService', ["$http", "$q", "$rootScope", "$cookieStore", "$s
     };
 
     var getLastSeizures = function (reload) {
+
         lastSeizures = [];
-
-        var queryString = '<View>' +
-                            '<Query>' +
-                                '<Where>' +
-                                    '<Eq>' +
-                                        '<FieldRef Name=\'Cobrado\'/>' +
-                                        '<Value Type=\'Boolean\'>FALSE</Value>'+
-                                    '</Eq>' +
-                                '</Where>' +
-                                '<OrderBy>' +
-                                    '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
-                                '</OrderBy>' +
-                            '</Query>' +
-                            '<RowLimit>5</RowLimit>' +
-                        '</View>';
-        var queryCAML = new SP.CamlQuery();
-        queryCAML.set_viewXml(queryString);
-
+        var queryCAML = '';
         var items = list.getItems(queryCAML);
+
         context.load(items);
         context.executeQueryAsync(
-             function () {
-                 var listItemEnumerator = items.getEnumerator();
-                 while (listItemEnumerator.moveNext()) {
-                     var item = listItemEnumerator.get_current();
+            function () {
+                var listItemEnumerator = items.getEnumerator();
+                while (listItemEnumerator.moveNext()) {
+                    var item = listItemEnumerator.get_current();
 
-                     var seizure = {
-                         type: 'SEIZURE',
-                         id: item.get_id(),
-                         contractNumber: item.get_item('Title'),
-                         defendant: item.get_item('Demandado'),
-                         court: item.get_item('Juzgado'),
-                         record: item.get_item('Expediente'),
-                         lawyer: item.get_item('Abogado'),
-                         municipality: item.get_item('Municipio'),
-                         state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
-                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
-                         realEstate: item.get_item('Inmueble'),
-                         precedent: item.get_item('Antecedente'),
-                         shippingParcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         shippingTrackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                         receivingParcel: (item.get_item('Paqueteria_x0020_recibo')) ? { id: item.get_item('Paqueteria_x0020_recibo').get_lookupId(), name: item.get_item('Paqueteria_x0020_recibo').get_lookupValue() } : undefined,
-                         receivingTrackingNumber: (item.get_item('Guia_x0020_recibo')) ? item.get_item('Guia_x0020_recibo') : undefined,
-                         receivingReceived: item.get_item('Recibido'),
-                         deliveryDate: new moment(item.get_item('Entrega')),
-                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
-                         delivered: item.get_item('Entregado'),
-                         cashed: item.get_item('Cobrado'),
-                         comments: item.get_item('Observaciones'),
-                         creationDate: new moment(item.get_item('Creacion')),
-                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
-                         paymentComments: item.get_item('Observaciones_x0020_pagado'),
-                         paymentApply: item.get_item('Aplica'),
-                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
-                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
-                     };
-                     
-                     var anomalyNowDate = moment().startOf('day');
+                    var seizure = {
+                        type: 'SEIZURE',
+                        id: item.get_id(),
+                        contractNumber: item.get_item('Title'),
+                        defendant: item.get_item('Demandado'),
+                        court: item.get_item('Juzgado'),
+                        record: item.get_item('Expediente'),
+                        lawyer: item.get_item('Abogado'),
+                        municipality: item.get_item('Municipio'),
+                        state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
+                        status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
+                        realEstate: item.get_item('Inmueble'),
+                        precedent: item.get_item('Antecedente'),
+                        shippingParcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
+                        shippingTrackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                        receivingParcel: (item.get_item('Paqueteria_x0020_recibo')) ? { id: item.get_item('Paqueteria_x0020_recibo').get_lookupId(), name: item.get_item('Paqueteria_x0020_recibo').get_lookupValue() } : undefined,
+                        receivingTrackingNumber: (item.get_item('Guia_x0020_recibo')) ? item.get_item('Guia_x0020_recibo') : undefined,
+                        receivingReceived: item.get_item('Recibido'),
+                        deliveryDate: new moment(item.get_item('Entrega')),
+                        realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
+                        delivered: item.get_item('Entregado'),
+                        cashed: item.get_item('Cobrado'),
+                        comments: item.get_item('Observaciones'),
+                        creationDate: new moment(item.get_item('Creacion')),
+                        cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                        paymentComments: item.get_item('Observaciones_x0020_pagado'),
+                        paymentApply: item.get_item('Aplica'),
+                        invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                        invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
+                    };
 
-                     if(seizure.deliveryDate && anomalyNowDate.diff(angular.copy(seizure.deliveryDate).startOf('day'), 'days') >= 1 && !seizure.delivered){
-                         // Si ya se pasó la fecha de entrega y no hemos entregado el embargo
-                         seizure.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega expiró y el embargo no ha sido enviado.'
-                         }
-                     }
+                    var anomalyNowDate = moment().startOf('day');
 
-                     seizure.attachments = getDocuments(libraries.attachments, seizure);
-                     seizure.documents = getDocuments(libraries.documents, seizure);
-                     lastSeizures.push(seizure);
-                 }
+                    if(seizure.deliveryDate && anomalyNowDate.diff(angular.copy(seizure.deliveryDate).startOf('day'), 'days') >= 1 && !seizure.delivered){
+                        // Si ya se pasó la fecha de entrega y no hemos entregado el embargo
+                        seizure.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega expiró y el embargo no ha sido enviado.'
+                        }
+                    }
 
-                 $rootScope.$broadcast('seizuresLoaded', reload);
-                 $rootScope.$broadcast('applyChanges');
+                    seizure.attachments = getDocuments(libraries.attachments, seizure);
+                    seizure.documents = getDocuments(libraries.documents, seizure);
+                    lastSeizures.push(seizure);
+                }
 
-             },
+                $rootScope.$broadcast('seizuresLoaded', reload);
+                $rootScope.$broadcast('applyChanges');
+            },
             function (response, args) {
                 console.log(args.get_message())
             }

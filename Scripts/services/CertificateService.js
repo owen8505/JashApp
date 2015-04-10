@@ -68,106 +68,90 @@ Jash.factory('CertificateService', ["$http", "$q", "$rootScope", "$cookieStore",
     };
 
     var getLastCertificates = function (reload) {
+
         lastCertificates = [];
-
-        var queryString = '<View>' +
-                            '<Query>' +
-                                '<Where>' +
-                                    '<Eq>' +
-                                        '<FieldRef Name=\'Cobrado\'/>' +
-                                        '<Value Type=\'Boolean\'>FALSE</Value>'+
-                                    '</Eq>' +
-                                '</Where>' +
-                                '<OrderBy>' +
-                                    '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
-                                '</OrderBy>' +
-                            '</Query>' +
-                            '<RowLimit>5</RowLimit>' +
-                        '</View>';
-        var queryCAML = new SP.CamlQuery();
-        queryCAML.set_viewXml(queryString);
-
+        var queryCAML = '';
         var items = list.getItems(queryCAML);
+
         context.load(items);
         context.executeQueryAsync(
-             function () {
-                 var listItemEnumerator = items.getEnumerator();
-                 while (listItemEnumerator.moveNext()) {
-                     var item = listItemEnumerator.get_current();
+            function () {
+                var listItemEnumerator = items.getEnumerator();
+                while (listItemEnumerator.moveNext()) {
+                    var item = listItemEnumerator.get_current();
 
-                     var certificate = {
-                         type: 'CERTIFICATE',
-                         id: item.get_id(),
-                         folio: item.get_item('Title'),
-                         creationDate: new moment(item.get_item('Creacion')),
-                         deliveryDate: new moment(item.get_item('Entrega')),
-                         owner: item.get_item('Propietario'),
-                         inscription: item.get_item('Inscripcion'),
-                         description: item.get_item('Descripcion'),
-                         lawyer: item.get_item('Abogado'),
-                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
-                         zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
-                         manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
-                         cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
-                         payment: item.get_item('Pagado'),
-                         paymentComments: item.get_item('Observaciones_x0020_pagado'),
-                         received: item.get_item('Recibido'),
-                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
-                         delivered: item.get_item('Entregado'),
-                         cashed: item.get_item('Cobrado'),
-                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
-                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
-                     };
+                    var certificate = {
+                        type: 'CERTIFICATE',
+                        id: item.get_id(),
+                        folio: item.get_item('Title'),
+                        creationDate: new moment(item.get_item('Creacion')),
+                        deliveryDate: new moment(item.get_item('Entrega')),
+                        owner: item.get_item('Propietario'),
+                        inscription: item.get_item('Inscripcion'),
+                        description: item.get_item('Descripcion'),
+                        lawyer: item.get_item('Abogado'),
+                        status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
+                        zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
+                        manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
+                        committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                        cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
+                        payment: item.get_item('Pagado'),
+                        paymentComments: item.get_item('Observaciones_x0020_pagado'),
+                        received: item.get_item('Recibido'),
+                        realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
+                        delivered: item.get_item('Entregado'),
+                        cashed: item.get_item('Cobrado'),
+                        parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
+                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                        invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                        invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
+                    };
 
-                     var anomalyNowDate = moment().startOf('day');
+                    var anomalyNowDate = moment().startOf('day');
 
-                     if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= 1 && !certificate.delivered){
-                         // Si ya se pasó la fecha de entrega y no hemos generado el certificado
-                         certificate.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
-                         }
-                     } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
-                         // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
-                         certificate.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
-                         }
-                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
-                         // Si ya pasó un día y no hemos asignado un gestor
+                    if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= 1 && !certificate.delivered){
+                        // Si ya se pasó la fecha de entrega y no hemos generado el certificado
+                        certificate.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega expiró y el certificado no ha sido generado.'
+                        }
+                    } else if(certificate.deliveryDate && anomalyNowDate.diff(angular.copy(certificate.deliveryDate).startOf('day'), 'days') >= -5 && !certificate.delivered){
+                        // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el certificado
+                        certificate.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega está próxima y el certificado no ha sido generado.'
+                        }
+                    } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 1 && !certificate.manager){
+                        // Si ya pasó un día y no hemos asignado un gestor
 
-                         certificate.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El certificado aun no tiene ningún gestor asignado.'
-                         }
-                     } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 2 && !certificate.committedDate){
-                         // Si ya pasaron dos días y aun no asignamos una fecha comprometida
+                        certificate.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
+                            message: 'El certificado aun no tiene ningún gestor asignado.'
+                        }
+                    } else if(certificate.creationDate && anomalyNowDate.diff(angular.copy(certificate.creationDate).startOf('day'), 'days') >= 2 && !certificate.committedDate){
+                        // Si ya pasaron dos días y aun no asignamos una fecha comprometida
 
-                         certificate.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El certificado aun no tiene una fecha comprometida.'
-                         }
-                     } else if(certificate.committedDate && anomalyNowDate.diff(angular.copy(certificate.committedDate).startOf('day'), 'days') >= 0 && !certificate.trackingNumber){
-                         // Si ya es la fecha comprometida y no hay datos de envío
+                        certificate.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
+                            message: 'El certificado aun no tiene una fecha comprometida.'
+                        }
+                    } else if(certificate.committedDate && anomalyNowDate.diff(angular.copy(certificate.committedDate).startOf('day'), 'days') >= 0 && !certificate.trackingNumber){
+                        // Si ya es la fecha comprometida y no hay datos de envío
 
-                         certificate.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'Aun no se cuenta con una guía de envío de los documentos.'
-                         }
-                     }
+                        certificate.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
+                            message: 'Aun no se cuenta con una guía de envío de los documentos.'
+                        }
+                    }
 
-                     certificate.attachments = getDocuments(libraries.attachments, certificate);
-                     certificate.documents = getDocuments(libraries.documents, certificate);
-                     lastCertificates.push(certificate);
-                 }
+                    certificate.attachments = getDocuments(libraries.attachments, certificate);
+                    certificate.documents = getDocuments(libraries.documents, certificate);
+                    lastCertificates.push(certificate);
+                }
 
-                 $rootScope.$broadcast('certificatesLoaded', reload);
-                 $rootScope.$broadcast('applyChanges');
-
-             },
+                $rootScope.$broadcast('lastCertificatesLoaded', reload);
+                $rootScope.$broadcast('applyChanges');
+            },
             function (response, args) {
                 console.log(args.get_message())
             }

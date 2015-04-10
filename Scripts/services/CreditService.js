@@ -69,26 +69,11 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
     };
 
     var getLastCredits = function (reload) {
+
         lastCredits = [];
-
-        var queryString = '<View>' +
-                            '<Query>' +
-                                '<Where>' +
-                                    '<Eq>' +
-                                        '<FieldRef Name=\'Cobrado\'/>' +
-                                        '<Value Type=\'Boolean\'>FALSE</Value>'+
-                                    '</Eq>' +
-                                '</Where>' +
-                                '<OrderBy>' +
-                                    '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
-                                '</OrderBy>' +
-                            '</Query>' +
-                            '<RowLimit>5</RowLimit>' +
-                        '</View>';
-        var queryCAML = new SP.CamlQuery();
-        queryCAML.set_viewXml(queryString);
-
+        var queryCAML = '';
         var items = list.getItems(queryCAML);
+
         context.load(items);
         context.executeQueryAsync(
             function () {
@@ -177,7 +162,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
                 $rootScope.$broadcast('creditsLoaded', reload);
                 $rootScope.$broadcast('applyChanges');
-
             },
             function (response, args) {
                 console.log(args.get_message())

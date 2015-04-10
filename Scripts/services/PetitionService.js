@@ -68,87 +68,71 @@ Jash.factory('PetitionService', ["$http", "$q", "$rootScope", "$cookieStore", "$
     };
 
     var getLastPetitions = function (reload) {
+
         lastPetitions = [];
-
-        var queryString = '<View>' +
-                            '<Query>' +
-                                '<Where>' +
-                                    '<Eq>' +
-                                        '<FieldRef Name=\'Cobrado\'/>' +
-                                        '<Value Type=\'Boolean\'>FALSE</Value>'+
-                                    '</Eq>' +
-                                '</Where>' +
-                                '<OrderBy>' +
-                                    '<FieldRef Name=\'ID\' Ascending="FALSE" />' +
-                                '</OrderBy>' +
-                            '</Query>' +
-                            '<RowLimit>5</RowLimit>' +
-                        '</View>';
-        var queryCAML = new SP.CamlQuery();
-        queryCAML.set_viewXml(queryString);
-
+        var queryCAML = '';
         var items = list.getItems(queryCAML);
+
         context.load(items);
         context.executeQueryAsync(
-             function () {
-                 var listItemEnumerator = items.getEnumerator();
-                 while (listItemEnumerator.moveNext()) {
-                     var item = listItemEnumerator.get_current();
+            function () {
+                var listItemEnumerator = items.getEnumerator();
+                while (listItemEnumerator.moveNext()) {
+                    var item = listItemEnumerator.get_current();
 
-                     var petition = {
-                         type: 'PETITION',
-                         id: item.get_id(),
-                         contractNumber: item.get_item('Title'),
-                         defendant: item.get_item('Demandado'),
-                         court: item.get_item('Juzgado'),
-                         record: item.get_item('Expediente'),
-                         lawyer: item.get_item('Abogado'),
-                         municipality: item.get_item('Municipio'),
-                         state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
-                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
-                         presentationDate: (item.get_item('Presentacion')) ? new moment(item.get_item('Presentacion')) : undefined,
-                         assignedCourt: item.get_item('Juzgado_x0020_asignado'),
-                         petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
-                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
-                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                         received: item.get_item('Recibido'),
-                         deliveryDate: new moment(item.get_item('Entrega')),
-                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
-                         delivered: item.get_item('Entregado'),
-                         cashed: item.get_item('Cobrado'),
-                         committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
-                         comments: item.get_item('Observaciones'),
-                         creationDate: new moment(item.get_item('Creacion')),
-                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
-                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
-                     };
+                    var petition = {
+                        type: 'PETITION',
+                        id: item.get_id(),
+                        contractNumber: item.get_item('Title'),
+                        defendant: item.get_item('Demandado'),
+                        court: item.get_item('Juzgado'),
+                        record: item.get_item('Expediente'),
+                        lawyer: item.get_item('Abogado'),
+                        municipality: item.get_item('Municipio'),
+                        state: (item.get_item('Estado')) ? { id: item.get_item('Estado').get_lookupId(), name: item.get_item('Estado').get_lookupValue() } : undefined,
+                        status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
+                        presentationDate: (item.get_item('Presentacion')) ? new moment(item.get_item('Presentacion')) : undefined,
+                        assignedCourt: item.get_item('Juzgado_x0020_asignado'),
+                        petitionNumber: item.get_item('Numero_x0020_de_x0020_exhorto'),
+                        parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
+                        trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
+                        received: item.get_item('Recibido'),
+                        deliveryDate: new moment(item.get_item('Entrega')),
+                        realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
+                        delivered: item.get_item('Entregado'),
+                        cashed: item.get_item('Cobrado'),
+                        committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
+                        comments: item.get_item('Observaciones'),
+                        creationDate: new moment(item.get_item('Creacion')),
+                        invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
+                        invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
+                    };
 
-                     var anomalyNowDate = moment().startOf('day');
+                    var anomalyNowDate = moment().startOf('day');
 
-                     if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
-                         // Si ya se pasó la fecha de entrega y no hemos entregado el exhorto
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                             message: 'La fecha de entrega expiró y el exhorto no ha sido enviado.'
-                         }
-                     }  else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 5 && !petition.committedDate){
-                         // Si ya pasaron cinco días y no hemos asignado una fecha de diligencia
+                    if(petition.deliveryDate && anomalyNowDate.diff(angular.copy(petition.deliveryDate).startOf('day'), 'days') >= 1 && !petition.delivered){
+                        // Si ya se pasó la fecha de entrega y no hemos entregado el exhorto
+                        petition.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
+                            message: 'La fecha de entrega expiró y el exhorto no ha sido enviado.'
+                        }
+                    }  else if(petition.creationDate && anomalyNowDate.diff(angular.copy(petition.creationDate).startOf('day'), 'days') >= 5 && !petition.committedDate){
+                        // Si ya pasaron cinco días y no hemos asignado una fecha de diligencia
 
-                         petition.anomaly = {
-                             status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                             message: 'El exhorto aun no tiene ninguna fecha de diligencia asignada.'
-                         }
-                     }
+                        petition.anomaly = {
+                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
+                            message: 'El exhorto aun no tiene ninguna fecha de diligencia asignada.'
+                        }
+                    }
 
-                     petition.attachments = getDocuments(libraries.attachments, petition);
-                     petition.documents = getDocuments(libraries.documents, petition);
-                     lastPetitions.push(petition);
-                 }
+                    petition.attachments = getDocuments(libraries.attachments, petition);
+                    petition.documents = getDocuments(libraries.documents, petition);
+                    lastPetitions.push(petition);
+                }
 
-                 $rootScope.$broadcast('petitionsLoaded', reload);
-                 $rootScope.$broadcast('applyChanges');
-
-             },
+                $rootScope.$broadcast('petitionsLoaded', reload);
+                $rootScope.$broadcast('applyChanges');
+            },
             function (response, args) {
                 console.log(args.get_message())
             }
