@@ -10,56 +10,6 @@
                 <ng-include src="'templates/credit_new_template.html'"></ng-include>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.NEW)">
-                <li><h3>Datos del gestor</h3></li>
-                <li>
-                    <label for="credit-zone">Región:</label>
-                    <span class="third-width">
-                        <button id="credit-zone" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="zonesDropdown" ng-disabled="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)">
-                            <span ng-if="!selectedItem.zone">Selecciona una zona</span><span ng-if="selectedItem.zone">{{ selectedItem.zone.name }}</span>
-                            <span class="caret"></span>
-                        </button>
-
-                    </span>
-                </li>
-                <li>
-                    <label for="credit-manager">Gestor:</label>
-                    <span class="third-width">
-                        <button id="credit-manager" type="button" class="btn btn-default dropdown" data-animation="am-flip-x" bs-dropdown="managersDropdown" ng-disabled="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)">
-                            <span ng-if="!selectedItem.manager">Selecciona un gestor</span><span ng-if="selectedItem.manager">{{ selectedItem.manager.name }}</span>
-                            <span class="caret"></span>
-                        </button>
-
-                    </span>
-                    <!--span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" template="templates/request_info_template.html" data-auto-close="1" title="Enviar correo" bs-popover>Solicitar información</a></span-->
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" id="request-info-trigger" manager="selectedItem.manager" send-mail-function="sendMail" ng-popover>Solicitar información</a></span>
-                    <span class="third-width"><a ng-disabled="!isManagerSelected()" class="btn btn-default" title="Información del gestor" data-placement="top" data-template="templates/manager_detail_template.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Datos del gestor</a></span>
-                </li>
-            </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.WAITING_CONFIRMATION)">
-                <li><h3>Derechos</h3></li>
-                <li>
-                    <label for="credit-payment-not-apply">Aplica:</label>
-                    <input id="credit-payment-not-apply" type="checkbox" ng-model="selectedItem.paymentApply">
-                </li>
-                <li>
-                    <label for="credit-cost">Costo de derechos:</label>
-                    <span class="third-width"><input id="credit-cost" type="text" placeholder="Ej. $1,200.00" class="form-control" ng-model="selectedItem.cost" ng-currency ng-readonly="!selectedItem.paymentApply || isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)"></span>
-                </li>
-                <li>
-                    <label for="credit-committed-date">Fecha comprometida por el gestor:</label>
-                    <quick-datepicker ng-model='committedDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setCommittedDate(committedDate)" placeholder="Selecciona una fecha" ng-hide="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)"></quick-datepicker>
-                    <div id="credit-committed-date" ng-if="selectedItem.committedDate">{{ selectedItem.committedDate | formatDate }}</div>
-                </li>
-                <li ng-if="selectedItem.paymentApply">
-                    <label for="credit-payment">Pago de derechos:</label>
-                    <input id="credit-payment" type="checkbox" ng-model="selectedItem.payment" ng-disabled="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)">
-                </li>
-                <li>
-                    <label for="credit-comments">Observaciones:</label>
-                    <textarea id="credit-comments" class="form-control" placeholder="Ej. Se pagó a tiempo" ng-model="selectedItem.paymentComments" ng-readonly="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)"></textarea>
-                </li>
-            </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.WAITING_SHIPPING)">
                 <li><h3>Datos de envío</h3></li>
                 <li>
                     <label for="credit-parcel">Paquetería:</label>
@@ -85,8 +35,8 @@
                     <label for="credit-documents">Subir archivo del crédito:</label>
                     <span class="third-width"><input id="credit-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Crédito 3035 Ricardo Rosas"></span>
                     <span class="third-width"><input id="credit-documents" onchange="angular.element(this).scope().documentFilesChanged(this)" class="form-control" type="file"></span>
-                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument()">Nuevo crédito</a></span>
-                    <a ng-repeat="document in selectedItem.documents" ng-hide="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)" ng-class="{'attachment-link':document.url, 'attachment-link-disabled':!document.url}"></span></a>
+                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument()" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)}">Nuevo crédito</a></span>
+                    <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)}"></span></a>
                 </li>
                 <li>
                     <label for="credit-real-delivery-date">Fecha de entrega:</label>
@@ -98,11 +48,18 @@
                     <input id="credit-deliver" type="checkbox" ng-model="selectedItem.delivered">
                 </li>
             </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.DOCS_RECEIVED) && selectedItem.invoiceFolio">
+            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.DOCS_RECEIVED)">
+                <li><h3>Observaciones</h3></li>
+                <li>
+                    <label for="petition-comments">Observaciones:</label>
+                    <textarea id="petition-comments" class="form-control" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments" ng-readonly="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></textarea>
+                </li>
+            </ol>
+            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.DELIVERED) && selectedItem.invoiceFolio">
                 <li><h3>Factura</h3></li>
                 <li>
                     <label for="credit-invoice-date">Fecha de facturación:</label>
-                    <div id="credit-delivery-date">{{ selectedItem.invoiceDate | formatDate }}</div>
+                    <div id="credit-invoice-date">{{ selectedItem.invoiceDate | formatDate }}</div>
                 </li>
                 <li>
                     <label for="credit-invoice-folio">Folio de factura:</label>
@@ -117,7 +74,7 @@
                 <li class="action-button-holder">
                     <a class="btn btn-danger delete-button" ng-click="deleteCredit()">Eliminar</a>
                     <a ui-sref="dashboard" class="btn btn-default">Cancelar</a>
-                    <a class="btn btn-success" ng-class="" ng-click="updateCredit()" ng-disabled="!isValidForm(['owner', 'ownerAddress', 'solidary1', 'solidary1Address'], ['folio', 'contractNumber'])">Guardar</a>
+                    <a class="btn btn-success" ng-class="" ng-click="updateCredit()" ng-disabled="!isValidForm(['owner'], [])">Guardar</a>
                 </li>
             </ol>
         </fieldset>

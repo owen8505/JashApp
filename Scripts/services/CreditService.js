@@ -3,7 +3,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
     var credits = [];
     var lastCredits = [];
     var warningList = [];
-    var SPWeb, context, appContext, list, libraries, mailList, documentsTotal, documentsProcessed;
+    var SPWeb, context, appContext, list, libraries, documentsTotal, documentsProcessed;
 
     var getDeliveryDate = function (date) {
         var dateCopy = angular.copy(date);
@@ -84,36 +84,18 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                     var credit = {
                         type: 'CREDIT',
                         id: item.get_id(),
-                        folio: item.get_item('Title'),
-                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
                         lawyer: item.get_item('Abogado'),
                         creationDate: new moment(item.get_item('Creacion')),
                         deliveryDate: new moment(item.get_item('Entrega')),
                         owner: item.get_item('Propietario'),
-                        rpp: item.get_item('RPP'),
-                        ownerAddress: item.get_item('Direccion_x0020_de_x0020_acredit'),
-                        solidary1: item.get_item('Solidario_x0020_1'),
-                        solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
-                        solidary2: item.get_item('Solidario_x0020_2'),
-                        solidary2Address: item.get_item('Direccion_x0020_de_x0020_solidar0'),
-                        solidary3: item.get_item('Solidario_x0020_3'),
-                        solidary3Address: item.get_item('Direccion_x0020_de_x0020_solidar1'),
-                        solidary4: item.get_item('Solidario_x0020_4'),
-                        solidary4Address: item.get_item('Direccion_x0020_de_x0020_solidar2'),
                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
-                        zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
-                        manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
-                        committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
-                        cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
-                        payment: item.get_item('Pagado'),
-                        paymentComments: item.get_item('Observaciones_x0020_pagado'),
                         received: item.get_item('Recibido'),
                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                         delivered: item.get_item('Entregado'),
+                        comments: item.get_item('Observaciones'),
                         cashed: item.get_item('Cobrado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                        paymentApply: item.get_item('Aplica'),
                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                     };
@@ -131,27 +113,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         credit.anomaly = {
                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
                             message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
-                        }
-                    } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 1 && !credit.manager){
-                        // Si ya pasó un día y no hemos asignado un gestor
-
-                        credit.anomaly = {
-                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                            message: 'El crédito aun no tiene ningún gestor asignado.'
-                        }
-                    } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 2 && !credit.committedDate){
-                        // Si ya pasaron dos días y aun no asignamos una fecha comprometida
-
-                        credit.anomaly = {
-                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                            message: 'El crédito aun no tiene una fecha comprometida.'
-                        }
-                    } else if(credit.committedDate && anomalyNowDate.diff(angular.copy(credit.committedDate).startOf('day'), 'days') >= 0 && !credit.trackingNumber){
-                        // Si ya es la fecha comprometida y no hay datos de envío
-
-                        credit.anomaly = {
-                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                            message: 'Aun no se cuenta con una guía de envío de los documentos.'
                         }
                     }
 
@@ -187,36 +148,18 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                     var credit = {
                         type: 'CREDIT',
                         id: item.get_id(),
-                        folio: item.get_item('Title'),
-                        contractNumber: item.get_item('Numero_x0020_de_x0020_contrato'),
                         lawyer: item.get_item('Abogado'),
                         creationDate: new moment(item.get_item('Creacion')),
                         deliveryDate: new moment(item.get_item('Entrega')),
                         owner: item.get_item('Propietario'),
-                        rpp: item.get_item('RPP'),
-                        ownerAddress: item.get_item('Direccion_x0020_de_x0020_acredit'),
-                        solidary1: item.get_item('Solidario_x0020_1'),
-                        solidary1Address: item.get_item('Direccion_x0020_de_x0020_solidar'),
-                        solidary2: item.get_item('Solidario_x0020_2'),
-                        solidary2Address: item.get_item('Direccion_x0020_de_x0020_solidar0'),
-                        solidary3: item.get_item('Solidario_x0020_3'),
-                        solidary3Address: item.get_item('Direccion_x0020_de_x0020_solidar1'),
-                        solidary4: item.get_item('Solidario_x0020_4'),
-                        solidary4Address: item.get_item('Direccion_x0020_de_x0020_solidar2'),
                         status: (item.get_item('Estatus')) ? { id: item.get_item('Estatus').get_lookupId(), name: item.get_item('Estatus').get_lookupValue() } : undefined,
-                        zone: (item.get_item('Region')) ? { id: item.get_item('Region').get_lookupId(), name: item.get_item('Region').get_lookupValue() } : undefined,
-                        manager: (item.get_item('Gestor')) ? { id: item.get_item('Gestor').get_lookupId(), name: item.get_item('Gestor').get_lookupValue() } : undefined,
-                        committedDate: (item.get_item('Comprometida')) ? new moment(item.get_item('Comprometida')) : undefined,
-                        cost: (item.get_item('Costo')) ? item.get_item('Costo') : undefined,
-                        payment: item.get_item('Pagado'),
-                        paymentComments: item.get_item('Observaciones_x0020_pagado'),
                         received: item.get_item('Recibido'),
                         realDeliveryDate: (item.get_item('Entrega_x0020_real')) ? new moment(item.get_item('Entrega_x0020_real')) : undefined,
                         delivered: item.get_item('Entregado'),
+                        comments: item.get_item('Observaciones'),
                         cashed: item.get_item('Cobrado'),
                         parcel: (item.get_item('Paqueteria')) ? { id: item.get_item('Paqueteria').get_lookupId(), name: item.get_item('Paqueteria').get_lookupValue() } : undefined,
                         trackingNumber: (item.get_item('Guia')) ? item.get_item('Guia') : undefined,
-                        paymentApply: item.get_item('Aplica'),
                         invoiceDate: (item.get_item('Fecha_x0020_de_x0020_facturacion')) ? new moment(item.get_item('Fecha_x0020_de_x0020_facturacion')) : undefined,
                         invoiceFolio: item.get_item('Folio_x0020_de_x0020_factura')
                     };
@@ -234,27 +177,6 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         credit.anomaly = {
                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
                             message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
-                        }
-                    } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 1 && !credit.manager){
-                        // Si ya pasó un día y no hemos asignado un gestor
-
-                        credit.anomaly = {
-                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                            message: 'El crédito aun no tiene ningún gestor asignado.'
-                        }
-                    } else if(credit.creationDate && anomalyNowDate.diff(angular.copy(credit.creationDate).startOf('day'), 'days') >= 2 && !credit.committedDate){
-                        // Si ya pasaron dos días y aun no asignamos una fecha comprometida
-
-                        credit.anomaly = {
-                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                            message: 'El crédito aun no tiene una fecha comprometida.'
-                        }
-                    } else if(credit.committedDate && anomalyNowDate.diff(angular.copy(credit.committedDate).startOf('day'), 'days') >= 0 && !credit.trackingNumber){
-                        // Si ya es la fecha comprometida y no hay datos de envío
-
-                        credit.anomaly = {
-                            status: DEFAULT_VALUES.ANOMALY_STATUS.WARNING,
-                            message: 'Aun no se cuenta con una guía de envío de los documentos.'
                         }
                     }
 
@@ -402,10 +324,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                                             'type': 'SP.Data.' + libraryItem },
                                         'Folio': credit.id.toString(),
                                         'Title': document.title,
-                                        'Propietario': credit.owner,
-                                        'RPP': credit.rpp,
-                                        'Solidario_x0020_1': credit.solidary1,
-                                        'Solidario_x0020_2': credit.solidary2
+                                        'Propietario': credit.owner
                                     }
                                 } else {
                                     body = {
@@ -555,10 +474,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         '__metadata': {
                             'type': 'SP.Data.' + libraryItem },
                         'Title': document.title,
-                        'Propietario': credit.owner,
-                        'RPP': credit.rpp,
-                        'Solidario_x0020_1': credit.solidary1,
-                        'Solidario_x0020_2': credit.solidary2
+                        'Propietario': credit.owner
                     }
                 } else {
                     body = {
@@ -627,38 +543,20 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         var credit = {
             id: 0,
             type: 'CREDIT',
-            folio: undefined,
-            contractNumber: undefined,
             lawyer: undefined,
             creationDate: now,
             deliveryDate: getDeliveryDate(now),
             owner: undefined,
-            rpp: undefined,
-            ownerAddress: undefined,
-            solidary1: undefined,
-            solidary1Address: undefined,
-            solidary2: undefined,
-            solidary2Address: undefined,
-            solidary3: undefined,
-            solidary3Address: undefined,
-            solidary4: undefined,
-            solidary4Address: undefined,
             attachments: [],
             status: DEFAULT_VALUES.CREDIT_STATUS.NEW,
-            zone: undefined,
-            manager: undefined,
-            committedDate: undefined,
-            cost: undefined,
-            payment: false,
-            paymentComments: false,
             received: false,
             realDeliveryDate: undefined,
             delivered: false,
+            comments: undefined,
             cashed: false,
             parcel: undefined,
             trackingNumber: undefined,
-            documents: [],
-            paymentApply: false
+            documents: []
         };
 
         return credit;
@@ -673,24 +571,11 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         var itemInfo = new SP.ListItemCreationInformation();
         var item = list.addItem(itemInfo);
 
-        item.set_item('Title', credit.folio);
-        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
         item.set_item('Abogado', credit.lawyer);
         item.set_item('Creacion', credit.creationDate.toISOString());
         item.set_item('Entrega', credit.deliveryDate.toISOString());
         item.set_item('Propietario', credit.owner);
-        item.set_item('RPP', credit.rpp);
-        item.set_item('Direccion_x0020_de_x0020_acredit', credit.ownerAddress);
-        item.set_item('Solidario_x0020_1', credit.solidary1);
-        item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
-        item.set_item('Solidario_x0020_2', credit.solidary2);
-        item.set_item('Direccion_x0020_de_x0020_solidar0', credit.solidary2Address);
-        item.set_item('Solidario_x0020_3', credit.solidary3);
-        item.set_item('Direccion_x0020_de_x0020_solidar1', credit.solidary3Address);
-        item.set_item('Solidario_x0020_4', credit.solidary4);
-        item.set_item('Direccion_x0020_de_x0020_solidar2', credit.solidary4Address);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(StatusService.getStatusByCode(credit.status.code).id));
-        item.set_item('Aplica', credit.paymentApply);
         item.update();
 
         context.load(item);
@@ -734,77 +619,37 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
             newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.DOCS_RECEIVED.code);
         } else if (credit.trackingNumber) {
             newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_DOCS.code);
-        } else if (credit.committedDate) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_SHIPPING.code);
-        } else if (credit.manager) {
-            newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.WAITING_CONFIRMATION.code);
         } else {
             newStatus = StatusService.getStatusByCode(DEFAULT_VALUES.CREDIT_STATUS.NEW.code);
         }
 
         var item = list.getItemById(credit.id);
-        item.set_item('Title', credit.folio);
-        item.set_item('Numero_x0020_de_x0020_contrato', credit.contractNumber);
         item.set_item('Abogado', credit.lawyer);
         item.set_item('Propietario', credit.owner);
-        item.set_item('RPP', credit.rpp);
-        item.set_item('Direccion_x0020_de_x0020_acredit', credit.ownerAddress);
-        item.set_item('Solidario_x0020_1', credit.solidary1);
-        item.set_item('Direccion_x0020_de_x0020_solidar', credit.solidary1Address);
-        item.set_item('Solidario_x0020_2', credit.solidary2);
-        item.set_item('Direccion_x0020_de_x0020_solidar0', credit.solidary2Address);
-        item.set_item('Solidario_x0020_3', credit.solidary3);
-        item.set_item('Direccion_x0020_de_x0020_solidar1', credit.solidary3Address);
-        item.set_item('Solidario_x0020_4', credit.solidary4);
-        item.set_item('Direccion_x0020_de_x0020_solidar2', credit.solidary4Address);
         item.set_item('Estatus', new SP.FieldLookupValue().set_lookupId(newStatus.id));
-        item.set_item('Region', new SP.FieldLookupValue().set_lookupId((credit.zone ? credit.zone.id : undefined )));
-        item.set_item('Gestor', new SP.FieldLookupValue().set_lookupId((credit.manager ? credit.manager.id : undefined )));
-        item.set_item('Comprometida', (credit.committedDate ? credit.committedDate.toISOString() : undefined ));
-        item.set_item('Costo', (credit.cost ? credit.cost : undefined ));
-        item.set_item('Pagado', credit.payment);
-        item.set_item('Observaciones_x0020_pagado', credit.paymentComments);
         item.set_item('Recibido', credit.received);
         item.set_item('Entrega_x0020_real', (credit.realDeliveryDate ? credit.realDeliveryDate.toISOString() : undefined ));
         item.set_item('Entregado', credit.delivered);
+        item.set_item('Observaciones', credit.comments);
         item.set_item('Cobrado', credit.cashed);
         item.set_item('Paqueteria', new SP.FieldLookupValue().set_lookupId((credit.parcel ? credit.parcel.id : undefined )));
         item.set_item('Guia', credit.trackingNumber);
-        item.set_item('Aplica', credit.paymentApply);
         item.update();
 
         context.load(item);
         context.executeQueryAsync(
             function () {
                 var originalElement = getCreditById(credit.id, $state.params.mode);
-                originalElement.folio = credit.folio;
-                originalElement.contractNumber = credit.contractNumber;
                 originalElement.lawyer = credit.lawyer;
                 originalElement.owner = credit.owner;
-                originalElement.rpp = credit.rpp;
-                originalElement.ownerAddress = credit.ownerAddress;
-                originalElement.solidary1 = credit.solidary1;
-                originalElement.solidary1Address = credit.solidary1Address;
-                originalElement.solidary2 = credit.solidary2;
-                originalElement.solidary2Address = credit.solidary2Address;
-                originalElement.solidary3 = credit.solidary3;
-                originalElement.solidary3Address = credit.solidary3Address;
-                originalElement.solidary4 = credit.solidary4;
-                originalElement.solidary4Address = credit.solidary4Address;
                 originalElement.status = newStatus;
-                originalElement.zone = credit.zone;
-                originalElement.manager = credit.manager;
-                originalElement.committedDate = credit.committedDate;
-                originalElement.cost = credit.cost;
-                originalElement.payment = credit.payment;
-                originalElement.paymentComments = credit.paymentComments;
                 originalElement.received = credit.received;
                 originalElement.realDeliveryDate = credit.realDeliveryDate;
                 originalElement.delivered = credit.delivered;
+                originalElement.comments = credit.comments;
                 originalElement.cashed = credit.cashed;
                 originalElement.parcel = credit.parcel;
                 originalElement.trackingNumber = credit.trackingNumber;
-                originalElement.paymentApply = credit.paymentApply;
 
                 processDocuments(credit);
 
@@ -847,33 +692,11 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
 
     };
 
-    var sendMail = function (manager, subject, observations) {
-        var itemInfo = new SP.ListItemCreationInformation();
-        var item = mailList.addItem(itemInfo);
-
-        item.set_item('Title', subject);
-        item.set_item('toEmail', manager.mail);
-        item.set_item('bodyEmail', observations);
-        item.update();
-
-        context.load(item);
-        context.executeQueryAsync(
-            function () {
-                $rootScope.$broadcast('mailSent');
-            },
-            function (response, args) {
-                console.log(args.get_message());
-            }
-        );
-
-    };
-
     var init = function () {
         SPWeb = ContextService.getSpWeb();
         context = new SP.ClientContext(SPWeb.appWebUrl);
         appContext = new SP.AppContextSite(context, SPWeb.hostUrl);
         list = appContext.get_web().get_lists().getByTitle('Creditos');
-        mailList = appContext.get_web().get_lists().getByTitle('Correos electronicos');
         libraries = {
             attachments: {
                 type: 'attachment',
@@ -900,8 +723,7 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
         getCreditById: getCreditById,
         updateCredit: updateCredit,
         saveCredit: saveCredit,
-        deleteCredit: deleteCredit,
-        sendMail: sendMail
+        deleteCredit: deleteCredit
     }
 
 }]);

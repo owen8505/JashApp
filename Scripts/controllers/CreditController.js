@@ -1,6 +1,6 @@
 'use strict';
 
-Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover', '$interval', 'CreditService', 'ManagerService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, $interval, CreditService, ManagerService, StatusService, DEFAULT_VALUES) {
+Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover', '$interval', 'CreditService', 'StatusService', 'DEFAULT_VALUES', function ($scope, $rootScope, $state, $popover, $interval, CreditService, StatusService, DEFAULT_VALUES) {
 
     //Crédito seleccionado
     $scope.selectedItem = undefined;
@@ -8,11 +8,8 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
     $scope.attachmentName = undefined;
     $scope.documentName = undefined;
     $scope.invoiceName = undefined;
-    $scope.committedDate = undefined;
 
     $scope.parcelsDropdown = [];
-    $scope.managersDropdown = [];
-    $scope.zonesDropdown = [];
 
     $scope.query = '';
 
@@ -56,9 +53,6 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
                             if(selectedItem.documentsLoaded && selectedItem.attachmentsLoaded){
                                 $scope.selectedItem = angular.copy(CreditService.getCreditById($state.params.id, $state.params.mode));
 
-                                if ($scope.selectedItem.zone) {
-                                    $scope.setZoneById($scope.selectedItem.zone.id);
-                                }
                                 $interval.cancel(interval);
                             }
                         }, 100);
@@ -87,13 +81,6 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
                 break;
         }
 
-        angular.forEach($scope.zones, function (zone, index) {
-            $scope.zonesDropdown.push({
-                text: zone.name,
-                click: 'setZone(' + index + ')'
-            });
-        });
-
         angular.forEach($scope.parcels, function (parcel, index) {
             $scope.parcelsDropdown.push({
                 text: parcel.name,
@@ -105,7 +92,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
     $scope.isNewCredit = function () {
         return $scope.titleState == DEFAULT_VALUES.ITEM_STATES.NEW.title;
-    }
+    };
 
     $scope.createCredit = function () {
         $scope.selectedItem = angular.copy(CreditService.createCredit());
@@ -123,61 +110,10 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
         CreditService.deleteCredit($scope.selectedItem);
     };
 
-    $scope.setZone = function (zoneIndex) {
-        if ($scope.selectedItem) {
-
-            $scope.selectedItem.zone = $scope.zones[zoneIndex];
-            $scope.managersDropdown = [];
-
-            angular.forEach($scope.managers, function (manager, index) {
-                if ($scope.selectedItem.zone.id == manager.zone.id) {
-
-                    $scope.managersDropdown.push({
-                        text: manager.name,
-                        click: 'setManager(' + index + ')'
-                    });
-                }
-            });
-
-            //Si ya está seleccionado un gestor y el gestor no pertenece a la región seleccionada lo reseteamos
-            if ($scope.selectedItem.manager && ManagerService.getManagerById($scope.selectedItem.manager.id).zone.id != $scope.selectedItem.zone.id) {
-                $scope.selectedItem.manager = undefined;
-            }
-        }
-    };
-
-    $scope.setZoneById = function () {
-        var zoneIndex = 0;
-
-        angular.forEach($scope.zones, function (zone, index) {
-            if ($scope.selectedItem.zone.id == zone.id) {
-                zoneIndex = index;
-            }
-        });
-
-        $scope.setZone(zoneIndex);
-    }
-
-    $scope.setManager = function (managerIndex) {
-        if ($scope.selectedItem) {
-            $scope.selectedItem.manager = $scope.managers[managerIndex];
-        }
-    };
-
     $scope.setParcel = function (parcelIndex) {
         if ($scope.selectedItem) {
             $scope.selectedItem.parcel = $scope.parcels[parcelIndex];
         }
-    };
-
-    $scope.isManagerSelected = function () {
-        var isManagerSelected = false;
-        if ($scope.selectedItem) {
-            if ($scope.selectedItem.manager) {
-                isManagerSelected = true;
-            }
-        }
-        return isManagerSelected;
     };
 
     $scope.isCurrentStatus = function (status, minStatus) {
@@ -185,17 +121,6 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
             return true;
         }
         return false;
-    };
-
-    $scope.sendMail = function (subject, observations) {
-        var manager = ManagerService.getManagerById($scope.selectedItem.manager.id);
-        CreditService.sendMail(manager, subject, observations);
-    };
-
-    $scope.setCommittedDate = function (committedDate) {
-        if ($scope.selectedItem) {
-            $scope.selectedItem.committedDate = new moment(committedDate).locale('es');
-        }
     };
 
     $scope.setRealDeliveryDate = function (realDeliveryDate) {
@@ -329,7 +254,7 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
 
     $scope.isValidForm = function (requiredFields, optionalFields) {
         var isValidForm = true;
-        var isOptionalForm = false;
+        var isOptionalForm = true;
         if ($scope.selectedItem) {
             for (var indexField in requiredFields) {
                 var fieldName = requiredFields[indexField];
@@ -339,27 +264,17 @@ Jash.controller('CreditController', ['$scope', '$rootScope', '$state', '$popover
                 }
             }
 
-            for (var indexField in optionalFields) {
-                var fieldName = optionalFields[indexField];
-                isOptionalForm = isOptionalForm || $scope.selectedItem[fieldName];
+            if (optionalFields && optionalFields.length){
+                isOptionalForm = false;
+
+                for (var indexField in optionalFields) {
+                    var fieldName = optionalFields[indexField];
+                    isOptionalForm = isOptionalForm || $scope.selectedItem[fieldName];
+                }
             }
         }
 
         return isValidForm && isOptionalForm;
-    };
-
-    $scope.isValidEmailForm = function (fields) {
-        var isValidForm = true;
-        if ($scope.selectedItem) {
-            for (var indexField in fields) {
-                var field = fields[indexField];
-                if (!field) {
-                    isValidForm = false;
-                    break;
-                }
-            }
-        }
-        return isValidForm;
     };
 
     // Si entramos al controlador y ya está cargada la información inicial podemos continuar, si no esperamos al broadcast del rootScope

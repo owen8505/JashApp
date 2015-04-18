@@ -81,7 +81,7 @@
                     <label for="certificate-documents">Subir archivo del certificado:</label>
                     <span class="third-width"><input id="certificate-document-name" type="text" ng-model="$parent.documentName" class="form-control" placeholder="Ej. Certificado 3035 Ricardo Rosas" ng-readonly="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></span>
                     <span class="third-width"><input id="certificate-documents" onchange="angular.element(this).scope().documentFilesChanged(this)" class="form-control" type="file" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)"></span>
-                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument()">Nuevo certificado</a></span>
+                    <span class="third-width"><a class="btn btn-default" ng-click="addDocument()" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)}">Nuevo certificado</a></span>
                     <a class="attachment-link" ng-repeat="document in selectedItem.documents" ng-hide ="document.removed" ng-href="{{ document.url }}" target="_blank">{{ document.title }} <span class="icon icon-cancel-circle" ng-click="deleteDocument($event, document)" ng-class="{'attachment-link-disabled': isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)}"></span></a>
                 </li>
                 <li>
@@ -94,11 +94,11 @@
                     <input id="certificate-deliver" type="checkbox" ng-model="selectedItem.delivered" ng-disabled="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.CASHED)">
                 </li>
             </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.DOCS_RECEIVED) && selectedItem.invoiceFolio">
+            <ol ng-if="isCurrentStatus(selectedItem.status, CERTIFICATE_STATUS.DELIVERED) && selectedItem.invoiceFolio">
                 <li><h3>Factura</h3></li>
                 <li>
                     <label for="certificate-invoice-date">Fecha de facturación:</label>
-                    <div id="certificate-delivery-date">{{ selectedItem.invoiceDate | formatDate }}</div>
+                    <div id="certificate-invoice-date">{{ selectedItem.invoiceDate | formatDate }}</div>
                 </li>
                 <li>
                     <label for="certificate-invoice-folio">Folio de factura:</label>

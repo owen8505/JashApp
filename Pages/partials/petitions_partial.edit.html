@@ -76,11 +76,11 @@
                     <textarea id="petition-comments" class="form-control" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments" ng-readonly="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></textarea>
                 </li>
             </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.WAITING_COMMITED_DATE) && selectedItem.invoiceFolio">
+            <ol ng-if="isCurrentStatus(selectedItem.status, PETITION_STATUS.DELIVERED) && selectedItem.invoiceFolio">
                 <li><h3>Factura</h3></li>
                 <li>
                     <label for="petition-invoice-date">Fecha de facturación:</label>
-                    <div id="petition-delivery-date">{{ selectedItem.invoiceDate | formatDate }}</div>
+                    <div id="petition-invoice-date">{{ selectedItem.invoiceDate | formatDate }}</div>
                 </li>
                 <li>
                     <label for="petition-invoice-folio">Folio de factura:</label>

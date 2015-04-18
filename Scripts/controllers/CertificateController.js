@@ -326,11 +326,11 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
 
     $scope.openRequestInfo = function () {
         
-    };    
+    };
 
     $scope.isValidForm = function (requiredFields, optionalFields) {
         var isValidForm = true;
-        var isOptionalForm = false;
+        var isOptionalForm = true;
         if ($scope.selectedItem) {
             for (var indexField in requiredFields) {
                 var fieldName = requiredFields[indexField];
@@ -340,12 +340,16 @@ Jash.controller('CertificateController', ['$scope', '$rootScope', '$state', '$po
                 }
             }
 
-            for (var indexField in optionalFields) {
-                var fieldName = optionalFields[indexField];
-                isOptionalForm = isOptionalForm || $scope.selectedItem[fieldName];
+            if (optionalFields && optionalFields.length){
+                isOptionalForm = false;
+
+                for (var indexField in optionalFields) {
+                    var fieldName = optionalFields[indexField];
+                    isOptionalForm = isOptionalForm || $scope.selectedItem[fieldName];
+                }
             }
         }
-        
+
         return isValidForm && isOptionalForm;
     };
 
