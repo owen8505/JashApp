@@ -105,6 +105,13 @@ Jash.controller('InvoiceController', ['$scope', '$rootScope', '$state', '$popove
         }
     };
 
+    $scope.onlyFutureDate = function (date) {
+        var today = new Date();
+        today.setDate(today.getDate() - 1);
+
+        return date > today;
+    };
+
     $scope.setInvoiceDate = function (invoiceDate) {        
         if ($scope.selectedItem) {
             $scope.selectedItem.invoiceDate = new moment(invoiceDate).locale('es');

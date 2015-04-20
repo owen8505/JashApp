@@ -30,7 +30,7 @@
 </li>
 <li>
     <label for="invoice-date">Fecha de facturación: <em class="mandatory-field">*</em></label>
-    <quick-datepicker ng-model='invoiceDate' label-format="dd/MM/yyyy" on-change="setInvoiceDate(invoiceDate)" placeholder="Selecciona una fecha" ></quick-datepicker>
+    <quick-datepicker ng-model='invoiceDate' label-format="dd/MM/yyyy" date-filter='onlyFutureDate' on-change="setInvoiceDate(invoiceDate)" placeholder="Selecciona una fecha" ></quick-datepicker>
     <div id="invoice-date" ng-if="selectedItem.invoiceDate">{{ selectedItem.invoiceDate | formatDate }}</div>
 </li>
 <li>

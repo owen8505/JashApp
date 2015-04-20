@@ -170,13 +170,13 @@ Jash.factory('CreditService', ["$http", "$q", "$rootScope", "$cookieStore", "$st
                         // Si ya se pasó la fecha de entrega y no hemos generado el crédito
                         credit.anomaly = {
                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                            message: 'La fecha de entrega expiró y el crédito no ha sido generado.'
+                            message: 'La fecha límite de entrega expiró y el crédito no ha sido generado.'
                         }
                     } else if(credit.deliveryDate && anomalyNowDate.diff(angular.copy(credit.deliveryDate).startOf('day'), 'days') >= -5 && !credit.delivered){
                         // Si faltan cinco días o menos para la fecha de entrega y no hemos generado el crédito
                         credit.anomaly = {
                             status: DEFAULT_VALUES.ANOMALY_STATUS.ERROR,
-                            message: 'La fecha de entrega está próxima y el crédito no ha sido generado.'
+                            message: 'La fecha límite de entrega está próxima y el crédito no ha sido generado.'
                         }
                     }
 
