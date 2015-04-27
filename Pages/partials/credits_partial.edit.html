@@ -10,6 +10,13 @@
                 <ng-include src="'templates/credit_new_template.html'"></ng-include>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.NEW)">
+                <li><h3>Observaciones</h3></li>
+                <li>
+                    <label for="petition-comments">Observaciones:</label>
+                    <textarea id="petition-comments" class="form-control" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments" ng-readonly="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></textarea>
+                </li>
+            </ol>
+            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.NEW)">
                 <li><h3>Datos de envío</h3></li>
                 <li>
                     <label for="credit-parcel">Paquetería:</label>
@@ -46,13 +53,6 @@
                 <li>
                     <label for="credit-deliver">Entregado:</label>
                     <input id="credit-deliver" type="checkbox" ng-model="selectedItem.delivered" ng-disabled="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)">
-                </li>
-            </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.NEW)">
-                <li><h3>Observaciones</h3></li>
-                <li>
-                    <label for="petition-comments">Observaciones:</label>
-                    <textarea id="petition-comments" class="form-control" placeholder="Ej. Se revisó el documento" ng-model="selectedItem.comments" ng-readonly="isCurrentStatus(selectedItem.status, PETITION_STATUS.CASHED)"></textarea>
                 </li>
             </ol>
             <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.DELIVERED) && selectedItem.invoiceFolio">
