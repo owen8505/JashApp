@@ -48,7 +48,7 @@
                     <input id="credit-deliver" type="checkbox" ng-model="selectedItem.delivered" ng-disabled="isCurrentStatus(selectedItem.status, CREDIT_STATUS.CASHED)">
                 </li>
             </ol>
-            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.DOCS_RECEIVED)">
+            <ol ng-if="isCurrentStatus(selectedItem.status, CREDIT_STATUS.NEW)">
                 <li><h3>Observaciones</h3></li>
                 <li>
                     <label for="petition-comments">Observaciones:</label>
